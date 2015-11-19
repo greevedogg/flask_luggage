@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+ 
+{% block content %}
+  <h2>Luggage</h2>
+  <form action="{{ url_for('luggage') }}" method=post>
+    {{ form.hidden_tag() }}
+ 
+    {{ form.name.label }}
+    {{ form.name }}
+ 
+    {{ form.ticket.label }}
+    {{ form.ticket }}
+ 
+    {{ form.location.label }}
+    {{ form.location }}
+ 
+    {{ form.bagCount.label }}
+    {{ form.bagCount }}
+ 
+    {{ form.submit }}
+  </form>
+{% endblock %}
