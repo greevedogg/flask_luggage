@@ -1,8 +1,8 @@
-from flask.ext.wtf import Form, TextField, SubmitField
+from flask.ext.wtf import Form, TextField, SubmitField, validators, ValidationError
  
 class LuggageForm(Form):
-  name = TextField("Last Name")
-  ticket = TextField("Ticket #")
-  location = TextField("Location")
-  bagCount = TextAreaField("Bag Count")
+  name = TextField("Last Name", [validators.Required()])
+  ticket = TextField("Ticket #", [validators.Required()])
+  location = TextField("Location", [validators.Required()])
+  bagCount = TextAreaField("Bag Count", [validators.Required()])
   submit = SubmitField("Store")
