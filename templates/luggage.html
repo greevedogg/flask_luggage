@@ -3,7 +3,19 @@
 {% block content %}
   <h2>Luggage</h2>
   
-  {% for message in get_flashed_messages() %}
+  {% for message in form.name.errors %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+ 
+  {% for message in form.ticket.errors %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+ 
+  {% for message in form.location.errors %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+ 
+  {% for message in form.bagCount.errors %}
     <div class="flash">{{ message }}</div>
   {% endfor %}
   
