@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, flash
 from forms import LuggageForm
+from flask.ext.wtf import Form
 
 app = Flask(__name__) 
  
