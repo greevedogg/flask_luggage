@@ -1,6 +1,6 @@
 # flask_luggage
 #I'm working on a Python Flask web app to manage luggage storage at a hotel's bellstand.
-#The app consists of a simple input form to store information to a MySQL database table,
+#The app consists of a simple input form to store information to a sqlite database table,
 #Similar to this:
 #Last Name:_____________
 #Ticket #:______________
