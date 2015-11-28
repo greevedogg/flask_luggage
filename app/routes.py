@@ -1,6 +1,6 @@
 import os
 from sqlite3 import dbapi2 as sqlite3
-from flask import Flask, render_template, request, flash
+from flask import Flask, session, g, redirect, url_for, render_template, request, flash
 from forms import LuggageForm
 from flask.ext.wtf import Form
 
