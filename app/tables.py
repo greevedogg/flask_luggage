@@ -1,3 +1,5 @@
+#Depricated....I will most likely be using sqlite, instead of MySQL and PyMySQL
+
 CREATE TABLE `users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `username` varchar(255) COLLATE utf8_bin NOT NULL,
