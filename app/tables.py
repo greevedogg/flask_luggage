@@ -1,4 +1,5 @@
 #Depricated....I will most likely be using sqlite, instead of MySQL and PyMySQL
+#See models.py & config.py for sqlite and sqlalchemy configuration
 
 CREATE TABLE `users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
