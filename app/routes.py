@@ -51,11 +51,15 @@ def luggage():
   form = LuggageForm()
  
   if request.method == 'POST':
-   if form.validate() == False:
-      flash('All fields are required.')
-      return render_template('luggage.html', form=form)
-   else:
-    return 'Entry Submitted to Luggage Log.'
+      if form.validate() == False:
+          flash('All fields are required.')
+          return render_template('luggage.html', form=form)
+       else:
+           db = get_db()
+           db.execute('insert into luggage (name, ticket, location, bagCount) values (?, ?, ?, ?)',
+                      [luggage.form['name'], luggage.form['ticket'], luggage.form['location'], luggage.form['bagCount']])
+           db.commit()
+           return 'Entry Submitted to Luggage Log.'
  
   elif request.method == 'GET':
     return render_template('luggage.html', form=form)  
