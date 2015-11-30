@@ -1,66 +1,39 @@
 import os
 from sqlite3 import dbapi2 as sqlite3
-from flask import Flask, session, g, redirect, url_for, render_template, request, flash
+from flask import Blueprint, session, g, redirect, url_for, render_template, request, flash
 from forms import LuggageForm
-from flask.ext.wtf import Form
+from models import Luggage, db
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import Form
+from sqlalchemy import exc
 
-app = Flask(__name__) 
- 
-app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'luggage.db'),
-    DEBUG=True,
-    SECRET_KEY='development key',
-    USERNAME='admin',
-    PASSWORD='default'
-))
-app.config.from_envvar('LUGGAGE_SETTINGS', silent=True)
-
-def init_db():
-    """Initializes the database."""
-    db = get_db()
-    with app.open_resource(schema.sql', mode='r') as f:
-        db.cursor().executescript(f.read())
-    db.commit()
-    
-@app.cli.command('initdb')
-def initdb_command():
-    """Creates the database tables."""
-    init_db()
-    print('Initialized the database')
-
-def get_db():
-    """Opens a new database connection if there is none yet for the current application context."""
-    if not hasattr(g, 'sqlite_db'):
-        g.sqlite_db = connect_db()
-    return g.sqlite_db
-
-@app.teardown_appcontext
-def close_db(error):
-    """Closes the database again at the end of the request."""
-    if hasattr(g, 'sqlite_db'):
-        g.sqlite_db.close()
-
-   
-@app.route('/luggage')
-def luggage():
-  form = LuggageForm()
-  return render_template('luggage.html', form=form)
+luggage = Blueprint('luggage', __name__, template_folder='templates')
   
-@app.route('/luggage', methods=['GET', 'POST'])
-def luggage():
-  form = LuggageForm()
- 
-  if request.method == 'POST':
-      if form.validate() == False:
-          flash('All fields are required.')
-          return render_template('luggage.html', form=form)
-       else:
-           db = get_db()
-           db.execute('insert into luggage (name, ticket, location, bagCount) values (?, ?, ?, ?)',
-                      [luggage.form['name'], luggage.form['ticket'], luggage.form['location'], luggage.form['bagCount']])
-           db.commit()
-           return 'Entry Submitted to Luggage Log.'
- 
-  elif request.method == 'GET':
-    return render_template('luggage.html', form=form)  
+@luggage.route('/create', methods=['GET', 'POST'])
+def create_luggage():
+    form = LuggageForm(request.form)
+
+    if request.method == 'POST':
+        if form.validate() == False:
+            flash('All fields are required.')
+            return render_template('create_luggage.html', form=form)
+        else:
+            try:
+                name = form.name.data
+                ticket = form.ticket.data
+                location = form.location.data
+                bagCount = form.bagCount.data
+                entity = Luggage(name, ticket, location, bagCount, None)
+                db.session.add(entity)
+                db.session.commit()
+                return 'Entry Submitted to Luggage Log.'
+            except exc.SQLAlchemyError as e:
+                return 'Entry NOT Submitted to Luggage Log.'
+
+    return render_template('create_luggage.html', form=form)
+
+@luggage.route('/')
+def show_luggage():
+    items = [item for item in Luggage.query.all()]
+    return render_template("display_luggage.html", items=items)
   

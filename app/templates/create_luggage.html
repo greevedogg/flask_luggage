@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
  
-{% block content %}
+{% block container %}
   <h2>Luggage</h2>
   
   {% for message in form.name.errors %}
@@ -19,20 +19,20 @@
     <div class="flash">{{ message }}</div>
   {% endfor %}
   
-  <form action="{{ url_for('luggage') }}" method=post>
-    {{ form.hidden_tag() }}
+  <form action="{{ url_for('luggage.create_luggage') }}" method=post>
+    {{ form.csrf_token }}
  
     {{ form.name.label }}
-    {{ form.name }}
+    {{ form.name }}<br/>
  
     {{ form.ticket.label }}
-    {{ form.ticket }}
+    {{ form.ticket }}<br/>
  
     {{ form.location.label }}
-    {{ form.location }}
+    {{ form.location }}<br/>
  
     {{ form.bagCount.label }}
-    {{ form.bagCount }}
+    {{ form.bagCount }}<br/>
  
     {{ form.submit }}
   </form>

@@ -1,4 +1,4 @@
-from wtforms import Form, TextField, SubmitField, validators, ValidationError
+from wtforms import Form, TextField, TextAreaField, SubmitField, validators, ValidationError
  
 class LuggageForm(Form):
   name = TextField("Last Name", [validators.Required("Please enter a Last Name")])
