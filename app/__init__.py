@@ -1,14 +1,14 @@
-from config import configure_app
+from .config import configure_app
 from flask import Flask, render_template
-from models import Luggage, db
-from routes import luggage
+from app.models import Luggage, db
+from .routes import luggage
 
 flask_app = Flask(__name__, template_folder='templates')
 
 configure_app(flask_app)
 db.init_app(flask_app)
 
-flask_app.register_blueprint(luggage, url_prefix='/luggages')
+flask_app.register_blueprint(luggage, url_prefix='/luggage')
 
 @flask_app.teardown_appcontext
 def close_db(error=None):
