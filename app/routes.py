@@ -1,9 +1,9 @@
 import os
 from sqlite3 import dbapi2 as sqlite3
 from flask import Blueprint, session, g, redirect, url_for, render_template, request, flash
-from forms import LuggageForm
-from models import Luggage, db
-from flask_sqlalchemy import SQLAlchemy
+from .forms import LuggageForm
+from .models import Luggage, db
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask_wtf import Form
 from sqlalchemy import exc
 
