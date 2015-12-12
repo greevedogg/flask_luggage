@@ -1,4 +1,43 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
+ 
+{% block form %}
+  <h2>Luggage</h2>
+  
+  {% for message in form.name.errors %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+ 
+  {% for message in form.ticket.errors %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+ 
+  {% for message in form.location.errors %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+ 
+  {% for message in form.bagCount.errors %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  
+  <form action="{{ url_for('luggage.create_luggage') }}" method=post>
+    {{ form.csrf_token }}
+ 
+    {{ form.name.label }}
+    {{ form.name }}<br/>
+ 
+    {{ form.ticket.label }}
+    {{ form.ticket }}<br/>
+ 
+    {{ form.location.label }}
+    {{ form.location }}<br/>
+ 
+    {{ form.bagCount.label }}
+    {{ form.bagCount }}<br/>
+ 
+    {{ form.submit }}
+  </form>
+{% endblock %}
+
 {% block container %}
   <div class="top-pad">
     <table class="table table-striped">

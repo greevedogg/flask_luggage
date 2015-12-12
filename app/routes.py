@@ -9,7 +9,7 @@ from sqlalchemy import exc
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
   
-@luggage.route('/create', methods=['GET', 'POST'])
+@luggage.route('/', methods=['GET', 'POST'])
 
 def create_luggage():
     form = LuggageForm(request.form)
@@ -20,21 +20,22 @@ def create_luggage():
             return render_template('create_luggage.html', form=form)
         else:
             try:
-                name = form.name.data
+                name = form.name.data.upper()
                 ticket = form.ticket.data
-                location = form.location.data
+                location = form.location.data.upper()
                 bagCount = form.bagCount.data
                 entity = Luggage(name, ticket, location, bagCount, None)
                 db.session.add(entity)
                 db.session.commit()
-                return 'Entry Submitted to Luggage Log.'
+                flash('Entry Submitted to Luggage Log.')
+                
             except exc.SQLAlchemyError as e:
                 return 'Entry NOT Submitted to Luggage Log.'
+    items = [item for item in Luggage.query.all()]
+    return render_template('display_luggage.html', items=items, form=form)
 
-    return render_template('create_luggage.html', form=form)
-
-@luggage.route('/')
+#@luggage.route('/')
 def show_luggage():
     items = [item for item in Luggage.query.all()]
-    return render_template("display_luggage.html", items=items)
+    return render_template("display_luggage.html", items=items, form=form)
   
