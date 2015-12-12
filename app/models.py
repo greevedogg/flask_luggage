@@ -1,10 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 from datetime import datetime
 from time import time
 
 db = SQLAlchemy()
 
 class Luggage(db.Model):
+    __tablename__ = 'luggage'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     ticket = db.Column(db.String(11))
@@ -12,7 +14,7 @@ class Luggage(db.Model):
     bagCount = db.Column(db.Integer)
     loggedIn = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User',
-                             backref=db.backref('luggages', lazy='joined'))
+                             backref=db.backref('luggage', lazy='joined'))
     
     def __init__(self, name, ticket, location, bagCount, user):
         self.name = name
@@ -35,4 +37,7 @@ class User(db.Model):
         
     def __repr__(self):
         pass
-    
+
+        
+#engine = create_engine('sqlite:///./Luggage.db')
+#db.metadata.create_all(bind=engine)        

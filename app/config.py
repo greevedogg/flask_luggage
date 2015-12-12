@@ -1,9 +1,10 @@
 import os
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///'
     SECRET_KEY = 'f57a4ed6-6fc3-4aa3-9bf9-e73328cb4b83'
     USERNAME='admin'
     PASSWORD='default'
@@ -11,7 +12,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///C:/Temp/Luggage.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'Luggage.db')
     SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'
 
 class TestingConfig(BaseConfig):

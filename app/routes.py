@@ -10,6 +10,7 @@ from sqlalchemy import exc
 luggage = Blueprint('luggage', __name__, template_folder='templates')
   
 @luggage.route('/create', methods=['GET', 'POST'])
+
 def create_luggage():
     form = LuggageForm(request.form)
 
