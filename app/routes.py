@@ -8,7 +8,7 @@ from flask_wtf import Form
 from sqlalchemy import exc
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
-  
+
 @luggage.route('/', methods=['GET', 'POST'])
 
 def create_luggage():
@@ -17,7 +17,7 @@ def create_luggage():
     if request.method == 'POST':
         if form.validate() == False:
             flash('All fields are required.')
-            return render_template('create_luggage.html', form=form)
+            return render_template('display_luggage.html', form=form)
         else:
             try:
                 name = form.name.data.upper()
@@ -28,7 +28,7 @@ def create_luggage():
                 db.session.add(entity)
                 db.session.commit()
                 flash('Entry Submitted to Luggage Log.')
-                
+
             except exc.SQLAlchemyError as e:
                 return 'Entry NOT Submitted to Luggage Log.'
     items = [item for item in Luggage.query.all()]
@@ -38,4 +38,3 @@ def create_luggage():
 def show_luggage():
     items = [item for item in Luggage.query.all()]
     return render_template("display_luggage.html", items=items, form=form)
-  

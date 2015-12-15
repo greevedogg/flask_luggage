@@ -4,11 +4,11 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #444;
 }
- 
+
 /*
  * Create dark grey header with a white logo
  */
-  
+
 header {
   background-color: #2B2B2B;
   height: 35px;
@@ -16,7 +16,7 @@ header {
   opacity: .9;
   margin-bottom: 10px;
 }
- 
+
 header h1.logo {
   margin: 0;
   font-size: 1.7em;
@@ -24,21 +24,21 @@ header h1.logo {
   text-transform: uppercase;
   float: left;
 }
- 
+
 header h1.logo:hover {
   color: #fff;
   text-decoration: none;
 }
- 
+
 /*
  * Center the body content
  */
-  
+
 .container {
   width: 940px;
   margin: 0 auto;
 }
- 
+
 div.jumbo {
   padding: 10px 0 30px 0;
   background-color: #eeeeee;
@@ -46,14 +46,18 @@ div.jumbo {
      -moz-border-radius: 6px;
           border-radius: 6px;
 }
- 
+
+div.top-pad {
+  padding-top: 10px;
+}
+
 h2 {
   font-size: 3em;
   margin-top: 40px;
   text-align: center;
   letter-spacing: -2px;
 }
- 
+
 h3 {
   font-size: 1.7em;
   font-weight: 100;
@@ -63,17 +67,19 @@ h3 {
   color: #999;
 }
 
-/* Contact form */
+form {
+  padding: 10px;
+}
 form label {
   font-size: 1.2em;
   font-weight: bold;
   display: block;
   padding: 10px 0;
 }
- 
+
 form input#name,
 form input#ticket,
-form input#location
+form input#location,
 form input#bagCount {
   width: 400px;
   background-color: #fafafa;
@@ -84,17 +90,18 @@ form input#bagCount {
   padding: 5px;
   font-size: 1.1em;
 }
- 
+
 form input#submit {
   display: block;
-  -webkit-border-radius: 3px; 
+  -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
           border-radius: 3px;
   border:1px solid #d8d8d8;
-  padding: 10px; 
-  font-weight:bold; 
-  text-align: center; 
-  color: #000000; 
+  margin: 10px 0px 0px 0px;
+  padding: 10px 40px 10px 40px;
+  font-weight:bold;
+  text-align: center;
+  color: #000000;
   background-color: #f4f4f4;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f4f4), color-stop(100%, #e5e5e5));
   background-image: -webkit-linear-gradient(top, #f4f4f4, #e5e5e5);
@@ -103,10 +110,10 @@ form input#submit {
   background-image: -o-linear-gradient(top, #f4f4f4, #e5e5e5);
   background-image: linear-gradient(top, #f4f4f4, #e5e5e5);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f4f4f4, endColorstr=#e5e5e5);
 }
- 
+
 form input#submit:hover{
   cursor: pointer;
-  border:1px solid #c1c1c1; 
+  border:1px solid #c1c1c1;
   background-color: #dbdbdb;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dbdbdb), color-stop(100%, #cccccc));
   background-image: -webkit-linear-gradient(top, #dbdbdb, #cccccc);
@@ -115,6 +122,20 @@ form input#submit:hover{
   background-image: -o-linear-gradient(top, #dbdbdb, #cccccc);
   background-image: linear-gradient(top, #dbdbdb, #cccccc);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#dbdbdb, endColorstr=#cccccc);
 }
+
+th, td {
+  text-align: center;
+}
+
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #cceeff;
+}
+
 
 /* Message flashing */
 .flash {
