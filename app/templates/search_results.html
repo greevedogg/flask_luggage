@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Search results for "{{ query }}":</h1>
+  {% for luggage in results %}
+      {% include 'display_luggage.html' %}
+  {% endfor %}
+{% endblock %}

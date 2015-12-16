@@ -36,6 +36,8 @@
 
     {{ form.submit }}
   </form>
+
+  <form style="display: inline;" action="{{ url_for('luggage.search') }}" method="post" name="search">{{ g.search_form.search(size=20) }}<input type="submit" value="Search"></form>
 {% endblock %}
 
 {% block container %}

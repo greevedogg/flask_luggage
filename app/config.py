@@ -1,6 +1,9 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+WHOOSH_BASE = os.path.join(basedir, 'Luggage.db')
+MAX_SEARCH_RESULTS = 10
+
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
@@ -8,7 +11,7 @@ class BaseConfig(object):
     SECRET_KEY = 'f57a4ed6-6fc3-4aa3-9bf9-e73328cb4b83'
     USERNAME='admin'
     PASSWORD='default'
-    
+
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
@@ -31,5 +34,3 @@ def configure_app(app):
 	app.config.from_envvar('LUGGAGE_SETTINGS', silent=True)
 	config_name = os.getenv('FLAKS_CONFIGURATION', 'default')
 	app.config.from_object(config[config_name])
-    
-    
