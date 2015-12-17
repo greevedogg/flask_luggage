@@ -36,7 +36,7 @@ def create_luggage():
                 db.session.add(entity)
                 db.session.commit()
                 flash('Entry Submitted to Luggage Log.')
-
+                return redirect(url_for('luggage.create_luggage'))
             except exc.SQLAlchemyError as e:
                 return 'Entry NOT Submitted to Luggage Log.'
     items = [item for item in Luggage.query.all()]
@@ -53,7 +53,7 @@ def search():
         #return redirect(url_for('index'))
     return redirect(url_for('luggage.search_results', query=g.search_form.search.data))
 
-@luggage.route('/search_results')
+@luggage.route('/search_results/<query>')
 def search_results(query):
-    results = Luggage.query.whoosh_search(query, MAX_SEARCH_RESULTS).all()
-    return render_template('search_results.html', query=query, results=results)
+    results = Luggage.query.whoosh_search(query , MAX_SEARCH_RESULTS).all()
+    return render_template('search_results.html', form=form, query=query, results=results)
