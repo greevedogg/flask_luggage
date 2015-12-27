@@ -5,6 +5,7 @@ from forms import LuggageForm, SearchForm
 from models import Luggage, db
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import Form
+from wtforms import validators
 from sqlalchemy import exc
 from config import MAX_SEARCH_RESULTS
 import flask.ext.whooshalchemy
@@ -15,7 +16,7 @@ luggage = Blueprint('luggage', __name__, template_folder='templates')
 
 @luggage.before_request
 def before_request():
-    g.search_form = SearchForm()
+    g.search_form = SearchForm(request.form)
 
 @luggage.route('/', methods=['GET', 'POST'])
 
@@ -39,7 +40,7 @@ def create_luggage():
                 return redirect(url_for('luggage.create_luggage'))
             except exc.SQLAlchemyError as e:
                 return 'Entry NOT Submitted to Luggage Log.'
-    items = [item for item in Luggage.query.all()]
+    items = [item for item in Luggage.query.order_by(Luggage.timeIn.desc()).all()]
     return render_template('display_luggage.html', items=items, form=form)
 
 #@luggage.route('/')
@@ -49,11 +50,13 @@ def show_luggage():
 
 @luggage.route('/search', methods=['POST'])
 def search():
-    #if not g.search_form.validate_on_submit():
-        #return redirect(url_for('index'))
+    #g.search_form = SearchForm()
+    #if not g.search_form.validate() == False:
+    #    return redirect(url_for('luggage'))
+
     return redirect(url_for('luggage.search_results', query=g.search_form.search.data))
 
 @luggage.route('/search_results/<query>')
 def search_results(query):
-    results = Luggage.query.whoosh_search(query , MAX_SEARCH_RESULTS).all()
-    return render_template('search_results.html', form=form, query=query, results=results)
+    results = Luggage.query.whoosh_search(query + "*", MAX_SEARCH_RESULTS).all()
+    return render_template('search_results.html', query=query, results=results)

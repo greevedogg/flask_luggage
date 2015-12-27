@@ -1,8 +1,28 @@
 {% extends "layout.html" %}
 
-{% block content %}
+{% block container %}
   <h1>Search results for "{{ query }}":</h1>
-  {% for luggage in results %}
-      {% include 'display_luggage.html' %}
-  {% endfor %}
-{% endblock %}
+
+        <div class="top-pad">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Last Name</th>
+                <th>Ticket #</th>
+                <th>Location</th>
+                <th>Bag Count</th>
+              </tr>
+            </thead>
+            <tbody>
+      {% for data in results %}
+              <tr>
+                <td>{{data.name}}</td>
+                <td>{{data.ticket}}</td>
+                <td>{{data.location}}</td>
+                <td>{{data.bagCount}}</td>
+              </tr>
+      {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endblock %}

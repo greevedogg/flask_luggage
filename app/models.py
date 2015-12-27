@@ -16,15 +16,18 @@ class Luggage(db.Model):
     location = db.Column(db.String(11))
     bagCount = db.Column(db.Integer)
     loggedIn = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timeIn = db.Column(db.DateTime)
     user = db.relationship('User',
                              backref=db.backref('luggage', lazy='joined'))
 
-    def __init__(self, name, ticket, location, bagCount, user):
+    def __init__(self, name, ticket, location, bagCount, user, timeIn=None):
         self.name = name
         self.ticket = ticket
         self.location = location
         self.bagCount = bagCount
         self.user = user
+        if timeIn is None:
+            self.timeIn = datetime.utcnow()
 
     def __repr__(self):
         return '<Luggage %r>' % (self.name, self.ticket)
