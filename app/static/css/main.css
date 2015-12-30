@@ -9,15 +9,22 @@ body {
  * Create dark grey header with a white logo
  */
 
+.navbar {
+  width: 940px;
+}
+
+.navbar-brand {
+  text-transform: uppercase;
+}
+
 header {
-  background-color: #2B2B2B;
   height: 35px;
   width: 100%;
   opacity: .9;
   margin-bottom: 10px;
 }
 
-header h1.logo {
+header, h1 {
   margin: 0;
   font-size: 1.7em;
   color: #fff;
@@ -25,18 +32,58 @@ header h1.logo {
   float: left;
 }
 
-header h1.logo:hover {
-  color: #fff;
-  text-decoration: none;
+.banner {
+  position: relative;
+  bottom: 8px;
+
 }
 
-/*
- * Center the body content
- */
+.results {
+  float:none;
+  color: black;
+  padding: 10px;
+}
+
+h2, h3 {
+  text-transform: uppercase;
+  text-decoration: underline;
+}
 
 .container {
+  width: 500px;
+  margin: 0px auto;
+  padding: 5px;
+
+}
+
+.outer {
   width: 940px;
-  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#srch {
+  margin: auto;
+  padding-top: 5px;
+}
+
+.center {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px;
+}
+.well {
+  width: 940px;
+  text-align: center;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05) inset;
+}
+
+div.footer {
+  width: 940px;
+  background-color: #ffffff;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05) inset;
+  padding-top: 5px;
+
 }
 
 div.jumbo {
@@ -67,8 +114,13 @@ h3 {
   color: #999;
 }
 
+input#search {
+  margin-top: 5px;
+  padding: 5px;
+}
+
 form {
-  padding: 10px;
+
 }
 form label {
   font-size: 1.2em;
@@ -125,21 +177,4 @@ form input#submit:hover{
 
 th, td {
   text-align: center;
-}
-
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-tr:hover {
-  background-color: #cceeff;
-}
-
-
-/* Message flashing */
-.flash {
-  background-color: #FBB0B0;
-  padding: 10px;
-  width: 400px;
 }

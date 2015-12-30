@@ -58,5 +58,5 @@ def search():
 
 @luggage.route('/search_results/<query>')
 def search_results(query):
-    results = Luggage.query.whoosh_search(query + "*", MAX_SEARCH_RESULTS).all()
+    results = Luggage.query.whoosh_search("*" + query + "*", MAX_SEARCH_RESULTS).all()
     return render_template('search_results.html', query=query, results=results)

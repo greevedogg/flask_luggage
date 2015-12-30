@@ -1,32 +1,63 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Luggage Services</title> 
+    <title>Luggage Services</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">    
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   </head>
-  <body class="w3-content" style="max-width:600px">
-   
-    <header class="w3-container w3-card-4 w3-light-blue">
-      <div class="container">
-        <h1 class="logo">Loews Royal Pacific Resort</h1>
+  <body>
+
+    <nav class="navbar navbar-inverse center" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/luggage"><span class="glyphicon glyphicon-home"></span>  Luggage Log</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <form role="form" style="display: inline;" action="{{ url_for('luggage.search') }}" method="post" name="search" autocomplete="off">{{ g.search_form.search(size=20) }}
+        <button type="submit" class="btn btn-default">
+          <span class="glyphicon glyphicon-search"></span> Search
+        </button>
+      </form>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+    <div class="center">
+      <div class="well center">
+        <h1 class="banner">Loews Royal Pacific Resort</h1>
       </div>
-    </header> 
-     
-    <div class="w3-container w3-card-4">
+    </div>
+  <div class="outer center">
+    <div class="container">
       {% block form %}
       {% endblock %}
     </div>
-    
-    <div class="w3-container w3-card-4">
+  </div>
+  <div class="outer center">
+    <div class="container">
       {% block container %}
       {% endblock %}
     </div>
-    
-    <footer class="w3-container w3-card-4 w3-light-blue">
-      <p>&copy;SCRG 2015 | All rights reserved</p>    
-    </footer>
+  </div>
+  <div class="outer center"
+    <div class="footer">
+      <div class="center" style="padding-left: 20px;">
+      {% block footer %}
+         <p>&copy;SCRG 2015 | All rights reserved</p>
+      </div>
+    </div>
+         <br>
+         <br>
+      {% endblock %}
+    </div>
+
   </body>
 </html>

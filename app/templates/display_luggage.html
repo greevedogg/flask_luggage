@@ -1,25 +1,25 @@
 {% extends "layout.html" %}
 
 {% block form %}
-  <h2>Luggage Log</h2>
+  <h2>Luggage Storage</h2>
 
   {% for message in form.name.errors %}
-    <div class="flash">{{ message }}</div>
+    <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
 
   {% for message in form.ticket.errors %}
-    <div class="flash">{{ message }}</div>
+    <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
 
   {% for message in form.location.errors %}
-    <div class="flash">{{ message }}</div>
+    <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
 
   {% for message in form.bagCount.errors %}
-    <div class="flash">{{ message }}</div>
+    <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
 
-  <form action="{{ url_for('luggage.create_luggage') }}" method=post>
+  <form action="{{ url_for('luggage.create_luggage') }}" method=post autocomplete="off">
     {{ form.csrf_token }}
 
     {{ form.name.label }}
@@ -37,12 +37,13 @@
     {{ form.submit }}
   </form>
 
-  <form style="display: inline;" action="{{ url_for('luggage.search') }}" method="post" name="search">{{ g.search_form.search(size=20) }}<input type="submit" value="Search"></form>
 {% endblock %}
 
 {% block container %}
-  <div class="top-pad">
-    <table class="table table-striped">
+  <h3>Luggage Log</h3>
+
+  <div>
+    <table class="table table-hover table-striped">
       <thead>
         <tr>
           <th>Last Name</th>
