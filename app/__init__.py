@@ -21,5 +21,12 @@ def close_db(error=None):
     # so the session is released by the current thread.
     pass
 
+@flask_app.template_filter()
+def datetimefilter(value, format='%H:%M'):
+    return value.strftime(format)
+
+flask_app.jinja_env.filters['datetimefilter'] = datetimefilter
+
+
 engine = create_engine('sqlite:///./Luggage.db')
 db.metadata.create_all(bind=engine)

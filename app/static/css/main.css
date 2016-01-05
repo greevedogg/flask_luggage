@@ -11,6 +11,7 @@ body {
 
 .navbar {
   width: 940px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-brand {
@@ -34,7 +35,9 @@ header, h1 {
 
 .banner {
   position: relative;
-  bottom: 8px;
+  bottom: 10px;
+  right: 10px;
+  text-shadow:  2px 2px 4px #000000;
 
 }
 
@@ -56,9 +59,17 @@ h2, h3 {
 
 }
 
+#foot {
+  width: 940px;
+  margin: 0px auto;
+
+
+}
+
 .outer {
   width: 940px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  padding-bottom: 10px;
 }
 
 #srch {
@@ -75,15 +86,21 @@ h2, h3 {
 .well {
   width: 940px;
   text-align: center;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05) inset;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
 }
 
-div.footer {
+.footer {
   width: 940px;
   background-color: #ffffff;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05) inset;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
   padding-top: 5px;
+  float: right;
 
+}
+
+#footertext {
+  padding-right: 5px;
+  float: right;
 }
 
 div.jumbo {
@@ -119,9 +136,6 @@ input#search {
   padding: 5px;
 }
 
-form {
-
-}
 form label {
   font-size: 1.2em;
   font-weight: bold;
@@ -178,3 +192,17 @@ form input#submit:hover{
 th, td {
   text-align: center;
 }
+
+.order-table {cursor:pointer; }
+
+.order-table::after, .order-table--asc::after, .order-table--desc::after {
+  font-size: .7em;
+  width: 1em;
+  display: inline-block;
+}
+
+.order-table::after { content: '▲▼'; }
+
+.order-table--asc::after { content: '▼'; }
+
+.order-table--desc::after { content: '▲'; }

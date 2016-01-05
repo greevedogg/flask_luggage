@@ -10,6 +10,7 @@
                 <th>Ticket #</th>
                 <th>Location</th>
                 <th>Bag Count</th>
+                <th>Time Stored</th>
               </tr>
             </thead>
             <tbody>
@@ -19,6 +20,7 @@
                 <td>{{data.ticket}}</td>
                 <td>{{data.location}}</td>
                 <td>{{data.bagCount}}</td>
+                <td>{{data.timeIn.datetimefilter}}</td>
               </tr>
       {% endfor %}
             </tbody>
