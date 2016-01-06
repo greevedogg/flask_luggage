@@ -10,7 +10,7 @@ flask_app = Flask(__name__, template_folder='templates')
 configure_app(flask_app)
 db.init_app(flask_app)
 
-flask_app.register_blueprint(luggage, url_prefix='/luggage')
+flask_app.register_blueprint(luggage)
 
 whooshalchemy.whoosh_index(flask_app, Luggage)
 
