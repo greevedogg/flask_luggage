@@ -5,6 +5,7 @@ class LuggageForm(Form):
   ticket = StringField("Ticket #", [validators.Required("Please enter a ticket #")])
   location = StringField("Location", [validators.Required("Please enter a location")])
   bagCount = StringField("Bag Count", [validators.Required("Please enter # of bags")])
+  loggedIn = StringField("Logged By", [validators.Length(min=2, max=3, message='Please enter your initals, only 2 or 3 letters')])
   submit = SubmitField("Store")
 
 class SearchForm(Form):

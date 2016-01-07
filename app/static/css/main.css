@@ -33,6 +33,11 @@ header, h1 {
   float: left;
 }
 
+div#head {
+  width: 100%;
+  background-image: url('rpr-banner-lrg.jpg');
+}
+
 .banner {
   position: relative;
   bottom: 10px;
@@ -86,6 +91,7 @@ h2, h3 {
 .well {
   width: 940px;
   text-align: center;
+  /*background-image: url('rpr-banner-lrg.jpg');*/
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -146,7 +152,8 @@ form label {
 form input#name,
 form input#ticket,
 form input#location,
-form input#bagCount {
+form input#bagCount,
+form input#loggedIn {
   width: 400px;
   background-color: #fafafa;
   -webkit-border-radius: 3px;

@@ -25,7 +25,7 @@ def close_db(error=None):
 def datetimefilter(value, format='%H:%M'):
     return value.strftime(format)
 
-flask_app.jinja_env.filters['datetimefilter'] = datetimefilter
+#flask_app.jinja_env.filters['datetimefilter'] = datetimefilter
 
 
 engine = create_engine('sqlite:///./Luggage.db')

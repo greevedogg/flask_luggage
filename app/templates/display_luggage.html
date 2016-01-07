@@ -20,6 +20,10 @@
     <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
 
+  {% for message in form.loggedIn.errors %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+
   <form action="{{ url_for('luggage.create_luggage') }}" method=post autocomplete="off">
     {{ form.csrf_token }}
 
@@ -34,6 +38,9 @@
 
     {{ form.bagCount.label }}
     {{ form.bagCount }}<br/>
+
+    {{form.loggedIn.label }}
+    {{ form.loggedIn }}<br/>
 
     {{ form.submit }}
   </form>
@@ -52,6 +59,7 @@
           <th class: "order-table">Ticket #</th>
           <th>Location</th>
           <th>Bag #</th>
+          <th>Logged By</th>
           <th class: "order-table">Time Stored</th>
         </tr>
       </thead>
@@ -62,7 +70,8 @@
           <td>{{data.ticket}}</td>
           <td>{{data.location}}</td>
           <td>{{data.bagCount}}</td>
-          <td>{{data.timeIn.datetimefilter}}</td>
+          <td>{{data.loggedIn}}</td>
+          <td>{{data.timeIn}}</td>
         </tr>
 {% endfor %}
       </tbody>
