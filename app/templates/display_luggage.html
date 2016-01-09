@@ -27,19 +27,19 @@
   <form action="{{ url_for('luggage.create_luggage') }}" method=post autocomplete="off">
     {{ form.csrf_token }}
 
-    {{ form.name.label }}
-    {{ form.name }}<br/>
-
-    {{ form.ticket.label }}
+      {{ form.ticket.label }}
     {{ form.ticket }}<br/>
 
-    {{ form.location.label }}
-    {{ form.location }}<br/>
+    {{ form.name.label }}
+    {{ form.name }}<br/>
 
     {{ form.bagCount.label }}
     {{ form.bagCount }}<br/>
 
-    {{form.loggedIn.label }}
+    {{ form.location.label }}
+    {{ form.location }}<br/>
+
+        {{form.loggedIn.label }}
     {{ form.loggedIn }}<br/>
 
     {{ form.submit }}
