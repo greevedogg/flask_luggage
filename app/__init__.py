@@ -23,7 +23,7 @@ def close_db(error=None):
 
 @flask_app.template_filter()
 def datetimefilter(value, format='%H:%M'):
-    return value.strftime(format)
+    return value.strftime(format, 'localtime')
 
 #flask_app.jinja_env.filters['datetimefilter'] = datetimefilter
 

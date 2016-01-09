@@ -71,7 +71,7 @@
           <td>{{data.location}}</td>
           <td>{{data.bagCount}}</td>
           <td>{{data.loggedIn}}</td>
-          <td>{{data.timeIn}}</td>
+          <td>{{data.timeIn.strftime('%H:%M')}}</td>
         </tr>
 {% endfor %}
       </tbody>
