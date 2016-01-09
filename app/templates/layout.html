@@ -32,23 +32,18 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-    <div class="center">
+<!--    <div class="center">
       <div class="well center" id="head">
         <h1 class="banner">Loews Royal Pacific Resort</h1>
       </div>
-    </div>
-  <div class="outer center">
-    <div class="container">
-      {% block form %}
-      {% endblock %}
-    </div>
-  </div>
-  <div class="outer center">
+    </div>-->
+  <div class="outer center" id="top">
     <div class="container">
       {% block container %}
       {% endblock %}
     </div>
   </div>
+
   {% block footer %}
   <div id="foot">
     <div class="footer">
@@ -63,7 +58,7 @@
 
 <script type=text/javascript>
   $(document).ready(function() {
-      $("#mytable").tablesorter();
+      $(table).tablesorter( {sortList: [[0,0],[1,0]]});
   });
   </script>
 

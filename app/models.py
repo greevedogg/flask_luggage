@@ -15,17 +15,17 @@ class Luggage(db.Model):
     ticket = db.Column(db.String(11))
     location = db.Column(db.String(11))
     bagCount = db.Column(db.Integer)
-    loggedIn = db.Column(db.String(2))#(db.Integer, db.ForeignKey('user.id'))
+    loggedInBy = db.Column(db.String(2))#(db.Integer, db.ForeignKey('user.id'))
     timeIn = db.Column(db.DateTime)
     #user = db.relationship('User',
                              #backref=db.backref('luggage', lazy='joined'))
 
-    def __init__(self, name, ticket, location, bagCount, loggedIn, timeIn=None):
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn=None):
         self.name = name
         self.ticket = ticket
         self.location = location
         self.bagCount = bagCount
-        self.loggedIn = loggedIn
+        self.loggedInBy = loggedInBy
         if timeIn is None:
             self.timeIn = datetime.utcnow()
 
