@@ -50,7 +50,7 @@
     <h3>Luggage Log</h3>
   </div>
   <div>
-    <table id="mytable" class="table table-hover table-striped tablesorter">
+    <table id="table" class="table table-hover table-striped tablesorter">
       <thead>
         <tr>
           <th class: "order-table">Last Name</th>
@@ -68,7 +68,7 @@
           <td>{{data.ticket}}</td>
           <td>{{data.location}}</td>
           <td>{{data.bagCount}}</td>
-          <td>{{data.loggedIn}}</td>
+          <td>{{data.loggedInBy}}</td>
           <td>{{data.timeIn.strftime('%H:%M')}}</td>
         </tr>
 {% endfor %}
