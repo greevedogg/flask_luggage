@@ -47,3 +47,4 @@ def configure_app(app):
 	app.config.from_envvar('LUGGAGE_SETTINGS', silent=True)
 	config_name = os.getenv('FLAKS_CONFIGURATION', 'default')
 	app.config.from_object(config[config_name])
+ 

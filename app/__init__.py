@@ -4,11 +4,16 @@ from models import Luggage, db
 from routes import luggage
 from sqlalchemy import create_engine
 import flask.ext.whooshalchemy as whooshalchemy
+from flask_moment import Moment
+from datetime import datetime
+from pytz import timezone
 
 flask_app = Flask(__name__, template_folder='templates')
 
+
 configure_app(flask_app)
 db.init_app(flask_app)
+moment = Moment(flask_app)
 
 flask_app.register_blueprint(luggage)
 
@@ -21,12 +26,15 @@ def close_db(error=None):
     # so the session is released by the current thread.
     pass
 
-@flask_app.template_filter()
-def datetimefilter(value, format='%H:%M'):
-    return value.strftime(format, 'localtime')
-
-#flask_app.jinja_env.filters['datetimefilter'] = datetimefilter
 
 
-engine = create_engine('sqlite:///./Luggage.db')
-db.metadata.create_all(bind=engine)
+
+
+def datetimefilter(value, format='%I:%M %p'):
+    tz = timezone('US/Eastern')
+    dt = value
+    local_dt = tz.localize(dt)
+    local_dt.replace(hour=local_dt.hour + int(local_dt.utcoffset().total_seconds() / 3600))
+    return local_dt.strftime(format)
+
+flask_app.jinja_env.filters['datetimefilter'] = datetimefilter

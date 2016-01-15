@@ -3,10 +3,28 @@
   <head>
     <title>Luggage Services</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="jquery.tablesorter.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script type='text/javascript'>//<![CDATA[
+$(window).load(function(){<!--from w  ww.  j  a  v a 2  s  .c  o m-->
+//save the selector so you don't have to do the lookup everytime
+$dropdown = $("#contextMenu");
+$(".actionButton").click(function() {
+    //get row ID
+    var id = $(this).closest("tr").children().first().html();
+    //move dropdown menu
+    $(this).after($dropdown);
+    //update links
+    $dropdown.find(".modifyLink").attr("href", "/search_results/modify?id="+id);
+    $dropdown.find(".completeLink").attr("href", "/search_results/complete?id="+id);
+    //show dropdown
+    $(this).dropdown();
+});
+});//]]>
+</script>
   </head>
   <body>
 
@@ -77,5 +95,13 @@
   }
   function getCellValue(row, index){ return $(row).children('td').eq(index).html() }
 </script>
+
+<script type=text/javascript>
+
+  {{ moment.include_moment() }}
+
+  </script>
+
+
   </body>
 </html>

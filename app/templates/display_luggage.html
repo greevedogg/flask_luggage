@@ -53,26 +53,35 @@
     <table id="table" class="table table-hover table-striped tablesorter">
       <thead>
         <tr>
-          <th class: "order-table">Last Name</th>
-          <th class: "order-table">Ticket #</th>
+          <th>Last Name</th>
+          <th>Ticket #</th>
           <th>Location</th>
           <th>Bag #</th>
           <th>Logged By</th>
-          <th class: "order-table">Time Stored</th>
+          <th>Time Stored</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
 {% for data in items %}
-        <tr>
+        <tr class="clicker">
           <td>{{data.name}}</td>
           <td>{{data.ticket}}</td>
           <td>{{data.location}}</td>
           <td>{{data.bagCount}}</td>
           <td>{{data.loggedInBy}}</td>
-          <td>{{data.timeIn.strftime('%H:%M')}}</td>
+          <td>{{data.timeIn | datetimefilter}}</td>
+          <td class="dropdown"><button class="btn btn-default dropdown-toggle" type="button"
+            data-toggle="dropdown"> Action <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="/">Complete</a></li>
+              <li><a href="/">Modify</a></li>
+              <li><a href="/">Add Comment</a></li>
+            </ul></td>
         </tr>
 {% endfor %}
       </tbody>
     </table>
   </div>
+
 {% endblock %}
