@@ -6,10 +6,11 @@ from sqlalchemy import create_engine
 import flask.ext.whooshalchemy as whooshalchemy
 from flask_moment import Moment
 from datetime import datetime
+import pytz
 from pytz import timezone
+import tzlocal
 
 flask_app = Flask(__name__, template_folder='templates')
-
 
 configure_app(flask_app)
 db.init_app(flask_app)
@@ -26,15 +27,11 @@ def close_db(error=None):
     # so the session is released by the current thread.
     pass
 
-
-
-
-
-def datetimefilter(value, format='%I:%M %p'):
-    tz = timezone('US/Eastern')
-    dt = value
-    local_dt = tz.localize(dt)
-    local_dt.replace(hour=local_dt.hour + int(local_dt.utcoffset().total_seconds() / 3600))
+def datetimefilter(value, format="%I:%M %p"):
+    tz = pytz.timezone('US/Eastern') # timezone you want to convert to from UTC
+    utc = pytz.timezone('UTC')
+    value = utc.localize(value, is_dst=None).astimezone(pytz.utc)
+    local_dt = value.astimezone(tz)
     return local_dt.strftime(format)
 
 flask_app.jinja_env.filters['datetimefilter'] = datetimefilter
