@@ -200,17 +200,3 @@ form input#submit:hover{
 th, td {
   text-align: center;
 }
-
-.order-table {cursor:pointer; }
-
-.order-table::after, .order-table--asc::after, .order-table--desc::after {
-  font-size: .7em;
-  width: 1em;
-  display: inline-block;
-}
-
-.order-table::after { content: '▲▼'; }
-
-.order-table--asc::after { content: '▼'; }
-
-.order-table--desc::after { content: '▲'; }
