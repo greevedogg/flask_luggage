@@ -117,11 +117,6 @@ div.jumbo {
           border-radius: 6px;
 }
 
-#top {
-  margin-top: 50px;
-  padding-top: 0px;
-}
-
 h2 {
   font-size: 3em;
   margin-top: 40px;
@@ -199,4 +194,8 @@ form input#submit:hover{
 
 th, td {
   text-align: center;
+}
+
+div#search_bar{
+  padding-top: 20px;
 }

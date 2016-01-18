@@ -3,24 +3,36 @@
 {% block container %}
     <h1 class="results">Search results for "{{ query }}":</h1>
         <div class="top-pad">
-          <table class="table table-striped">
+          <table class="table table-striped table-bordered">
             <thead>
               <tr>
                 <th>Last Name</th>
                 <th>Ticket #</th>
                 <th>Location</th>
-                <th>Bag Count</th>
+                <th>Bag #</th>
+                <th>Logged By</th>
+                <th>Time Stored</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-      {% for data in results %}
-              <tr>
-                <td>{{data.name}}</td>
-                <td>{{data.ticket}}</td>
-                <td>{{data.location}}</td>
-                <td>{{data.bagCount}}</td>
-              </tr>
-      {% endfor %}
+              {% for data in results %}
+                      <tr class="clicker">
+                        <td>{{data.name}}</td>
+                        <td>{{data.ticket}}</td>
+                        <td>{{data.location}}</td>
+                        <td>{{data.bagCount}}</td>
+                        <td>{{data.loggedInBy}}</td>
+                        <td>{{data.timeIn | datetimefilter}}</td>
+                        <td class="dropdown"><button class="btn btn-default dropdown-toggle" type="button"
+                          data-toggle="dropdown"> Action <span class="caret"></span></button>
+                          <ul class="dropdown-menu">
+                            <li><a href="/">Complete</a></li>
+                            <li><a href="/">Modify</a></li>
+                            <li><a href="/">Add Comment</a></li>
+                          </ul></td>
+                      </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>

@@ -61,3 +61,8 @@ def search():
 def search_results(query):
     results = Luggage.query.whoosh_search("*" + query + "*", MAX_SEARCH_RESULTS).all()
     return render_template('search_results.html', query=query, results=results)
+
+@luggage.route('/archive')
+def show_archive():
+    #items = [item for item in archive.query.all()]
+    return render_template("archive.html")#, items=items)
