@@ -47,6 +47,30 @@ class User(db.Model):
     def __repr__(self):
         pass
 
+class archive(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30))
+    ticket = db.Column(db.String(11))
+    location = db.Column(db.String(20))
+    bagCount = db.Column(db.Integer)
+    loggedInBy = db.Column(db.String(3))
+    comments = db.Column(db.String(160))
+    loggedOutBy = db.Column(db.String(3))
+    timeIn = db.Column(db.DateTime)
+    timeOut = db.Column(db.DateTime)
 
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, loggedOutBy, timeIn=None, timeOut=None):
+        self.name = name
+        self.ticket = ticket
+        self.location = location
+        self.bagCount = bagCount
+        self.loggedInBy = loggedInBy
+        self.comments = comments
+        self.loggedOutBy = loggedOutBy
+        self.timeIn = datetime.datetime
+        self.timeOut = datetime.utcnow()
+
+    def __repr__(self):
+        pass
 #engine = create_engine('sqlite:///./Luggage.db')
 #db.metadata.create_all(bind=engine)

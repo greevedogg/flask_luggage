@@ -23,16 +23,16 @@
     {{ form.csrf_token }}
 
     {{ form.name.label }}
-    {{ form.name }}<br/>
+    {{ form.name|e }}<br/>
 
     {{ form.ticket.label }}
-    {{ form.ticket }}<br/>
+    {{ form.ticket|e }}<br/>
 
     {{ form.location.label }}
-    {{ form.location }}<br/>
+    {{ form.location|e }}<br/>
 
     {{ form.bagCount.label }}
-    {{ form.bagCount }}<br/>
+    {{ form.bagCount|e }}<br/>
 
     {{ form.submit }}
   </form>

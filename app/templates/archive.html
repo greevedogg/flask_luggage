@@ -5,7 +5,34 @@
 <div class="page-header">
   <h2>Luggage Archives</h2>
 </div>
-
+<div class="row">
+  <table id="table" class="table table-bordered table-hover table-striped table-responsive tablesorter">
+    <thead>
+      <tr>
+        <th>Last Name</th>
+        <th>Ticket #</th>
+        <th>Location</th>
+        <th>Bag #</th>
+        <th>Logged By</th>
+        <th>Time Stored</th>
+        <th>Comments</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for data in entry %}
+      <tr class="clicker">
+        <td>{{data.name}}</td>
+        <td>{{data.ticket}}</td>
+        <td>{{data.location}}</td>
+        <td>{{data.bagCount}}</td>
+        <td>{{data.loggedInBy}}</td>
+        <td>{{data.timeIn}}</td>
+        <td>{{data.comments}}</td>
+      </tr>
+{% endfor %}
+    </tbody>
+  </table>
+</div>
 
 
 {% endblock %}

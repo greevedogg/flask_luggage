@@ -30,19 +30,19 @@
     {{ form.csrf_token }}
 
       {{ form.ticket.label }}
-    {{ form.ticket }}<br/>
+    {{ form.ticket|e }}<br/>
 
     {{ form.name.label }}
-    {{ form.name }}<br/>
+    {{ form.name|e }}<br/>
 
     {{ form.bagCount.label }}
-    {{ form.bagCount }}<br/>
+    {{ form.bagCount|e }}<br/>
 
     {{ form.location.label }}
-    {{ form.location }}<br/>
+    {{ form.location|e }}<br/>
 
-        {{form.loggedIn.label }}
-    {{ form.loggedIn }}<br/>
+    {{form.loggedIn.label }}
+    {{ form.loggedIn|e }}<br/>
 
     {{ form.submit }}
   </form>

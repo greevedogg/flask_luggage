@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block container %}
+
+  <div class="container-fluid">
+        <h2>Luggage Storage</h2>
+    <div class="row">
+    <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-2">
+  {% for message in form.name.errors %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+
+  {% for message in form.ticket.errors %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+
+  {% for message in form.location.errors %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+
+  {% for message in form.bagCount.errors %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+
+  {% for message in form.loggedIn.errors %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+
+  <form action="{{ url_for('luggage.edit_entry') }}" method=post autocomplete="off">
+    {{ form.csrf_token }}
+
+      {{ form.ticket.label }}
+    {{ form.ticket|e }}<br/>
+
+    {{ form.name.label }}
+    {{ form.name|e }}<br/>
+
+    {{ form.bagCount.label }}
+    {{ form.bagCount|e }}<br/>
+
+    {{ form.location.label }}
+    {{ form.location|e }}<br/>
+
+    {{form.loggedIn.label }}
+    {{ form.loggedIn|e }}<br/>
+
+    {{ form.submit }}
+  </form>
+  </div>
+  </div>
+  </div>
+
+  {% endblock %}

@@ -2,7 +2,7 @@ import os
 from sqlite3 import dbapi2 as sqlite3
 from flask import Blueprint, session, g, redirect, url_for, render_template, request, flash
 from forms import LuggageForm, SearchForm
-from models import Luggage, db
+from models import Luggage, db, archive
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import Form
 from wtforms import validators
@@ -62,7 +62,7 @@ def search_results(query):
     results = Luggage.query.whoosh_search("*" + query + "*", MAX_SEARCH_RESULTS).all()
     return render_template('search_results.html', query=query, results=results)
 
-@luggage.route('/archive')
+@luggage.route('/archive', methods=['POST', 'GET'])
 def show_archive():
-    #items = [item for item in archive.query.all()]
-    return render_template("archive.html")#, items=items)
+    entry = [item for item in archive.query.order_by(archive.timeIn.desc()).all()]
+    return render_template("archive.html", entry=entry)
