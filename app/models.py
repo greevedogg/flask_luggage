@@ -1,7 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
 from datetime import datetime
-from time import time
 import flask.ext.whooshalchemy
 
 db = SQLAlchemy()
@@ -15,10 +13,8 @@ class Luggage(db.Model):
     ticket = db.Column(db.String(11))
     location = db.Column(db.String(11))
     bagCount = db.Column(db.Integer)
-    loggedInBy = db.Column(db.String(2))#(db.Integer, db.ForeignKey('user.id'))
+    loggedInBy = db.Column(db.String(2))
     timeIn = db.Column(db.DateTime)
-    #user = db.relationship('User',
-                             #backref=db.backref('luggage', lazy='joined'))
 
     def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn=None):
         self.name = name
@@ -31,9 +27,6 @@ class Luggage(db.Model):
 
     def __repr__(self):
         return '<Luggage %r>' % (self.name, self.ticket)
-
-#if enable_search:
-    #whooshalchemy.whoosh_index(app, Luggage)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,7 +41,7 @@ class User(db.Model):
         pass
 
 class archive(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+
     name = db.Column(db.String(30))
     ticket = db.Column(db.String(11))
     location = db.Column(db.String(20))
@@ -56,6 +49,7 @@ class archive(db.Model):
     loggedInBy = db.Column(db.String(3))
     comments = db.Column(db.String(160))
     loggedOutBy = db.Column(db.String(3))
+    id = db.Column(db.Integer, primary_key=True)
     timeIn = db.Column(db.DateTime)
     timeOut = db.Column(db.DateTime)
 
@@ -72,5 +66,3 @@ class archive(db.Model):
 
     def __repr__(self):
         pass
-#engine = create_engine('sqlite:///./Luggage.db')
-#db.metadata.create_all(bind=engine)

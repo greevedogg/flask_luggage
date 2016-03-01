@@ -11,7 +11,6 @@ from config import MAX_SEARCH_RESULTS
 import flask.ext.whooshalchemy
 
 
-
 luggage = Blueprint('luggage', __name__, template_folder='templates')
 
 @luggage.before_request
@@ -44,17 +43,12 @@ def create_luggage():
     items = [item for item in Luggage.query.order_by(Luggage.timeIn.desc()).all()]
     return render_template('display_luggage.html', items=items, form=form)
 
-#@luggage.route('/')
 def show_luggage():
     items = [item for item in Luggage.query.all()]
-    return render_template("display_luggage.html", items=items, form=form)
+    return render_template("display_luggage.html", items=items)
 
 @luggage.route('/search', methods=['POST'])
 def search():
-    #g.search_form = SearchForm()
-    #if not g.search_form.validate() == False:
-    #    return redirect(url_for('luggage'))
-
     return redirect(url_for('luggage.search_results', query=g.search_form.search.data))
 
 @luggage.route('/search_results/<query>')

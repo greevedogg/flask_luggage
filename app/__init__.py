@@ -1,14 +1,10 @@
 from config import configure_app
-from flask import Flask, render_template
+from flask import Flask
 from models import Luggage, db, archive
 from routes import luggage
-from sqlalchemy import create_engine
 import flask.ext.whooshalchemy as whooshalchemy
 from flask_moment import Moment
-from datetime import datetime
 import pytz
-from pytz import timezone
-import tzlocal
 
 flask_app = Flask(__name__, template_folder='templates')
 
