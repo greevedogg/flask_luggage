@@ -3,7 +3,7 @@ from wtforms.validators import DataRequired
 from models import Luggage
 
 def already_exists(form, field):
-    if form.id.data == None and Luggage.query.filter_by(ticket=field.data).first():
+    if not form.id.data and Luggage.query.filter_by(ticket=field.data).first():
         raise ValidationError('This ticket already exists')
 
 class LuggageForm(Form):

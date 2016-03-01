@@ -86,8 +86,8 @@
             <button class="btn btn-default dropdown-toggle ticket-action-button needsclick" type="button"
               data-toggle="dropdown"> Action <span class="caret"></span>
             </button><ul class="dropdown-menu ticket-actions">
-              <li><a href="{{ url_for('luggage.complete_ticket', number=data.ticket) }}">Complete</a></li>
-              <li><a href="{{ url_for('luggage.edit_ticket', number=data.ticket) }}">Modify</a></li>
+              <li><a href="{{ url_for('luggage.complete_ticket', id=data.id) }}">Complete</a></li>
+              <li><a href="{{ url_for('luggage.edit_ticket', id=data.id) }}">Modify</a></li>
             </ul>
           </td>
         </tr>

@@ -23,10 +23,13 @@ def before_request():
 def create_luggage():
     form = LuggageForm(request.form)
 
+    items = [item for item in Luggage.query.order_by(Luggage.timeIn.desc()).all()]
+    locations_availability = Location().availability()
+
     if request.method == 'POST':
         if form.validate() == False:
             flash('All fields are required.')
-            return render_template('display_luggage.html', form=form)
+            return render_template('display_luggage.html', items=items, form=form, locations_availability=locations_availability)
         else:
             try:
                 name = form.name.data.upper()
@@ -42,18 +45,15 @@ def create_luggage():
             except exc.SQLAlchemyError as e:
                 return 'Entry NOT Submitted to Luggage Log.'
 
-    items = [item for item in Luggage.query.order_by(Luggage.timeIn.desc()).all()]
-
-    locations_availability = Location().availability()
-
     return render_template('display_luggage.html', items=items, form=form, locations_availability=locations_availability)
 
-@luggage.route('/ticket/<number>',  methods=['POST', 'GET'])
-def edit_ticket(number):
-    if request.method == 'POST':
-        number = request.form.get('ticket')
 
-    luggage = Luggage.query.filter_by(ticket=number).first()
+@luggage.route('/ticket/<id>',  methods=['POST', 'GET'])
+def edit_ticket(id):
+    if request.method == 'POST':
+        id = request.form.get('id')
+
+    luggage = Luggage.query.get(id)
 
     if request.method == 'POST':
         form = LuggageForm(request.form)
@@ -78,9 +78,9 @@ def edit_ticket(number):
     return render_template('edit_entry.html', form=form, locations_availability=locations_availability)
 
 
-@luggage.route('/ticket/<number>/complete', methods=['GET'])
-def complete_ticket(number):
-    luggage = Luggage.query.filter_by(ticket=number).first()
+@luggage.route('/ticket/<id>/complete', methods=['GET'])
+def complete_ticket(id):
+    luggage = Luggage.query.get(id)
 
     archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
                       luggage.timeIn)
