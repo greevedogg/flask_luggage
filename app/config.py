@@ -1,9 +1,7 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
-
 WHOOSH_BASE = os.path.join(basedir, 'Luggage.db')
 MAX_SEARCH_RESULTS = 10
-
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = ''
 MYSQL_HOST = '127.0.0.1'
@@ -21,7 +19,6 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
-    #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'Luggage.db')
     SQLALCHEMY_DATABASE_URI = 'mysql://' + MYSQL_USER + ':' + MYSQL_PASSWORD + '@' + MYSQL_HOST + '/' + MYSQL_DATABASE
     SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'
 
@@ -55,4 +52,4 @@ def configure_app(app):
 	app.config.from_envvar('LUGGAGE_SETTINGS', silent=True)
 	config_name = os.getenv('FLAKS_CONFIGURATION', 'default')
 	app.config.from_object(config[config_name])
- 
+

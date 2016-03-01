@@ -91,18 +91,13 @@ def complete_ticket(number):
 
     return redirect(url_for('luggage.create_luggage'))
 
-#@luggage.route('/')
 def show_luggage():
     items = [item for item in Luggage.query.all()]
-    return render_template("display_luggage.html", items=items, form=form)
+    return render_template("display_luggage.html", items=items)
 
 
 @luggage.route('/search', methods=['POST'])
 def search():
-    #g.search_form = SearchForm()
-    #if not g.search_form.validate() == False:
-    #    return redirect(url_for('luggage'))
-
     return redirect(url_for('luggage.search_results', query=g.search_form.search.data))
 
 
