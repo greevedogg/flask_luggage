@@ -16,16 +16,18 @@ class Luggage(db.Model):
     location = db.Column(db.String(11))
     bagCount = db.Column(db.Integer)
     loggedInBy = db.Column(db.String(2))#(db.Integer, db.ForeignKey('user.id'))
+    comments = db.Column(db.String(160))
     timeIn = db.Column(db.DateTime)
     #user = db.relationship('User',
                              #backref=db.backref('luggage', lazy='joined'))
 
-    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn=None):
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, timeIn=None):
         self.name = name
         self.ticket = ticket
         self.location = location
         self.bagCount = bagCount
         self.loggedInBy = loggedInBy
+        self.comments = comments
         if timeIn is None:
             self.timeIn = datetime.utcnow()
 
@@ -47,7 +49,7 @@ class User(db.Model):
     def __repr__(self):
         pass
 
-class archive(db.Model):
+class Archive(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     ticket = db.Column(db.String(11))
@@ -59,7 +61,7 @@ class archive(db.Model):
     timeIn = db.Column(db.DateTime)
     timeOut = db.Column(db.DateTime)
 
-    def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, loggedOutBy, timeIn=None, timeOut=None):
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn, loggedOutBy=None, comments=None, timeOut=None):
         self.name = name
         self.ticket = ticket
         self.location = location
@@ -67,10 +69,27 @@ class archive(db.Model):
         self.loggedInBy = loggedInBy
         self.comments = comments
         self.loggedOutBy = loggedOutBy
-        self.timeIn = datetime.datetime
+        self.timeIn = timeIn
         self.timeOut = datetime.utcnow()
 
     def __repr__(self):
         pass
+
+
+class Location(object):
+    def __init(self):
+        pass
+
+    def availability(self):
+        query = db.session.query(Luggage.location.distinct().label('location'))
+        locations_selected = [item.location for item in query.all()]
+        all_locations = {u'21a': u'21A', u'21b': u'21B', u'21c': u'21C'}
+
+        locations_availability = {
+            key: {'is_occupied': True if value in locations_selected else False, 'map_identifier': value}
+            for key, value in all_locations.iteritems()}
+
+        return locations_availability
+
 #engine = create_engine('sqlite:///./Luggage.db')
 #db.metadata.create_all(bind=engine)

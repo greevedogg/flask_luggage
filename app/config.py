@@ -14,8 +14,9 @@ class BaseConfig(object):
     TESTING = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'
     SECRET_KEY = 'f57a4ed6-6fc3-4aa3-9bf9-e73328cb4b83'
-    USERNAME='admin'
-    PASSWORD='default'
+    USERNAME = 'admin'
+    PASSWORD = 'default'
+    SQLALCHEMY_POOL_RECYCLE = 7200  # Fixes MySQL lost connection error
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
@@ -36,10 +37,17 @@ class TestingConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     SECRET_KEY = '993c77c6-8575-4d32-88dd-1ecdd58298f9'
 
+class VagrantConfig(BaseConfig):
+    DEBUG = True
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'mysql://homestead:secret@127.0.0.1:33060/' + MYSQL_DATABASE
+    SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'
+
 config = {
     "production": "app.config.ProductionConfig",
     "development": "app.config.DevelopmentConfig",
     "testing": "app.config.TestingConfig",
+    "vagrant": "app.config.VagrantConfig",
     "default": "app.config.DevelopmentConfig"
 }
 

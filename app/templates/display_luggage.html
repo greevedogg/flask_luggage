@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 
 {% block container %}
-
   <div class="container-fluid">
         <h2>Luggage Storage</h2>
     <div class="row">
@@ -22,7 +21,7 @@
     <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
 
-  {% for message in form.loggedIn.errors %}
+  {% for message in form.loggedInBy.errors %}
     <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
 
@@ -39,10 +38,12 @@
     {{ form.bagCount|e }}<br/>
 
     {{ form.location.label }}
-    {{ form.location|e }}<br/>
+    <a class="btn btn-primary" id="view-bin-availability">View Availability</a>{{ form.location|e }}<br/>
 
-    {{form.loggedIn.label }}
-    {{ form.loggedIn|e }}<br/>
+    {{form.loggedInBy.label }}
+    {{ form.loggedInBy|e }}<br/>
+
+    {{ form.id|e }}
 
     {{ form.submit }}
   </form>
@@ -75,23 +76,23 @@
       <tbody>
 {% for data in items %}
         <tr class="clicker">
-          <td>{{data.name}}</td>
+          <td>{{data.name}} {% if data.comments %} <span class="glyphicon glyphicon-pencil has-comment"></span> {% endif %}</td>
           <td>{{data.ticket}}</td>
           <td>{{data.location}}</td>
           <td>{{data.bagCount}}</td>
           <td>{{data.loggedInBy}}</td>
           <td>{{data.timeIn | datetimefilter}}</td>
-          <td class="dropdown"><button class="btn btn-default dropdown-toggle" type="button"
-            data-toggle="dropdown"> Action <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="/">Complete</a></li>
-              <li><a href="/">Modify</a></li>
-              <li><a href="/">Add Comment</a></li>
-            </ul></td>
+          <td class="dropdown">
+            <button class="btn btn-default dropdown-toggle ticket-action-button needsclick" type="button"
+              data-toggle="dropdown"> Action <span class="caret"></span>
+            </button><ul class="dropdown-menu ticket-actions">
+              <li><a href="{{ url_for('luggage.complete_ticket', number=data.ticket) }}">Complete</a></li>
+              <li><a href="{{ url_for('luggage.edit_ticket', number=data.ticket) }}">Modify</a></li>
+            </ul>
+          </td>
         </tr>
 {% endfor %}
       </tbody>
     </table>
   </div>
-
 {% endblock %}

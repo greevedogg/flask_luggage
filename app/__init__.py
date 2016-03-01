@@ -1,6 +1,6 @@
 from config import configure_app
 from flask import Flask, render_template
-from models import Luggage, db, archive
+from models import Luggage, db, Archive
 from routes import luggage
 from sqlalchemy import create_engine
 import flask.ext.whooshalchemy as whooshalchemy

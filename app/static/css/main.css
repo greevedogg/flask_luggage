@@ -1,8 +1,28 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #444;
+}
+
+/*
+ * GLOBAL
+ */
+
+.blur {
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+  -moz-filter: blur(10px);
+  -o-filter: blur(10px);
+  -ms-filter: blur(10px);
 }
 
 /*
@@ -145,11 +165,11 @@ form label {
   padding: 10px 0;
 }
 
-form input#name,
-form input#ticket,
-form input#location,
-form input#bagCount,
-form input#loggedIn {
+#name,
+#ticket,
+#location,
+#bagCount,
+#loggedInBy {
   width: 400px;
   background-color: #fafafa;
   -webkit-border-radius: 3px;
@@ -158,6 +178,11 @@ form input#loggedIn {
   border: 1px solid #cccccc;
   padding: 5px;
   font-size: 1.1em;
+}
+
+#location {
+  width: 264px;
+  margin-left: 10px;
 }
 
 form input#submit {
@@ -198,4 +223,105 @@ th, td {
 
 div#search_bar{
   padding-top: 20px;
+}
+
+/* bin overlay */
+
+#bin-location-finder {
+  display: none;
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.overlay__content-container {
+  position: absolute;
+  width: 100vw;
+  top: 10vh;
+}
+
+.overlay__action-group {
+  margin: 10px 10px 10px 20px;
+}
+
+.overlay__cancel, .overlay__cancel:active {
+  color: #fff !important;
+}
+
+.overlay__content {
+  margin: 0 2vw;
+  height: 95vh;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+.overlay__content--desktop {
+  height: 86vh;
+  width: 95vw;
+}
+
+.overlay__location {
+  position: absolute;
+}
+
+.overlay__location:active {
+  border: 2px solid #00CD00;
+}
+
+.overlay__location-status {
+  position: absolute;
+  background: green;
+  width: 30px;
+  height: 30px;
+  bottom: 35px;
+  left: 41px;
+}
+
+.overlay__location-status--occupied {
+  background: red;
+}
+
+.overlay__location-21a {
+  height: 87px;
+  width: 110px;
+}
+
+.overlay__location-21a-status {
+
+}
+
+.overlay__location-21b {
+  top: 87px;
+  height: 87px;
+  width: 110px;
+}
+
+.overlay__location-21c {
+  top: 172px;
+  height: 87px;
+  width: 110px;
+}
+
+/*
+ * TICKET LIST
+ */
+
+.has-comment {
+  font-weight: bold;
+  color: red;
+}
+
+.is-tablet .ticket-actions li > a {
+  height: 40px;
+  line-height: 40px;
+}
+
+.is-tablet .dropdown-menu {
+  margin-top: -4px;
 }

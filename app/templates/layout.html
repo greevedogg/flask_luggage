@@ -1,67 +1,91 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Luggage Services</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="jquery.tablesorter.js"></script>
+    <script src="{{ url_for('static', filename='js/restive.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fastclick.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <script type='text/javascript'>//<![CDATA[
-$(window).load(function(){<!--from w  ww.  j  a  v a 2  s  .c  o m-->
-//save the selector so you don't have to do the lookup everytime
-$dropdown = $("#contextMenu");
-$(".actionButton").click(function() {
-    //get row ID
-    var id = $(this).closest("tr").children().first().html();
-    //move dropdown menu
-    $(this).after($dropdown);
-    //update links
-    $dropdown.find(".modifyLink").attr("href", "/search_results/modify?id="+id);
-    $dropdown.find(".completeLink").attr("href", "/search_results/complete?id="+id);
-    //show dropdown
-    $(this).dropdown();
-});
-});//]]>
-</script>
-  </head>
-  <body>
+</head>
+<body>
 
-    <nav class="navbar navbar-inverse navbar-static-top center">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand navbar-left" href="/"><span class="glyphicon glyphicon-briefcase"></span>  Home</a>
-          <a class="navbar-brand" href="/archive"><span class="glyphicon glyphicon-briefcase"></span>  Archives</a>
+<section class="overlay" id="bin-location-finder">
+    <div class="overlay__action-group">
+        <button class="btn btn-success btn-lg overlay__save">Save</button>
+        <button class="btn btn-link btn-lg overlay__cancel">Cancel</button>
+    </div>
+
+    <div class="overlay__content-container">
+        <div class="overlay__content">
+            {% set locations_availability = locations_availability or {} %}
+
+            {% for location, data in locations_availability.iteritems() %}
+            <a class="overlay__location overlay__location-{{location}}" href="#" data-map-identifier="{{data.map_identifier}}">
+                <span class="overlay__location-status overlay__location-{{location}}-status {% if data.is_occupied %} overlay__location-status--occupied {% endif %}"></span>
+            </a>
+            {% endfor %}
+
+            <img src="{{ url_for('static', filename='images/luggage-layout.png') }}"/>
         </div>
-      </div><!-- /.container -->
-    </nav>
+    </div>
+</section>
 
-  <div class="outer center" id="top">
+<nav class="navbar navbar-inverse navbar-static-top center">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand navbar-left" href="/"><span class="glyphicon glyphicon-briefcase"></span> Home</a>
+            <a class="navbar-brand" href="/archive"><span class="glyphicon glyphicon-briefcase"></span> Archives</a>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+
+<div class="outer center" id="top">
     <div class="container-fluid">
-      {% block container %}
-      {% endblock %}
+        {% block container %}
+        {% endblock %}
     </div>
-  </div>
+</div>
 
-  {% block footer %}
-  <div id="foot">
+{% block footer %}
+<div id="foot">
     <div class="footer">
-      <div class="center">
+        <div class="center">
 
-         <p id="footertext">&copy;SCRG 2015 | All rights reserved</p>
-      </div>
+            <p id="footertext">&copy;SCRG 2015 | All rights reserved</p>
+        </div>
     </div>
-  </div>
-      {% endblock %}
+</div>
+{% endblock %}
 
+<script>
+    $(function(){
+        $('html').restive({
+            breakpoints: ['960'],
+            classes: ['viewport-960'],
+            turbo_classes: 'is_tablet=is-tablet,is_pc=is-desktop'
+        });
+    });
+</script>
+
+
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='jquery.tablesorter.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bin-location-map.js') }}"></script>
 
 <script type=text/javascript>
   $(document).ready(function() {
       $('#table').tablesorter( {sortList: [[0,0],[1,0]]});
   });
-  </script>
-  <script type=text/javascript>
+
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+
+<script type=text/javascript>
   $('th').click(function(){
       var table = $(this).parents('table').eq(0)
       var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
@@ -76,7 +100,8 @@ $(".actionButton").click(function() {
       }
   }
   function getCellValue(row, index){ return $(row).children('td').eq(index).html() }
+
 </script>
 
-  </body>
+</body>
 </html>
