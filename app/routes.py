@@ -83,7 +83,7 @@ def complete_ticket(id):
     luggage = Luggage.query.get(id)
 
     archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
-                      luggage.timeIn)
+                      luggage.timeIn, '', luggage.comments)
 
     db.session.add(archive)
     db.session.delete(luggage)
