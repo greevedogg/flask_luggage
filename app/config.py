@@ -14,7 +14,7 @@ class BaseConfig(object):
     SECRET_KEY = 'f57a4ed6-6fc3-4aa3-9bf9-e73328cb4b83'
     USERNAME = 'admin'
     PASSWORD = 'default'
-    SQLALCHEMY_POOL_RECYCLE = 7200  # Fixes MySQL lost connection error
+    SQLALCHEMY_POOL_RECYCLE = 900  # Fixes MySQL lost connection error
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
