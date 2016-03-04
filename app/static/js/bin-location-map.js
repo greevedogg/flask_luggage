@@ -28,8 +28,6 @@
 
     observe.on('location:reset', function() {
         binToPersist = null;
-
-        observe.trigger('location:clear-selected');
     });
 
     $(function(){
@@ -64,6 +62,7 @@
             $('#bin-location-finder').fadeOut(200);
 
             observe.trigger('location:reset');
+            observe.trigger('location:clear-selected');
 
             event.preventDefault();
         });
