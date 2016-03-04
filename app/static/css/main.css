@@ -270,17 +270,21 @@ div#search_bar{
   position: absolute;
 }
 
-.overlay__location:active {
-  border: 2px solid #00CD00;
+.overlay__location:active, .overlay__location--selected {
+  border: 2px solid #FFFF66;
 }
 
 .overlay__location-status {
   position: absolute;
   background: green;
-  width: 30px;
-  height: 30px;
+  width: 106px;
+  height: 48px;
   bottom: 35px;
-  left: 41px;
+  left: 3px;
+}
+
+.overlay__location--selected .overlay__location-status {
+  left: 0;
 }
 
 .overlay__location-status--occupied {
@@ -297,13 +301,13 @@ div#search_bar{
 }
 
 .overlay__location-21b {
-  top: 87px;
+  top: 85px;
   height: 87px;
   width: 110px;
 }
 
 .overlay__location-21c {
-  top: 172px;
+  top: 171px;
   height: 87px;
   width: 110px;
 }

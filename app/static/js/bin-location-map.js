@@ -4,8 +4,20 @@
     var observe = $({});
     var binToPersist = null;
 
-    observe.on('location:selected', function(e, mapIdentifier) {
+    observe.on('location:selected', function(e, selectedBin, mapIdentifier) {
+        var $selectedBin = $(selectedBin);
+
         binToPersist = mapIdentifier;
+
+        observe.trigger('location:clear-selected');
+
+        if ($selectedBin.is('.overlay__location')) {
+            $selectedBin.addClass('overlay__location--selected');
+        }
+    });
+
+    observe.on('location:clear-selected', function() {
+        $('.overlay__location').removeClass('overlay__location--selected');
     });
 
     observe.on('location:persist', function() {
@@ -33,8 +45,9 @@
         $('.overlay__location').on('click touchstart', function(event) {
             var mapIdentifier = $(this).data('map-identifier');
 
-            observe.trigger('location:selected', [mapIdentifier]);
-    //        event.preventDefault();
+            observe.trigger('location:selected', [event.currentTarget, mapIdentifier]);
+
+            event.preventDefault();
         });
 
         $('.overlay__save').click(function(event) {
