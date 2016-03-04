@@ -28,6 +28,8 @@
 
     observe.on('location:reset', function() {
         binToPersist = null;
+
+        observe.trigger('location:clear-selected');
     });
 
     $(function(){
