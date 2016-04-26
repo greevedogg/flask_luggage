@@ -180,11 +180,6 @@ form label {
   font-size: 1.1em;
 }
 
-#location {
-  width: 264px;
-  margin-left: 10px;
-}
-
 form input#submit {
   display: block;
   -webkit-border-radius: 3px;
@@ -223,93 +218,6 @@ th, td {
 
 div#search_bar{
   padding-top: 20px;
-}
-
-/* bin overlay */
-
-#bin-location-finder {
-  display: none;
-}
-
-.overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: 2000;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.overlay__content-container {
-  position: absolute;
-  width: 100vw;
-  top: 10vh;
-}
-
-.overlay__action-group {
-  margin: 10px 10px 10px 20px;
-}
-
-.overlay__cancel, .overlay__cancel:active {
-  color: #fff !important;
-}
-
-.overlay__content {
-  margin: 0 2vw;
-  height: 95vh;
-  overflow: scroll;
-  -webkit-overflow-scrolling: touch;
-  position: relative;
-}
-
-.overlay__content--desktop {
-  height: 86vh;
-  width: 95vw;
-}
-
-.overlay__location {
-  position: absolute;
-}
-
-.overlay__location:active, .overlay__location--selected {
-  border: 2px solid #FFFF66;
-}
-
-.overlay__location-status {
-  position: absolute;
-  background: green;
-  width: 106px;
-  height: 48px;
-  bottom: 35px;
-  left: 3px;
-}
-
-.overlay__location--selected .overlay__location-status {
-  left: 0;
-}
-
-.overlay__location-status--occupied {
-  background: red;
-}
-
-.overlay__location-21a {
-  height: 87px;
-  width: 110px;
-}
-
-.overlay__location-21a-status {
-
-}
-
-.overlay__location-21b {
-  top: 85px;
-  height: 87px;
-  width: 110px;
-}
-
-.overlay__location-21c {
-  top: 171px;
-  height: 87px;
-  width: 110px;
 }
 
 /*

@@ -27,11 +27,18 @@ def close_db(error=None):
     # so the session is released by the current thread.
     pass
 
+# TODO: move filters and helpers to their own file
 def datetimefilter(value, format="%I:%M %p"):
     tz = pytz.timezone('US/Eastern') # timezone you want to convert to from UTC
     utc = pytz.timezone('UTC')
     value = utc.localize(value, is_dst=None).astimezone(pytz.utc)
     local_dt = value.astimezone(tz)
     return local_dt.strftime(format)
+
+@flask_app.context_processor
+def utility_processor():
+    def currentyear():
+        return datetime.now().year
+    return dict(current_year=currentyear)
 
 flask_app.jinja_env.filters['datetimefilter'] = datetimefilter

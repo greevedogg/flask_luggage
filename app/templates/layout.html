@@ -13,27 +13,6 @@
 </head>
 <body>
 
-<section class="overlay" id="bin-location-finder">
-    <div class="overlay__action-group">
-        <button class="btn btn-success btn-lg overlay__save">Save</button>
-        <button class="btn btn-link btn-lg overlay__cancel">Cancel</button>
-    </div>
-
-    <div class="overlay__content-container">
-        <div class="overlay__content">
-            {% set locations_availability = locations_availability or {} %}
-
-            {% for location, data in locations_availability.iteritems() %}
-            <a class="overlay__location overlay__location-{{location}}" href="#" data-map-identifier="{{data.map_identifier}}">
-                <span class="overlay__location-status overlay__location-{{location}}-status {% if data.is_occupied %} overlay__location-status--occupied {% endif %}"></span>
-            </a>
-            {% endfor %}
-
-            <img src="{{ url_for('static', filename='images/luggage-layout.png') }}"/>
-        </div>
-    </div>
-</section>
-
 <nav class="navbar navbar-inverse navbar-static-top center">
     <div class="container">
         <div class="navbar-header">
@@ -56,7 +35,7 @@
     <div class="footer">
         <div class="center">
 
-            <p id="footertext">&copy;SCRG 2015 | All rights reserved</p>
+            <p id="footertext">&copy;SCRG {{ current_year() }} | All rights reserved</p>
         </div>
     </div>
 </div>
@@ -75,7 +54,6 @@
 
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='jquery.tablesorter.js') }}"></script>
-<script src="{{ url_for('static', filename='js/bin-location-map.js') }}"></script>
 
 <script type=text/javascript>
   $(document).ready(function() {

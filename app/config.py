@@ -7,6 +7,12 @@ MYSQL_PASSWORD = ''
 MYSQL_HOST = '127.0.0.1'
 MYSQL_DATABASE = 'luggageapp'
 
+PRODUCTION = "production"
+DEVELOPMENT = "development"
+TESTING = "testing"
+VAGRANT = "vagrant"
+DEFAULT = "default"
+
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
@@ -41,15 +47,16 @@ class VagrantConfig(BaseConfig):
     SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'
 
 config = {
-    "production": "app.config.ProductionConfig",
-    "development": "app.config.DevelopmentConfig",
-    "testing": "app.config.TestingConfig",
-    "vagrant": "app.config.VagrantConfig",
-    "default": "app.config.DevelopmentConfig"
+    PRODUCTION: "app.config.ProductionConfig",
+    DEVELOPMENT: "app.config.DevelopmentConfig",
+    TESTING: "app.config.TestingConfig",
+    VAGRANT: "app.config.VagrantConfig",
+    DEFAULT: "app.config.DevelopmentConfig"
 }
 
-def configure_app(app):
-	app.config.from_envvar('LUGGAGE_SETTINGS', silent=True)
-	config_name = os.getenv('FLAKS_CONFIGURATION', 'default')
-	app.config.from_object(config[config_name])
 
+def configure_app(app):
+    app.config.from_envvar('LUGGAGE_SETTINGS', silent=True)
+    # TODO: rename FLAKS_CONFIGURATION to FLASK_CONFIGURATION  on PythonAnywhere
+    config_name = os.getenv('FLAKS_CONFIGURATION', 'default')
+    app.config.from_object(config[config_name])
