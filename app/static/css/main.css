@@ -26,6 +26,18 @@ body {
 }
 
 /*
+ * BOOTSTRAP MODS
+ */
+
+.form-group.last {
+  margin-bottom: 0;
+}
+
+.modal-dialog {
+  margin: 35vh auto auto;
+}
+
+/*
  * Create dark grey header with a white logo
  */
 
@@ -165,20 +177,20 @@ form label {
   padding: 10px 0;
 }
 
-#name,
-#ticket,
-#location,
-#bagCount,
-#loggedInBy {
-  width: 400px;
-  background-color: #fafafa;
-  -webkit-border-radius: 3px;
-     -moz-border-radius: 3px;
-          border-radius: 3px;
-  border: 1px solid #cccccc;
-  padding: 5px;
-  font-size: 1.1em;
-}
+/*#name,*/
+/*#ticket,*/
+/*#location,*/
+/*#bagCount,*/
+/*#loggedInBy {*/
+  /*width: 400px;*/
+  /*background-color: #fafafa;*/
+  /*-webkit-border-radius: 3px;*/
+     /*-moz-border-radius: 3px;*/
+          /*border-radius: 3px;*/
+  /*border: 1px solid #cccccc;*/
+  /*padding: 5px;*/
+  /*font-size: 1.1em;*/
+/*}*/
 
 form input#submit {
   display: block;

@@ -51,13 +51,13 @@
     });
 </script>
 
-
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='jquery.tablesorter.js') }}"></script>
 
 <script type=text/javascript>
   $(document).ready(function() {
-      $('#table').tablesorter( {sortList: [[5,1]]});
+      $('#open-tickets').tablesorter( {sortList: [[5,1]]});
+      $('#archived-tickets').tablesorter( {sortList: [[6,1]]});
   });
 
   $(function() {
@@ -82,6 +82,9 @@
   function getCellValue(row, index){ return $(row).children('td').eq(index).html() }
 
 </script>
+
+{% block scripts %}
+{% endblock %}
 
 </body>
 </html>

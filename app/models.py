@@ -15,7 +15,8 @@ class Luggage(db.Model):
     ticket = db.Column(db.String(11))
     location = db.Column(db.String(11))
     bagCount = db.Column(db.Integer)
-    loggedInBy = db.Column(db.String(2))#(db.Integer, db.ForeignKey('user.id'))
+    loggedInBy = db.Column(db.String(3))#(db.Integer, db.ForeignKey('user.id'))
+    modifiedBy = db.Column(db.String(3))
     comments = db.Column(db.String(160))
     timeIn = db.Column(db.DateTime)
     #user = db.relationship('User',
@@ -58,6 +59,7 @@ class Archive(db.Model):
     loggedInBy = db.Column(db.String(3))
     comments = db.Column(db.String(160))
     loggedOutBy = db.Column(db.String(3))
+    modifiedBy = db.Column(db.String(3))
     timeIn = db.Column(db.DateTime)
     timeOut = db.Column(db.DateTime)
 

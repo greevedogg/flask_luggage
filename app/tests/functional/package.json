@@ -1,0 +1,14 @@
+{
+  "name": "luggageapp",
+  "version": "0.2.0",
+  "description": "Luggage app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ryan Greever, Jorge Colon <jorge@2upmedia.com>",
+  "license": "proprietary",
+  "devDependencies": {
+    "appium": "^1.5.2"
+  }
+}

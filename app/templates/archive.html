@@ -6,14 +6,15 @@
   <h2>Luggage Archives</h2>
 </div>
 <div class="row">
-  <table id="table" class="table table-bordered table-hover table-striped table-responsive">
+  <table id="archived-tickets" class="table table-bordered table-hover table-striped table-responsive">
     <thead>
       <tr>
         <th>Last Name</th>
         <th>Ticket #</th>
         <th>Location</th>
         <th>Bag #</th>
-        <th>Logged By</th>
+        <th>First Logged By</th>
+        <th>Closed By</th>
         <th>Time Stored</th>
         <th>Comments</th>
       </tr>
@@ -26,8 +27,9 @@
         <td>{{data.location}}</td>
         <td>{{data.bagCount}}</td>
         <td>{{data.loggedInBy}}</td>
+        <td>{{data.loggedOutBy if data.loggedOutBy}}</td>
         <td>{{data.timeIn}}</td>
-        <td>{{data.comments}}</td>
+        <td>{{data.comments if data.comments}}</td>
       </tr>
 {% endfor %}
     </tbody>

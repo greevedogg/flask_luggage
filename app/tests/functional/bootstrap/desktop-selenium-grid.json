@@ -1,0 +1,27 @@
+{
+  "capabilities": [
+    {
+      "browserName": "phantomjs",
+      "maxInstances": 3,
+      "platformName": "MAC"
+    },
+    {
+      "browserName": "firefox",
+      "maxInstances": 3,
+      "platformName": "MAC"
+    }
+  ],
+  "configuration": {
+    "cleanUpCycle": 2000,
+    "timeout": 2000,
+    "url": "http://127.0.0.1:4444/wd/hub",
+    "host": "127.0.0.1",
+    "port": 6666,
+    "maxSession": 6,
+    "register": true,
+    "registerCycle": 5000,
+    "hubPort": 4444,
+    "hubHost": "127.0.0.1",
+    "role": "node"
+  }
+}

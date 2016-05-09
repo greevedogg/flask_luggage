@@ -9,6 +9,7 @@ from wtforms import validators
 from sqlalchemy import exc
 from config import MAX_SEARCH_RESULTS
 import flask.ext.whooshalchemy
+import re
 
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
@@ -61,7 +62,7 @@ def edit_ticket(id):
         form = LuggageForm(obj=luggage)
 
     if request.method == 'POST':
-        if form.validate() == False:
+        if not form.validate():
             # flash('All fields are required.')
             return render_template('edit_entry.html', form=form)
         else:
@@ -81,15 +82,17 @@ def edit_ticket(id):
 @luggage.route('/ticket/<id>/complete', methods=['GET'])
 def complete_ticket(id):
     luggage = Luggage.query.get(id)
+    loggedOutBy = re.sub(r'[\W]+', '', request.args.get('loggedOutBy'))
 
     archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
-                      luggage.timeIn, '', luggage.comments)
+                      luggage.timeIn, loggedOutBy, luggage.comments)
 
     db.session.add(archive)
     db.session.delete(luggage)
     db.session.commit()
 
     return redirect(url_for('luggage.create_luggage'))
+
 
 def show_luggage():
     items = [item for item in Luggage.query.all()]

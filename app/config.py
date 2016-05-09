@@ -37,7 +37,7 @@ class ProductionConfig(BaseConfig):
 class TestingConfig(BaseConfig):
     DEBUG = False
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    SQLALCHEMY_DATABASE_URI = 'mysql://homestead:secret@127.0.0.1:33060/' + MYSQL_DATABASE + '-testing'
     SECRET_KEY = '993c77c6-8575-4d32-88dd-1ecdd58298f9'
 
 class VagrantConfig(BaseConfig):

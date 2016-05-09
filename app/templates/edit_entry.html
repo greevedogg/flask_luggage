@@ -6,46 +6,35 @@
         <h2>Luggage Storage</h2>
     <div class="row">
     <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-2">
-  {% for message in form.name.errors %}
-    <div class="alert alert-danger">{{ message }}</div>
-  {% endfor %}
+    {% for field, errors in form.errors.iteritems() %}
+        {% for error in errors %}
+            <div class="alert alert-danger"><strong>{{ form[field].label.text }}:</strong> {{ error }}</div>
+        {% endfor %}
+    {% endfor %}
 
-  {% for message in form.ticket.errors %}
-    <div class="alert alert-danger">{{ message }}</div>
-  {% endfor %}
-
-  {% for message in form.location.errors %}
-    <div class="alert alert-danger">{{ message }}</div>
-  {% endfor %}
-
-  {% for message in form.bagCount.errors %}
-    <div class="alert alert-danger">{{ message }}</div>
-  {% endfor %}
-
-  {% for message in form.loggedInBy.errors %}
-    <div class="alert alert-danger">{{ message }}</div>
-  {% endfor %}
-
-  <form action="{{ url_for('luggage.edit_ticket', id=form.id) }}" method="post" autocomplete="off">
+  <form action="{{ url_for('luggage.edit_ticket', id=form.id.data) }}" method="post" autocomplete="off">
     {{ form.csrf_token }}
 
     {{ form.ticket.label }}
-    {{ form.ticket|e }}<br/>
+    {{ form.ticket(class="form-control")|e }}<br/>
 
     {{ form.name.label }}
-    {{ form.name|e }}<br/>
+    {{ form.name(class="form-control")|e }}<br/>
 
     {{ form.bagCount.label }}
-    {{ form.bagCount|e }}<br/>
+    {{ form.bagCount(class="form-control")|e }}<br/>
 
     {{ form.location.label }}
-    {{ form.location|e }}<br/>
+    {{ form.location(class="form-control")|e }}<br/>
 
     {{ form.comments.label }}
-    {{ form.comments(cols="40", rows="5")|e }}<br/>
+    {{ form.comments(cols="40", rows="5", class="form-control")|e }}<br/>
 
     {{ form.loggedInBy.label }}
-    {{ form.loggedInBy|e }}<br/>
+    {{ form.loggedInBy(class="form-control")|e }}<br/>
+
+    {{ form.modifiedBy.label }}
+    {{ form.modifiedBy(class="form-control")|e }}<br/>
 
     {{ form.id|e }}
 
