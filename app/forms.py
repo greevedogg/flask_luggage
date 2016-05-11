@@ -9,7 +9,7 @@ def already_exists(form, field):
 
 
 def check_last_modified(form, field):
-    if form.id.data and 2 < len(field.data) > 3:
+    if form.id.data and not 2 <= len(field.data) <= 3:
         raise ValidationError('Please enter your initials, only 2 or 3 letters')
 
 
