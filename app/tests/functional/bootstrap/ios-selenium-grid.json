@@ -3,8 +3,8 @@
     {
       "version": "9.2",
       "browserName": "Safari",
-      "deviceName": "iPhone Simulator",
-      "applicationName": "iPhone Simulator",
+      "deviceName": "iPad Simulator",
+      "applicationName": "iPad Simulator",
       "maxInstances": 1,
       "platformName": "iOS"
     }

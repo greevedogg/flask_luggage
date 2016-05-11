@@ -40,10 +40,10 @@ class MainPage(BasePage):
         TICKET_COMPLETE_BUTTON = self._get_formatted_locator(ticket_number, MainPageLocators.TICKET_COMPLETE_BUTTON)
 
         ticket_row = self.driver.find_element(*TICKET_ROW)
-        actions_element = ticket_row.find_element(*TICKET_ACTION_BUTTON)
+        actions_element = self.driver.find_element(*TICKET_ACTION_BUTTON)
         actions_element.click()
 
-        complete_button = ticket_row.find_element(*TICKET_COMPLETE_BUTTON)
+        complete_button = self.driver.find_element(*TICKET_COMPLETE_BUTTON)
         complete_button.click()
 
     def close_ticket(self):
