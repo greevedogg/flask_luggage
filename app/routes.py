@@ -85,7 +85,7 @@ def complete_ticket(id):
     loggedOutBy = re.sub(r'[\W]+', '', request.args.get('loggedOutBy'))
 
     archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
-                      luggage.timeIn, loggedOutBy, luggage.comments)
+                      luggage.timeIn, luggage.modifiedBy, loggedOutBy, luggage.comments)
 
     db.session.add(archive)
     db.session.delete(luggage)

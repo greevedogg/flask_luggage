@@ -63,14 +63,15 @@ class Archive(db.Model):
     timeIn = db.Column(db.DateTime)
     timeOut = db.Column(db.DateTime)
 
-    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn, loggedOutBy=None, comments=None, timeOut=None):
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn, modifiedBy, loggedOutBy=None, comments=None, timeOut=None):
         self.name = name
         self.ticket = ticket
         self.location = location
         self.bagCount = bagCount
         self.loggedInBy = loggedInBy
-        self.comments = comments
         self.loggedOutBy = loggedOutBy
+        self.modifiedBy = modifiedBy
+        self.comments = comments
         self.timeIn = timeIn
         self.timeOut = datetime.utcnow()
 
