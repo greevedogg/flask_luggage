@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 
 {% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+    <script src="{{ url_for('static', filename='js/lodash.core.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/display-luggage.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dialog-with-initials.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ticket-actions.js') }}"></script>
 {% endblock %}
 
@@ -97,7 +100,7 @@
 
             <ul class="dropdown-menu ticket-actions">
               <li><a class="ticket-actions__complete" href="{{ url_for('luggage.complete_ticket', id=data.id) }}" data-target="#myModal" data-party-name="{{ data.name }}">Complete</a></li>
-              <li><a href="{{ url_for('luggage.edit_ticket', id=data.id) }}">Modify</a></li>
+              <li><a class="ticket-actions__modify" href="{{ url_for('luggage.edit_ticket', id=data.id) }}">Modify</a></li>
             </ul>
           </td>
         </tr>

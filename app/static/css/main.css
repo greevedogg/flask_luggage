@@ -25,6 +25,14 @@ body {
   -ms-filter: blur(10px);
 }
 
+input:invalid {
+  border: 1px solid red;
+}
+
+#close-initials-submit {
+  display: none;
+}
+
 /*
  * BOOTSTRAP MODS
  */
@@ -192,7 +200,7 @@ form label {
   /*font-size: 1.1em;*/
 /*}*/
 
-form input#submit {
+#submit {
   display: block;
   -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
@@ -212,7 +220,7 @@ form input#submit {
   background-image: linear-gradient(top, #f4f4f4, #e5e5e5);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f4f4f4, endColorstr=#e5e5e5);
 }
 
-form input#submit:hover{
+#submit:hover{
   cursor: pointer;
   border:1px solid #c1c1c1;
   background-color: #dbdbdb;

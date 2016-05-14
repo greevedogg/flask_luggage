@@ -20,7 +20,7 @@ class LuggageForm(Form):
   # bagCount = StringField("Bag Count", [validators.Required("Please enter # of bags"), validators.Regexp(r"\d{1,2}$", message="Please include only numbers. Maximum of two digits.")])
   bagCount = StringField("Bag Count", [validators.Required("Please enter # of Bags")])
   comments = TextAreaField("Comments")
-  loggedInBy = StringField("First Logged By", [validators.Length(min=2, max=3, message='Please enter your initials, only 2 or 3 letters')])
+  loggedInBy = StringField("Logged By", [validators.Length(min=2, max=3, message='Please enter your initials, only 2 or 3 letters')])
   modifiedBy = StringField("Last Modified By", [check_last_modified])
   submit = SubmitField("Store")
   id = HiddenField("Id")

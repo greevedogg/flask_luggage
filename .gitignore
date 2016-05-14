@@ -57,3 +57,5 @@ docs/_build/
 target/
 
 whoosh_index
+
+tests/functional/bootstrap/env.py

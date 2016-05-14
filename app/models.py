@@ -17,12 +17,13 @@ class Luggage(db.Model):
     bagCount = db.Column(db.Integer)
     loggedInBy = db.Column(db.String(3))#(db.Integer, db.ForeignKey('user.id'))
     modifiedBy = db.Column(db.String(3))
+    lastModified = db.Column(db.DateTime)
     comments = db.Column(db.String(160))
     timeIn = db.Column(db.DateTime)
     #user = db.relationship('User',
                              #backref=db.backref('luggage', lazy='joined'))
 
-    def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, timeIn=None):
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, timeIn=None, lastModified=None):
         self.name = name
         self.ticket = ticket
         self.location = location
@@ -31,6 +32,7 @@ class Luggage(db.Model):
         self.comments = comments
         if timeIn is None:
             self.timeIn = datetime.utcnow()
+            self.lastModified = datetime.utcnow()
 
     def __repr__(self):
         return '<Luggage %r>' % (self.name, self.ticket)
@@ -38,17 +40,17 @@ class Luggage(db.Model):
 #if enable_search:
     #whooshalchemy.whoosh_index(app, Luggage)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    userName = db.Column(db.String(30), unique=True)
-    pin = db.Column(db.String(10), unique=True)
-
-    def __init__(self, userName, pin):
-        self.userName = userName
-        self.pin = pin
-
-    def __repr__(self):
-        pass
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     userName = db.Column(db.String(30), unique=True)
+#     pin = db.Column(db.String(10), unique=True)
+#
+#     def __init__(self, userName, pin):
+#         self.userName = userName
+#         self.pin = pin
+#
+#     def __repr__(self):
+#         pass
 
 class Archive(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -60,10 +62,11 @@ class Archive(db.Model):
     comments = db.Column(db.String(160))
     loggedOutBy = db.Column(db.String(3))
     modifiedBy = db.Column(db.String(3))
+    lastModified = db.Column(db.DateTime)
     timeIn = db.Column(db.DateTime)
     timeOut = db.Column(db.DateTime)
 
-    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn, modifiedBy, loggedOutBy=None, comments=None, timeOut=None):
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn, modifiedBy, lastModified, loggedOutBy=None, comments=None, timeOut=None):
         self.name = name
         self.ticket = ticket
         self.location = location
@@ -71,6 +74,7 @@ class Archive(db.Model):
         self.loggedInBy = loggedInBy
         self.loggedOutBy = loggedOutBy
         self.modifiedBy = modifiedBy
+        self.lastModified = lastModified
         self.comments = comments
         self.timeIn = timeIn
         self.timeOut = datetime.utcnow()

@@ -1,6 +1,6 @@
 from elements import (TicketElement, NameElement, BagCountElement, LocationElement, LoggedInByElement,
                       CloseTicketInitialsElement)
-from locators import MainPageLocators
+from locators import MainPageLocators, EditTicketPageLocators
 
 
 class BasePage(object):
@@ -8,6 +8,16 @@ class BasePage(object):
 
     def __init__(self, driver):
         self.driver = driver
+
+
+class EditTicketPage(BasePage):
+    close_ticket_initials = CloseTicketInitialsElement()
+
+    def ask_for_initials(self):
+        self.driver.find_element(*EditTicketPageLocators.STORE_BUTTON).click()
+
+    def modify_ticket(self):
+        self.driver.find_element(*EditTicketPageLocators.CLOSE_TICKET).click()
 
 
 class MainPage(BasePage):
@@ -23,7 +33,6 @@ class MainPage(BasePage):
         return "Luggage" in self.driver.title
 
     def store_ticket(self):
-        """Triggers the search"""
         element = self.driver.find_element(*MainPageLocators.STORE_BUTTON)
         element.click()
 
@@ -39,12 +48,18 @@ class MainPage(BasePage):
         TICKET_ACTION_BUTTON = self._get_formatted_locator(ticket_number, MainPageLocators.TICKET_ACTION_BUTTON)
         TICKET_COMPLETE_BUTTON = self._get_formatted_locator(ticket_number, MainPageLocators.TICKET_COMPLETE_BUTTON)
 
-        ticket_row = self.driver.find_element(*TICKET_ROW)
+        self.driver.find_element(*TICKET_ROW)
         actions_element = self.driver.find_element(*TICKET_ACTION_BUTTON)
         actions_element.click()
 
         complete_button = self.driver.find_element(*TICKET_COMPLETE_BUTTON)
         complete_button.click()
+
+    def modify_ticket_url(self, ticket_number):
+        MODIFY_TICKET = self._get_formatted_locator(ticket_number, MainPageLocators.MODIFY_TICKET)
+        modify_link = self.driver.find_element(*MODIFY_TICKET)
+
+        return modify_link.get_attribute('href')
 
     def close_ticket(self):
         self.driver.find_element(*MainPageLocators.CLOSE_TICKET).click()

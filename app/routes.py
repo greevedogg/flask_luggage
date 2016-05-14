@@ -1,5 +1,5 @@
-import os
-from sqlite3 import dbapi2 as sqlite3
+# import os
+# from sqlite3 import dbapi2 as sqlite3
 from flask import Blueprint, session, g, redirect, url_for, render_template, request, flash
 from forms import LuggageForm, SearchForm
 from models import Luggage, db, Archive, Location
@@ -10,6 +10,7 @@ from sqlalchemy import exc
 from config import MAX_SEARCH_RESULTS
 import flask.ext.whooshalchemy
 import re
+from datetime import datetime
 
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
@@ -68,6 +69,8 @@ def edit_ticket(id):
         else:
             try:
                 form.populate_obj(luggage)
+
+                luggage.lastModified = datetime.utcnow()
                 db.session.commit()
                 flash('Entry saved')
                 return redirect(url_for('luggage.create_luggage'))
@@ -85,7 +88,7 @@ def complete_ticket(id):
     loggedOutBy = re.sub(r'[\W]+', '', request.args.get('loggedOutBy'))
 
     archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
-                      luggage.timeIn, luggage.modifiedBy, loggedOutBy, luggage.comments)
+                      luggage.timeIn, luggage.modifiedBy, luggage.lastModified, loggedOutBy, luggage.comments)
 
     db.session.add(archive)
     db.session.delete(luggage)
