@@ -29,7 +29,7 @@ class DevelopmentConfig(BaseConfig):
     SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'
 
 class ProductionConfig(BaseConfig):
-    DEBUG = True
+    DEBUG = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = 'mysql://greevedogg:' + os.getenv('MYSQL_PASSWORD', '') + '@greevedogg.mysql.pythonanywhere-services.com/greevedogg$luggageapp'
     SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'

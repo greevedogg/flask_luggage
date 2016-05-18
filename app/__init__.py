@@ -9,8 +9,11 @@ from datetime import datetime
 import pytz
 from pytz import timezone
 import tzlocal
+from flask_sslify import SSLify
 
 flask_app = Flask(__name__, template_folder='templates')
+
+SSLify(flask_app)
 
 configure_app(flask_app)
 db.init_app(flask_app)

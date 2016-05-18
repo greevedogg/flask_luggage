@@ -1,7 +1,7 @@
 import unittest
 from appium import webdriver
 from pageobjects.pages import MainPage
-import env
+import bootstrap.common as env
 
 
 class PythonOrgSearch(unittest.TestCase):

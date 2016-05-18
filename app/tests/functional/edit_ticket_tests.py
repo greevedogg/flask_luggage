@@ -1,7 +1,7 @@
 import unittest
 from appium import webdriver
 from pageobjects.pages import MainPage, EditTicketPage
-import env
+import bootstrap.common as env
 
 
 class PythonOrgSearch(unittest.TestCase):
@@ -32,7 +32,7 @@ class PythonOrgSearch(unittest.TestCase):
 
         assert main_page.has_stored_ticked(ticket_number)
 
-    def tes_02_edit_ticket(self):
+    def test_02_edit_ticket(self):
         driver = self.driver
         driver.get(env.APP_BASE_URL)
 
