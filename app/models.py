@@ -24,11 +24,11 @@ class Luggage(db.Model):
                              #backref=db.backref('luggage', lazy='joined'))
 
     def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, timeIn=None, lastModified=None):
-        self.name = name
+        self.name = name.upper()
         self.ticket = ticket
         self.location = location
         self.bagCount = bagCount
-        self.loggedInBy = loggedInBy
+        self.loggedInBy = loggedInBy.upper()
         self.comments = comments
         if timeIn is None:
             self.timeIn = datetime.utcnow()
@@ -71,9 +71,9 @@ class Archive(db.Model):
         self.ticket = ticket
         self.location = location
         self.bagCount = bagCount
-        self.loggedInBy = loggedInBy
-        self.loggedOutBy = loggedOutBy
-        self.modifiedBy = modifiedBy
+        self.loggedInBy = loggedInBy.upper()
+        self.loggedOutBy = loggedOutBy.upper()
+        self.modifiedBy = modifiedBy.upper()
         self.lastModified = lastModified
         self.comments = comments
         self.timeIn = timeIn

@@ -71,6 +71,7 @@ def edit_ticket(id):
                 form.populate_obj(luggage)
 
                 luggage.lastModified = datetime.utcnow()
+                luggage.modifiedBy = luggage.modifiedBy.upper()
                 db.session.commit()
                 flash('Entry saved')
                 return redirect(url_for('luggage.create_luggage'))
