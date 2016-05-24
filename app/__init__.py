@@ -1,15 +1,18 @@
+# from sqlalchemy import create_engine
+# from pytz import timezone
+# import tzlocal
 from config import configure_app
 from flask import Flask, render_template
 from models import Luggage, db, Archive
 from routes import luggage
-from sqlalchemy import create_engine
 import flask.ext.whooshalchemy as whooshalchemy
 from flask_moment import Moment
 from datetime import datetime
 import pytz
-from pytz import timezone
-import tzlocal
 from flask_sslify import SSLify
+import json
+import string
+import os
 
 flask_app = Flask(__name__, template_folder='templates')
 
@@ -42,6 +45,21 @@ def datetimefilter(value, format="%I:%M %p"):
 def utility_processor():
     def currentyear():
         return datetime.now().year
-    return dict(current_year=currentyear)
+
+    def locations(selected_locations):
+        selected_locations = json.loads(selected_locations) if selected_locations else dict()
+        locations_filtered = {key: value for key, value in selected_locations.iteritems() if value}
+        keys = []
+
+        if locations_filtered:
+            keys = locations_filtered.keys()
+            keys.sort(key=string.lower)
+
+        return ' '.join(keys)
+
+    def is_production():
+        return config.PRODUCTION in os.getenv('FLAKS_CONFIGURATION', '')
+
+    return dict(current_year=currentyear, locations=locations, is_production=is_production)
 
 flask_app.jinja_env.filters['datetimefilter'] = datetimefilter

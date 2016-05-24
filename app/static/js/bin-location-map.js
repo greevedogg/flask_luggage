@@ -1,70 +1,148 @@
 ;(function(){
     'use strict';
 
-    var observe = $({});
-    var binToPersist = null;
-
-    observe.on('location:selected', function(e, selectedBin, mapIdentifier) {
-        var $selectedBin = $(selectedBin);
-
-        binToPersist = mapIdentifier;
-
-        observe.trigger('location:clear-selected');
-
-        if ($selectedBin.is('.overlay__location')) {
-            $selectedBin.addClass('overlay__location--selected');
-        }
-    });
-
-    observe.on('location:clear-selected', function() {
-        $('.overlay__location').removeClass('overlay__location--selected');
-    });
-
-    observe.on('location:persist', function() {
-        $('#location').val(binToPersist);
-
-        observe.trigger('location:reset');
-    });
-
-    observe.on('location:reset', function() {
-        binToPersist = null;
-    });
-
-    $(function(){
+    $(function() {
         // bin location overlay component
         if ($('html').is('.is-desktop')) {
             $('.overlay__content').addClass('overlay__content--desktop');
         }
+    });
 
-        $('#view-bin-availability').click(function(event) {
-           $('#bin-location-finder').fadeIn(200);
+    Vue.component('bin-location-map', {
+        template: '#bin-location-map-template',
+        props: {
+            binsToPersist: {
+                type: Object,
+                default: function() {
+                    return {};
+                }
+            }
+        },
+        data: function() {
+            return {
+                selectedMapIdentifier: null,
+                touchedEnded: false
+            };
+        },
+        activate: function (done) {
+            if (this.binsToPersist) {
+                this.broadcastCurrentLocations(this.binsToPersist); // TODO: I'm not liking this. I think there could be a better way of communicating to child components that binsToPersist has been set.
+            }
 
-            event.preventDefault();
-        });
+            done();
+        },
+        methods: {
+            save: function() {
+                $('.bin-location-finder').fadeOut(200);
 
-        $('.overlay__location').on('click touchstart', function(event) {
-            var mapIdentifier = $(this).data('map-identifier');
+                this.persistLocations();
+            },
+            cancel: function() {
+                $('.bin-location-finder').fadeOut(200);
 
-            observe.trigger('location:selected', [event.currentTarget, mapIdentifier]);
+                this.resetLocations();
+            },
+            persistLocations: function() {
+                this.$dispatch('persist-locations', this.binsToPersist);
+            },
+            resetLocations: function() {
+                var that = this;
 
-            event.preventDefault();
-        });
+                _.forOwn(this.binsToPersist, function(value, key) {
+                    Vue.set(that.binsToPersist, key, 0);
+                });
 
-        $('.overlay__save').click(function(event) {
-            $('#bin-location-finder').fadeOut(200);
+                this.$dispatch('current-locations', this.binsToPersist);
+                this.broadcastCurrentLocations(this.binsToPersist);
+            },
+            broadcastCurrentLocations: function (binsToPersist) {
+                this.$broadcast('current-locations', binsToPersist);
+            },
+            selectedLocation: function(event, mapIdentifier, isTouch) {
+                var isTouch = isTouch || false;
 
-            observe.trigger('location:persist');
+                this.selectedMapIdentifier = mapIdentifier;
 
-            event.preventDefault();
-        });
+                if (event.metaKey || (isTouch && this.touchedEnded == false)) {
+                    this.addLocation(mapIdentifier);
+                } else {
+                    this.oneLocation(mapIdentifier);
+                    this.touchedEnded = false;
+                }
 
-        $('.overlay__cancel').click(function(event) {
-            $('#bin-location-finder').fadeOut(200);
+                this.$dispatch('current-locations', this.binsToPersist);
+                this.broadcastCurrentLocations(this.binsToPersist);
+            },
+            addLocation: function(location) {
+                Vue.set(this.binsToPersist, location, 1);
+            },
+            removeLocation: function(location) {
+                Vue.delete(this.binsToPersist, location);
+            },
+            oneLocation: function(location) {
+                this.resetLocations();
+                this.addLocation(location);
+            },
 
-            observe.trigger('location:reset');
-            observe.trigger('location:clear-selected');
+        },
+        events: {
+            'selected-location': function(event, mapIdentifier, isTouch) {
+                this.selectedLocation(event, mapIdentifier, isTouch);
+            },
+            'touch-ended': function() {
+                this.touchedEnded = true;
+            }
+        }
+    });
 
-            event.preventDefault();
-        });
+    Vue.component('map-location', {
+        template: '#location-template',
+        // props: ['location', 'map-identifier', 'is-occupied', 'amount'],
+        props: {
+            location: null,
+            mapIdentifier: null,
+            isOccupied: {
+                default: false
+            },
+            amount: null
+        },
+        data: function() {
+            return {
+                currentLocations: {}
+            }
+        },
+        computed: {
+            isSelected: function() {
+                return this.mapIdentifier in this.currentLocations && this.currentLocations[this.mapIdentifier];
+            }
+        },
+        methods: {
+            selectedLocation: function(event) {
+                this.isSelected = true;
+
+                var mapIdentifier = $(event.currentTarget).data('map-identifier');
+
+                this.$dispatch('selected-location', event, mapIdentifier);
+            },
+            touchStartedLocation: function(event) {
+                var mapIdentifier = null;
+
+
+                if (event.targetTouches && event.targetTouches.length > 0) {
+                    mapIdentifier = $(event.currentTarget).data('map-identifier');
+                }
+                
+                this.$dispatch('touch-started');
+                this.$dispatch('selected-location', event, mapIdentifier, true);
+            },
+            touchEndedLocation: function(event) {
+                this.$dispatch('touch-ended');
+            }
+        },
+        events: {
+            'current-locations': function(locations) {
+                this.currentLocations = locations;
+            }
+        }
     });
 })();

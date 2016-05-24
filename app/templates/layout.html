@@ -5,13 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='js/restive.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fastclick.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
+
+<template id="bin-location-map-template">
+  <section class="overlay bin-location-finder" id="bin-location-finder">
+    <div class="overlay__action-group">
+        <button class="btn btn-success btn-lg overlay__save" @click="save">Save</button>
+        <button class="btn btn-link btn-lg overlay__cancel" @click="cancel">Cancel</button>
+    </div>
+
+    <div class="overlay__content-container">
+        <div class="overlay__content">
+            {% set locations_availability = locations_availability or {} %}
+
+            {% for location, data in locations_availability.iteritems() %}
+              <map-location location="{{ location }}" map-identifier="{{ data.map_identifier }}" amount="{{ data.amount }}"
+                            :is-occupied="{{ 'true' if data.is_occupied else 'false'  }}">
+              </map-location>
+            {% endfor %}
+
+            <img src="{{ url_for('static', filename='images/luggage-layout.png') }}"/>
+        </div>
+    </div>
+  </section>
+</template>
+
+<template id="location-template">
+  <a class="overlay__location overlay__location-${* location }" :class="{'overlay__location--selected': isSelected}"
+     href="#" data-map-identifier="${* mapIdentifier }" data-location="${* location }" @click.prevent="selectedLocation" @touchstart.stop="touchStartedLocation"
+     @touchend="touchEndedLocation">
+    <span v-if="amount" class="overlay__location-amount ${ isOccupied ? 'overlay__location-amount--occupied':'' }">${ amount }</span>
+    <span v-else class="overlay__location-amount">0</span>
+      <span class="overlay__location-identifier overlay__location-identifier-${* location } ${ isOccupied ? 'overlay__location-identifier--occupied':''}">${* mapIdentifier }</span>
+      <span class="overlay__location-status overlay__location-${* location }-status ${ isOccupied ? 'overlay__location-status--occupied':'' }"></span>
+  </a>
+</template>
+
+{% set currentLocations = ':bins-to-persist=\'' + form.location.data + '\'' if form.location.data else '' -%}
+
+<bin-location-map @persist-locations="persistLocations" {{ currentLocations | safe }}></bin-location-map>
 
 <nav class="navbar navbar-inverse navbar-static-top center">
     <div class="container">
@@ -51,8 +89,15 @@
     });
 </script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='jquery.tablesorter.js') }}"></script>
+
+{% if is_production() %}
+  <script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+{% else %}
+  <script src="{{ url_for('static', filename='js/vue.js') }}"></script>
+{% endif %}
+<script src="{{ url_for('static', filename='js/bin-location-map.js') }}"></script>
 
 <script type=text/javascript>
   $(document).ready(function() {
@@ -85,6 +130,11 @@
 
 {% block scripts %}
 {% endblock %}
+
+{# Important to instantiate root view AFTER registering components #}
+<script src="{{ url_for('static', filename='js/vue.global.js') }}"></script>
+{#<script src="https://getfirebug.com/firebug-lite.js#startOpened"></script>#}
+{#<script src="https://getfirebug.com/firebug-lite.js#startOpened=false"></script>#}
 
 </body>
 </html>

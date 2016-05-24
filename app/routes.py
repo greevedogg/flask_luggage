@@ -1,16 +1,17 @@
 # import os
 # from sqlite3 import dbapi2 as sqlite3
+# from flask_sqlalchemy import SQLAlchemy
+# from flask_wtf import Form
+# from wtforms import validators
+# import flask.ext.whooshalchemy
 from flask import Blueprint, session, g, redirect, url_for, render_template, request, flash
 from forms import LuggageForm, SearchForm
 from models import Luggage, db, Archive, Location
-from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import Form
-from wtforms import validators
 from sqlalchemy import exc
 from config import MAX_SEARCH_RESULTS
-import flask.ext.whooshalchemy
 import re
 from datetime import datetime
+import json
 
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
@@ -36,7 +37,7 @@ def create_luggage():
             try:
                 name = form.name.data.upper()
                 ticket = form.ticket.data
-                location = form.location.data.upper()
+                location = form.location.data
                 bagCount = form.bagCount.data
                 loggedInBy = form.loggedInBy.data.upper()
                 entity = Luggage(name, ticket, location, bagCount, loggedInBy, None)
@@ -45,7 +46,8 @@ def create_luggage():
                 flash('Entry Submitted to Luggage Log.')
                 return redirect(url_for('luggage.create_luggage'))
             except exc.SQLAlchemyError as e:
-                return 'Entry NOT Submitted to Luggage Log.'
+                flash('Entry NOT Submitted to Luggage Log.')
+                return redirect(url_for('luggage.create_luggage'))
 
     return render_template('display_luggage.html', items=items, form=form, locations_availability=locations_availability)
 

@@ -12,7 +12,7 @@
                 <div class="form-group last">
                     <label for="dialog__close-ticket-initials" class="col-sm-2 control-label">Sign Off</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="dialog__close-ticket-initials" name="dialog__close-ticket-initials" placeholder="Your Initials" autocomplete="off">
+                      <input type="text"  v-model="initials | uppercase" class="form-control" id="dialog__close-ticket-initials" name="dialog__close-ticket-initials" placeholder="Your Initials" autocomplete="off">
                       <input type="submit" id="close-initials-submit">
                     </div>
                   </div>

@@ -2,7 +2,7 @@
 
 {% block scripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-    <script src="{{ url_for('static', filename='js/lodash.core.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lodash.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/display-luggage.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialog-with-initials.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ticket-actions.js') }}"></script>
@@ -39,7 +39,7 @@
   <form action="{{ url_for('luggage.create_luggage') }}" method=post autocomplete="off">
     {{ form.csrf_token }}
 
-      {{ form.ticket.label }}
+    {{ form.ticket.label }}
     {{ form.ticket(class="form-control")|e }}<br/>
 
     {{ form.name.label }}
@@ -49,12 +49,13 @@
     {{ form.bagCount(class="form-control")|e }}<br/>
 
     {{ form.location.label }}
-    {{ form.location(class="form-control")|e }}<br/>
+    {% include 'partials/bin-location/view-availability.html' %}
 
-    {{form.loggedInBy.label }}
-    {{ form.loggedInBy(class="form-control")|e }}<br/>
+    {{ form.loggedInBy.label }}
+    {{ form.loggedInBy(**{'v-model': 'loggedInBy | uppercase', 'class': 'form-control'}) }}
 
     {{ form.id|e }}
+    {{ form.location(**{'v-model': 'binsToPersist | json'}) }}
 
     {{ form.submit }}
   </form>
@@ -89,7 +90,7 @@
         <tr class="clicker" id="ticket-number-{{data.ticket}}">
           <td>{{data.name}} {% if data.comments %} <span class="glyphicon glyphicon-pencil has-comment" data-toggle="tooltip" data-placement="top" title="{{ data.comments }}"></span> {% endif %}</td>
           <td>{{data.ticket}}</td>
-          <td>{{data.location}}</td>
+          <td>{{locations(data.location)}}</td>
           <td>{{data.bagCount}}</td>
           <td>{{data.loggedInBy}}</td>
           <td>{{data.timeIn | datetimefilter}}</td>

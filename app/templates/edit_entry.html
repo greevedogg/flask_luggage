@@ -2,7 +2,7 @@
 
 {% block scripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-    <script src="{{ url_for('static', filename='js/lodash.core.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lodash.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dialog-with-initials.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modify-ticket.js') }}"></script>
 {% endblock %}
@@ -35,15 +35,16 @@
         {{ form.bagCount(class="form-control")|e }}<br/>
 
         {{ form.location.label }}
-        {{ form.location(class="form-control")|e }}<br/>
+        {% include 'partials/bin-location/view-availability.html' %}
 
         {{ form.comments.label }}
         {{ form.comments(cols="40", rows="5", class="form-control")|e }}<br/>
 
         {{ form.loggedInBy.label }}
-        {{ form.loggedInBy(class="form-control")|e }}<br/>
+        {{ form.loggedInBy(**{'v-model': 'loggedInBy | uppercase', 'class': 'form-control'})|e }}<br/>
 
         <input type="hidden" id="modifiedBy" name="modifiedBy" value="" />
+        {{ form.location(**{'v-model': 'binsToPersist | json'}) }}
 
         {{ form.id|e }}
       </form>
