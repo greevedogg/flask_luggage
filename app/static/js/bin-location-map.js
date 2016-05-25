@@ -63,7 +63,7 @@
 
                 this.selectedMapIdentifier = mapIdentifier;
 
-                if (event.metaKey || (isTouch && this.touchedEnded == false)) {
+                if ((event.ctrlKey || event.metaKey) || (isTouch && this.touchedEnded == false)) {
                     this.addLocation(mapIdentifier);
                 } else {
                     this.oneLocation(mapIdentifier);

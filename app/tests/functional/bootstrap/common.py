@@ -9,7 +9,8 @@ if 'ios' in platform:
       'browserName': 'Safari',
       'deviceName': 'iPad Air 2',
       'safariIgnoreFraudWarning': True,
-      'nonSyntheticWebClick': True
+      # 'nativeWebTap': True,
+      'nonSyntheticWebClick': False,
     }
 else:
     CAPABILITIES = {

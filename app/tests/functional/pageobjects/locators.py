@@ -25,4 +25,4 @@ class MainPageLocators(GlobalLocators):
 
 class EditTicketPageLocators(GlobalLocators):
     """All edit ticket page locators should come here"""
-    STORE_BUTTON = (By.ID, 'submit')
+    STORE_BUTTON = (By.XPATH, 'id("submit")')

@@ -38,7 +38,7 @@
 
 <template id="location-template">
   <a class="overlay__location overlay__location-${* location }" :class="{'overlay__location--selected': isSelected}"
-     href="#" data-map-identifier="${* mapIdentifier }" data-location="${* location }" @click.prevent="selectedLocation" @touchstart.stop="touchStartedLocation"
+     href="#" data-map-identifier="${* mapIdentifier }" data-location="${* location }" @click.prevent="selectedLocation" @touchstart.stop.prevent="touchStartedLocation"
      @touchend="touchEndedLocation">
     <span v-if="amount" class="overlay__location-amount ${ isOccupied ? 'overlay__location-amount--occupied':'' }">${ amount }</span>
     <span v-else class="overlay__location-amount">0</span>

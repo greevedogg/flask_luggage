@@ -12,6 +12,7 @@ class BasePageElement(object):
         WebDriverWait(driver, 100).until(
             lambda driver: driver.find_element(*self.locator))
         driver.find_element(*self.locator).send_keys(value)
+        # driver.set_value(driver.find_element(*self.locator), value)
 
     def __get__(self, obj, owner):
         """Gets the text of the specified object"""

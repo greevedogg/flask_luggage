@@ -11,7 +11,7 @@ class PythonOrgSearch(unittest.TestCase):
             env.SELENIUM_HUB,
             env.CAPABILITIES
         )
-        self.driver.implicitly_wait(10 if 'ios' not in env.platform else 60)
+        self.driver.implicitly_wait(10 if 'ios' not in env.platform else 20)
         self.ticket_number = "46789254"
 
     def test_01_search_in_python_org(self):

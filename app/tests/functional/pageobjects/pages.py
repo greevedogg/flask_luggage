@@ -4,34 +4,80 @@ from selenium.webdriver.common.keys import Keys
 from elements import (TicketElement, NameElement, BagCountElement, LocationElement, LoggedInByElement,
                       CloseTicketInitialsElement)
 from locators import MainPageLocators, EditTicketPageLocators
-import time
+from time import sleep
+from bootstrap.common import platform
+from appium.webdriver.common.touch_action import TouchAction
+from appium.webdriver.common.multi_action import MultiAction
 
+
+IS_IOS = True if 'ios' in platform else False
 
 class BasePage(object):
     """Base class to initialize the base page that will be called from all pages"""
 
     def __init__(self, driver):
+        if IS_IOS:
+            driver.orientation = 'LANDSCAPE'
+
         self.driver = driver
 
     def select_location(self, *locations):
         view_location_button = self.driver.find_element(*MainPageLocators.VIEW_LOCATION)
         view_location_button.click()
 
-        locations = self._get_formatted_bin_locations(MainPageLocators.BIN_LOCATION, locations)
+        prepared_locations = self._get_formatted_bin_locations(MainPageLocators.BIN_LOCATION, locations)
 
-        if len(locations) > 1:
-            # hold meta key
-            action = ActionChains(self.driver)
+        if len(prepared_locations) > 1:
+            if not IS_IOS:
+                action = ActionChains(self.driver)
 
-            for i, location in enumerate(locations):
-                action.click(self.driver.find_element(*location))
+                for i, location in enumerate(prepared_locations):
+                    action.click(self.driver.find_element(*location))
 
-                if i == 0:
-                    action.key_down(Keys.META)
+                    # hold meta click after clicking the first bin so pre-selected bins will reset
+                    if i == 0:
+                        action.key_down(Keys.META)
 
-            action.key_up(Keys.META)
-            action.click(self.driver.find_element(*MainPageLocators.SAVE_BINS))
-            action.perform()
+                action.key_up(Keys.META)
+
+                action.click(self.driver.find_element(*MainPageLocators.SAVE_BINS))
+                action.perform()
+            else:
+                # sleep(2)
+
+                bin_mapping = {
+                    '21a': {'x': 75, 'y': 166},
+                    '21b': {'x': 75, 'y': 251},
+                    '22a': {'x': 184, 'y': 166},
+                    '22b': {'x': 184, 'y': 251},
+                }
+
+                bin_actions = []
+
+                self.driver.switch_to.context('NATIVE_APP')
+
+                for i, location in enumerate(locations):
+                    bin_action1 = TouchAction(self.driver)
+                    bin_action1.press(**bin_mapping[location]).release()
+
+                    if i == 0:
+                        TouchAction(self.driver).tap(**bin_mapping[location]).perform()
+
+                    bin_actions.append(bin_action1)
+
+
+
+                ma = MultiAction(self.driver)
+                ma.add(*bin_actions)
+                ma.perform()
+                self.driver.switch_to.context(self.driver.contexts[1])
+
+                self.driver.find_element(*MainPageLocators.SAVE_BINS).click()
+
+                sleep(1)
+
+        # if IS_IOS:
+        #     sleep(10)
 
     @staticmethod
     def _get_formatted_bin_locations(locater_template, locations):
@@ -45,8 +91,9 @@ class EditTicketPage(BasePage):
     close_ticket_initials = CloseTicketInitialsElement()
 
     def ask_for_initials(self):
-        time.sleep(1)
-        self.driver.find_element(*EditTicketPageLocators.STORE_BUTTON).click()
+        button = self.driver.find_element(*EditTicketPageLocators.STORE_BUTTON)
+        button.click()
+        sleep(1) if IS_IOS else sleep(1)
 
     def modify_ticket(self):
         self.driver.find_element(*EditTicketPageLocators.CLOSE_TICKET).click()
@@ -65,6 +112,7 @@ class MainPage(BasePage):
         return "Luggage" in self.driver.title
 
     def store_ticket(self):
+        sleep(2) if IS_IOS else sleep(1)
         element = self.driver.find_element(*MainPageLocators.STORE_BUTTON)
         element.click()
 
