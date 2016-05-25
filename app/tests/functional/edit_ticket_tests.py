@@ -26,7 +26,7 @@ class PythonOrgSearch(unittest.TestCase):
         main_page.ticket = ticket_number
         main_page.name = "COLON"
         main_page.bag_count = "2"
-        main_page.location = "12A"
+        main_page.select_location('21a', '21b')
         main_page.logged_in_by = "JC"
         main_page.store_ticket()
 
@@ -44,9 +44,21 @@ class PythonOrgSearch(unittest.TestCase):
         driver.get(modify_ticket_url)
 
         edit_ticket = EditTicketPage(driver)
+        edit_ticket.select_location('22a', '22b')
         edit_ticket.ask_for_initials()
         edit_ticket.close_ticket_initials = "RG"
         edit_ticket.modify_ticket()
+
+    def test_03_complete_ticket(self):
+        driver = self.driver
+        driver.get(env.APP_BASE_URL)
+
+        ticket_number = self.ticket_number
+
+        main_page = MainPage(driver)
+        main_page.ask_for_initials(ticket_number)
+        main_page.close_ticket_initials = "JC"
+        main_page.close_ticket()
 
     def tearDown(self):
         self.driver.quit()

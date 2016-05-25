@@ -1,6 +1,10 @@
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+
 from elements import (TicketElement, NameElement, BagCountElement, LocationElement, LoggedInByElement,
                       CloseTicketInitialsElement)
 from locators import MainPageLocators, EditTicketPageLocators
+import time
 
 
 class BasePage(object):
@@ -9,11 +13,39 @@ class BasePage(object):
     def __init__(self, driver):
         self.driver = driver
 
+    def select_location(self, *locations):
+        view_location_button = self.driver.find_element(*MainPageLocators.VIEW_LOCATION)
+        view_location_button.click()
+
+        locations = self._get_formatted_bin_locations(MainPageLocators.BIN_LOCATION, locations)
+
+        if len(locations) > 1:
+            # hold meta key
+            action = ActionChains(self.driver)
+
+            for i, location in enumerate(locations):
+                action.click(self.driver.find_element(*location))
+
+                if i == 0:
+                    action.key_down(Keys.META)
+
+            action.key_up(Keys.META)
+            action.click(self.driver.find_element(*MainPageLocators.SAVE_BINS))
+            action.perform()
+
+    @staticmethod
+    def _get_formatted_bin_locations(locater_template, locations):
+        return [
+            (locater_template[0], locater_template[1].format(value))
+            for i, value in enumerate(locations)
+        ]
+
 
 class EditTicketPage(BasePage):
     close_ticket_initials = CloseTicketInitialsElement()
 
     def ask_for_initials(self):
+        time.sleep(1)
         self.driver.find_element(*EditTicketPageLocators.STORE_BUTTON).click()
 
     def modify_ticket(self):

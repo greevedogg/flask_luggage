@@ -33,6 +33,10 @@ input:invalid {
   display: none;
 }
 
+[v-cloak] {
+  display:none;
+}
+
 /*
  * BOOTSTRAP MODS
  */

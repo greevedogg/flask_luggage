@@ -64,10 +64,12 @@ def edit_ticket(id):
     else:
         form = LuggageForm(obj=luggage)
 
+    locations_availability = Location().availability()
+
     if request.method == 'POST':
         if not form.validate():
             # flash('All fields are required.')
-            return render_template('edit_entry.html', form=form)
+            return render_template('edit_entry.html', form=form, locations_availability=locations_availability)
         else:
             try:
                 form.populate_obj(luggage)
@@ -80,7 +82,7 @@ def edit_ticket(id):
             except exc.SQLAlchemyError as e:
                 return 'Entry was not saved'
 
-    locations_availability = Location().availability()
+
 
     return render_template('edit_entry.html', form=form, locations_availability=locations_availability)
 

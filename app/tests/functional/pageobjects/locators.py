@@ -18,6 +18,9 @@ class MainPageLocators(GlobalLocators):
     TICKET_ACTION_BUTTON = (By.XPATH, '//button[contains(@class,"ticket-action-button") and @data-ticket-number="{0}"]')
     TICKET_COMPLETE_BUTTON = (By.XPATH, 'id("ticket-number-{0}")//*[contains(@class, "ticket-actions__complete")]')
     MODIFY_TICKET = (By.XPATH, 'id("ticket-number-{0}")//*[contains(@class, "ticket-actions__modify")]')
+    BIN_LOCATION = (By.XPATH, '//*[contains(@class, "overlay__location-{0}") and @data-map-identifier]')
+    SAVE_BINS = (By.XPATH, '//*[contains(@class, "overlay__save")]')
+    VIEW_LOCATION = (By.ID, 'view-bin-availability')
 
 
 class EditTicketPageLocators(GlobalLocators):
