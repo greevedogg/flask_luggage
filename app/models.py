@@ -75,7 +75,7 @@ class Archive(db.Model):
         self.bagCount = bagCount
         self.loggedInBy = loggedInBy.upper()
         self.loggedOutBy = loggedOutBy.upper()
-        self.modifiedBy = modifiedBy.upper()
+        self.modifiedBy = modifiedBy.upper() if modifiedBy else modifiedBy
         self.lastModified = lastModified
         self.comments = comments
         self.timeIn = timeIn

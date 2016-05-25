@@ -47,7 +47,11 @@ def utility_processor():
         return datetime.now().year
 
     def locations(selected_locations):
-        selected_locations = json.loads(selected_locations) if selected_locations else dict()
+        try:
+            selected_locations = json.loads(selected_locations) if selected_locations else dict()
+        except ValueError, e:
+            return selected_locations if selected_locations else ''
+
         locations_filtered = {key: value for key, value in selected_locations.iteritems() if value}
         keys = []
 

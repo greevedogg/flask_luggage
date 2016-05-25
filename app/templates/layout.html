@@ -47,7 +47,7 @@
   </a>
 </template>
 
-{% set currentLocations = ':bins-to-persist=\'' + form.location.data + '\'' if form.location.data else '' -%}
+{% set currentLocations = ':bins-to-persist=\'' + form.location.data + '\'' if form and form.location.data else '' -%}
 
 <bin-location-map @persist-locations="persistLocations" {{ currentLocations | safe }}></bin-location-map>
 
