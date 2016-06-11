@@ -93,12 +93,15 @@ def complete_ticket(id):
     luggage = Luggage.query.get(id)
     loggedOutBy = re.sub(r'[\W]+', '', request.args.get('loggedOutBy'))
 
-    archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
-                      luggage.timeIn, luggage.modifiedBy, luggage.lastModified, loggedOutBy, luggage.comments)
+    # TODO: figure out why luggage returns None only on production, but works. Perhaps it runs with HTTP scheme first
+    # and then gets redirected again to HTTPS
+    if luggage:
+        archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
+                          luggage.timeIn, luggage.modifiedBy, luggage.lastModified, loggedOutBy, luggage.comments)
 
-    db.session.add(archive)
-    db.session.delete(luggage)
-    db.session.commit()
+        db.session.add(archive)
+        db.session.delete(luggage)
+        db.session.commit()
 
     return redirect(url_for('luggage.create_luggage'))
 
