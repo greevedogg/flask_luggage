@@ -13,6 +13,7 @@ from config import MAX_SEARCH_RESULTS
 import re
 from datetime import datetime
 import json
+from whoosh.index import LockError
 
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
@@ -93,15 +94,16 @@ def complete_ticket(id):
     luggage = Luggage.query.get(id)
     loggedOutBy = re.sub(r'[\W]+', '', request.args.get('loggedOutBy'))
 
-    # TODO: figure out why luggage returns None only on production, but works. Perhaps it runs with HTTP scheme first
-    # and then gets redirected again to HTTPS
-    if luggage:
+    # TODO: figure out why luggage returns None only on production, but works. Seems like the delete is happening twice
+    try:
         archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
                           luggage.timeIn, luggage.modifiedBy, luggage.lastModified, loggedOutBy, luggage.comments)
 
         db.session.add(archive)
         db.session.delete(luggage)
         db.session.commit()
+    except LockError:
+        pass
 
     return redirect(url_for('luggage.create_luggage'))
 
