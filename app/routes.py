@@ -4,7 +4,8 @@
 # from flask_wtf import Form
 # from wtforms import validators
 # import flask.ext.whooshalchemy
-from flask import Blueprint, session, g, redirect, url_for, render_template, request, flash
+from flask import Blueprint, session, g, redirect, render_template, request, flash
+from helpers import url_for
 from forms import LuggageForm, SearchForm
 from models import Luggage, db, Archive, Location
 from sqlalchemy import exc
