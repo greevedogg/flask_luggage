@@ -96,12 +96,13 @@ def complete_ticket(id):
 
     # TODO: figure out why luggage returns None only on production, but works. Seems like the delete is happening twice
     try:
-        archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
-                          luggage.timeIn, luggage.modifiedBy, luggage.lastModified, loggedOutBy, luggage.comments)
+        if luggage:
+            archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
+                              luggage.timeIn, luggage.modifiedBy, luggage.lastModified, loggedOutBy, luggage.comments)
 
-        db.session.add(archive)
-        db.session.delete(luggage)
-        db.session.commit()
+            db.session.add(archive)
+            db.session.delete(luggage)
+            db.session.commit()
     except LockError:
         pass
 
