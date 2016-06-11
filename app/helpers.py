@@ -3,6 +3,8 @@ from datetime import datetime
 import json
 import string
 import os
+import functools
+from flask import url_for as orig_url_for
 
 def currentyear():
     return datetime.now().year
@@ -26,3 +28,11 @@ def locations(selected_locations):
 
 def is_production():
     return config.PRODUCTION in os.getenv('FLAKS_CONFIGURATION', '')
+
+
+def url_for(*args, **kwargs):
+    if is_production():
+        kwargs['_scheme'] = 'https'
+        kwargs['_external'] = True
+
+    return orig_url_for(*args, **kwargs)

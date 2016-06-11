@@ -40,6 +40,11 @@ def datetimefilter(value, format="%I:%M %p"):
 
 @flask_app.context_processor
 def utility_processor():
-    return dict(current_year=helpers.currentyear, locations=helpers.locations, is_production=helpers.is_production)
+    return dict(
+        current_year=helpers.currentyear,
+        locations=helpers.locations,
+        is_production=helpers.is_production,
+        url_for=helpers.url_for
+    )
 
 flask_app.jinja_env.filters['datetimefilter'] = datetimefilter
