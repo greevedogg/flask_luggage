@@ -22,7 +22,7 @@
           {% endfor %}
       {% endfor %}
 
-      <form action="{{ url_for('luggage.edit_ticket', id=form.id.data) }}" id="form-edit-ticket" method="post" autocomplete="off">
+      <form action="{{ url_for('luggage.edit_ticket', _external=True, id=form.id.data) }}" id="form-edit-ticket" method="post" autocomplete="off">
         {{ form.csrf_token }}
 
         {{ form.ticket.label }}

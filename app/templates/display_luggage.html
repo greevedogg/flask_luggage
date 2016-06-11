@@ -36,7 +36,7 @@
     <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
 
-  <form action="{{ url_for('luggage.create_luggage') }}" method=post autocomplete="off">
+  <form action="{{ url_for('luggage.create_luggage', _external=True) }}" method=post autocomplete="off">
     {{ form.csrf_token }}
 
     {{ form.ticket.label }}

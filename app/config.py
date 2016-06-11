@@ -33,6 +33,8 @@ class ProductionConfig(BaseConfig):
     TESTING = False
     SQLALCHEMY_DATABASE_URI = 'mysql://greevedogg:' + os.getenv('MYSQL_PASSWORD', '') + '@greevedogg.mysql.pythonanywhere-services.com/greevedogg$luggageapp'
     SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'
+    SERVER_NAME = 'lotsaluggage.net'
+    PREFERRED_URL_SCHEME = 'https'
 
 class TestingConfig(BaseConfig):
     DEBUG = False
@@ -45,6 +47,8 @@ class VagrantConfig(BaseConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'mysql://homestead:secret@127.0.0.1:33060/' + MYSQL_DATABASE
     SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'
+    PREFERRED_URL_SCHEME = 'https'
+    SERVER_NAME = 'localhost:5000'
 
 config = {
     PRODUCTION: "app.config.ProductionConfig",
