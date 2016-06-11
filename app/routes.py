@@ -44,10 +44,10 @@ def create_luggage():
                 db.session.add(entity)
                 db.session.commit()
                 flash('Entry Submitted to Luggage Log.')
-                return redirect(url_for('luggage.create_luggage'))
+                return redirect(url_for('luggage.create_luggage', _external=True))
             except exc.SQLAlchemyError as e:
                 flash('Entry NOT Submitted to Luggage Log.')
-                return redirect(url_for('luggage.create_luggage'))
+                return redirect(url_for('luggage.create_luggage', _external=True))
 
     return render_template('display_luggage.html', items=items, form=form, locations_availability=locations_availability)
 
@@ -78,7 +78,7 @@ def edit_ticket(id):
                 luggage.modifiedBy = luggage.modifiedBy.upper()
                 db.session.commit()
                 flash('Entry saved')
-                return redirect(url_for('luggage.create_luggage'))
+                return redirect(url_for('luggage.create_luggage', _external=True))
             except exc.SQLAlchemyError as e:
                 return 'Entry was not saved'
 
@@ -99,7 +99,7 @@ def complete_ticket(id):
     db.session.delete(luggage)
     db.session.commit()
 
-    return redirect(url_for('luggage.create_luggage'))
+    return redirect(url_for('luggage.create_luggage', _external=True))
 
 
 def show_luggage():
@@ -109,7 +109,7 @@ def show_luggage():
 
 @luggage.route('/search', methods=['POST'])
 def search():
-    return redirect(url_for('luggage.search_results', query=g.search_form.search.data))
+    return redirect(url_for('luggage.search_results', query=g.search_form.search.data, _external=True))
 
 
 @luggage.route('/search_results/<query>')
