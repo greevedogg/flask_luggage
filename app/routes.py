@@ -95,6 +95,7 @@ def complete_ticket(id):
     loggedOutBy = re.sub(r'[\W]+', '', request.args.get('loggedOutBy'))
 
     # TODO: figure out why luggage returns None only on production, but works. Seems like the delete is happening twice
+    # could be because of the call going to HTTP first, then HTTPS because of cloudflare
     try:
         if luggage:
             archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
