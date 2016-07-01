@@ -29,7 +29,7 @@ def create_luggage():
     form = LuggageForm(request.form)
 
     items = [item for item in Luggage.query.order_by(Luggage.timeIn.desc()).all()]
-    locations_availability = Location().availability()
+    locations_availability = None  # TODO: find out cleaner way to augment plan with bin location finder
 
     if request.method == 'POST':
         if form.validate() == False:
@@ -66,7 +66,7 @@ def edit_ticket(id):
     else:
         form = LuggageForm(obj=luggage)
 
-    locations_availability = Location().availability()
+    locations_availability = None   # TODO: find out cleaner way to augment plan with bin location finder
 
     if request.method == 'POST':
         if not form.validate():

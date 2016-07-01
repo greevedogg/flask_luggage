@@ -1,7 +1,6 @@
 from wtforms import Form, StringField, TextAreaField, SubmitField, HiddenField, validators, ValidationError
 from wtforms.validators import DataRequired
 from models import Luggage
-import helpers
 
 
 def already_exists(form, field):
@@ -14,15 +13,10 @@ def check_last_modified(form, field):
         raise ValidationError('Please enter your initials, only 2 or 3 letters')
 
 
-def has_location(form, field):
-    if not helpers.locations(field.data):
-        raise ValidationError('Please choose one or more locations')
-
-
 class LuggageForm(Form):
   name = StringField("Last Name", [validators.Required("Please enter a Last Name"), validators.Regexp(r"[A-Za-z-\']+", message="Please include only letters")])
   ticket = StringField("Ticket #", [validators.Required("Please enter a Ticket #"), already_exists])
-  location = HiddenField("Location", [has_location])
+  location = StringField("Location", [validators.Required("Please enter a Location")])
   # bagCount = StringField("Bag Count", [validators.Required("Please enter # of bags"), validators.Regexp(r"\d{1,2}$", message="Please include only numbers. Maximum of two digits.")])
   bagCount = StringField("Bag Count", [validators.Required("Please enter # of Bags")])
   comments = TextAreaField("Comments")

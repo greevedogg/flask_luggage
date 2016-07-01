@@ -27,7 +27,7 @@ class PythonOrgSearch(unittest.TestCase):
         main_page.ticket = ticket_number
         main_page.name = "COLON"
         main_page.bag_count = "2"
-        main_page.select_location('21a', '21b')
+        main_page.location = "21b"
         main_page.logged_in_by = "JC"
         main_page.store_ticket()
 

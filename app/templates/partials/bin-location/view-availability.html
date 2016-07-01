@@ -1,9 +1,1 @@
-<div class="clearfix">
-  <a class="btn btn-primary" id="view-bin-availability" @click.prevent="openDialog">View Availability</a>
-  <span v-if="hasBins" class="bins-selected" v-cloak>
-    <strong>Selected:</strong>
-    <ul>
-      <li v-for="bin in selectedBins">${ bin }</li>
-    </ul>
-  </span>
-</div><br/>
+{{ form.location(class="form-control")|e }}<br/>

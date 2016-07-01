@@ -26,7 +26,7 @@ class PythonOrgSearch(unittest.TestCase):
         main_page.ticket = ticket_number
         main_page.name = "COLON"
         main_page.bag_count = "2"
-        main_page.select_location('21a', '21b')
+        main_page.location = "22a"
         main_page.logged_in_by = "JC"
         main_page.store_ticket()
 
@@ -44,7 +44,7 @@ class PythonOrgSearch(unittest.TestCase):
         driver.get(modify_ticket_url)
 
         edit_ticket = EditTicketPage(driver)
-        edit_ticket.select_location('22a', '22b')
+        edit_ticket.location = "22a"
         edit_ticket.ask_for_initials()
         edit_ticket.close_ticket_initials = "RG"
         edit_ticket.modify_ticket()

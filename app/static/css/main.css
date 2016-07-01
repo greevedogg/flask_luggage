@@ -211,11 +211,6 @@ form label {
     margin-right: 7px;
 }
 
-#location {
-  width: 289px;
-  float: right;
-}
-
 #submit {
   display: block;
   -webkit-border-radius: 3px;

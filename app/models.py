@@ -28,7 +28,7 @@ class Luggage(db.Model):
     def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, timeIn=None, lastModified=None):
         self.name = name.upper()
         self.ticket = ticket
-        self.location = location
+        self.location = location.upper()
         self.bagCount = bagCount
         self.loggedInBy = loggedInBy.upper()
         self.comments = comments
@@ -71,7 +71,7 @@ class Archive(db.Model):
     def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn, modifiedBy, lastModified, loggedOutBy=None, comments=None, timeOut=None):
         self.name = name.upper()
         self.ticket = ticket
-        self.location = location
+        self.location = location.upper()
         self.bagCount = bagCount
         self.loggedInBy = loggedInBy.upper()
         self.loggedOutBy = loggedOutBy.upper()

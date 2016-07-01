@@ -44,7 +44,6 @@
         {{ form.loggedInBy(**{'v-model': 'loggedInBy | uppercase', 'class': 'form-control'})|e }}<br/>
 
         <input type="hidden" id="modifiedBy" name="modifiedBy" value="" />
-        {{ form.location(**{'v-model': 'binsToPersist | json'}) }}
 
         {{ form.id|e }}
       </form>
