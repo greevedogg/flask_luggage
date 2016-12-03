@@ -5,6 +5,7 @@ import string
 import os
 import functools
 from flask import url_for as orig_url_for
+import numbers
 
 def currentyear():
     return datetime.now().year
@@ -15,6 +16,9 @@ def locations(selected_locations):
         selected_locations = json.loads(selected_locations) if selected_locations else dict()
     except ValueError, e:
         return selected_locations if selected_locations else ''
+
+    if isinstance(selected_locations, numbers.Integral):
+        return str(selected_locations)
 
     locations_filtered = {key: value for key, value in selected_locations.iteritems() if value}
     keys = []
