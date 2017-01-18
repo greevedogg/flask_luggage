@@ -469,6 +469,10 @@ div#search_bar{
   height: 261px;
 }
 
+.dateTab {
+  text-align: center
+}
+
 /*
  * TICKET LIST
  */

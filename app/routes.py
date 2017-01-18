@@ -11,7 +11,7 @@ from models import Luggage, db, Archive, Location
 from sqlalchemy import exc
 from config import MAX_SEARCH_RESULTS
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from whoosh.index import LockError
 
@@ -128,5 +128,17 @@ def search_results(query):
 
 @luggage.route('/archive', methods=['POST', 'GET'])
 def show_archive():
-    entry = [item for item in Archive.query.order_by(Archive.timeIn.desc()).all()]
-    return render_template("archive.html", entry=entry)
+    return show_specific_archive(datetime.today().strftime("%Y%m%d"))
+
+
+@luggage.route('/archive/<day>', methods=['POST', 'GET'])
+def show_specific_archive(day):
+    archiveDate = datetime.strptime(day,"%Y%m%d")
+    limitDate = archiveDate + timedelta(days=1)
+    _archives=Archive.query.filter(Archive.timeIn >= archiveDate).filter(Archive.timeIn <= limitDate).order_by(Archive.timeIn.desc()).all()
+    entry = [item for item in _archives]
+    
+    daysBeforeToday = timedelta(days= (datetime.today() - archiveDate).days ).days
+    daysBeforeToday = daysBeforeToday if (daysBeforeToday <= 5) else 5 
+    printableDays = [archiveDate - timedelta(days=x) for x in range(-daysBeforeToday, 7)]
+    return render_template("archive.html", entry=entry, printableDays=printableDays, archiveDate=archiveDate)

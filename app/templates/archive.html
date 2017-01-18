@@ -2,6 +2,20 @@
 
 {% block container %}
 
+
+<div class="row">
+  <nav aria-label="Page navigation" class="dateTab">
+    <ul class="pagination">
+    
+      {% for day in printableDays %}
+        <li {% if archiveDate == day %} class="active" {% endif %}>
+          <a href="/archive/{{ day.strftime('%Y%m%d') }}">{{ day.strftime('%b %d') }}</a>
+       	</li>
+      {% endfor %}
+      
+    </ul>
+  </nav>
+</div>
 <div class="page-header">
   <h2>Luggage Archives</h2>
 </div>
