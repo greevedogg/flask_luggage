@@ -42,7 +42,8 @@ def create_luggage():
                 location = form.location.data
                 bagCount = form.bagCount.data
                 loggedInBy = form.loggedInBy.data.upper()
-                entity = Luggage(name, ticket, location, bagCount, loggedInBy, None)
+                comments = form.comments.data
+                entity = Luggage(name, ticket, location, bagCount, loggedInBy, comments)
                 db.session.add(entity)
                 db.session.commit()
                 flash('Entry Submitted to Luggage Log.')
