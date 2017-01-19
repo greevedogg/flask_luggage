@@ -100,8 +100,26 @@
 <script src="{{ url_for('static', filename='js/bin-location-map.js') }}"></script>
 
 <script type=text/javascript>
+  //add parser through the tablesorter addParser method 
+  $.tablesorter.addParser({ 
+    id: 'location',// set a unique id  
+    is: function(s) { 
+        return false; // return false so this parser is not auto detected
+    }, 
+    format: function(s) { 
+        // format your data for normalization
+        var newFormat = s.toLowerCase().replace(/([0-9]+)([a-z]+)/, function(a, b, c){
+        	var number = Number(b).toLocaleString('us', { minimumIntegerDigits: 3 });
+            return number + c;
+        })
+        return newFormat; 
+    },
+    type: 'text' // set type, either numeric or text 
+  });
   $(document).ready(function() {
-      $('#open-tickets').tablesorter( {sortList: [[5,1]]});
+      $('#open-tickets').tablesorter( {sortList: [[5,1]], headers: { 
+          2: { sorter:'location' } 
+      } });
       $('#archived-tickets').tablesorter( {sortList: [[6,1]]});
   });
 
