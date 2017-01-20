@@ -95,7 +95,7 @@
           <td>{{locations(data.location)}}</td>
           <td>{{data.bagCount}}</td>
           <td>{{data.loggedInBy}}</td>
-          <td>{{data.timeIn | datetimefilter}}</td>
+          <td class={{data.timeIn | datetimefilter('%Y-%m-%d-%H:%M:%S') }}>{{data.timeIn | datetimefilter}}</td>
           <td class="dropdown">
             <button class="btn btn-default dropdown-toggle ticket-action-button needsclick" type="button" data-ticket-number="{{data.ticket}}"
               data-toggle="dropdown">Actions <span class="caret"></span>

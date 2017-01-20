@@ -42,7 +42,7 @@
         <td>{{data.bagCount}}</td>
         <td>{{data.loggedInBy}}</td>
         <td>{{data.loggedOutBy if data.loggedOutBy}}</td>
-        <td>{{data.timeIn | datetimefilter('%Y-%m-%d %H:%M %p') }}</td>
+        <td class={{data.timeIn | datetimefilter('%Y-%m-%d-%H:%M:%S') }}>{{data.timeIn | datetimefilter('%Y-%m-%d %H:%M %p') }}</td>
         <td>{{data.comments if data.comments}}</td>
       </tr>
 {% endfor %}

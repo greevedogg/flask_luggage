@@ -102,7 +102,7 @@
 <script type=text/javascript>
   //add parser through the tablesorter addParser method 
   $.tablesorter.addParser({ 
-    id: 'location',// set a unique id  
+    id: 'location', // set a unique id  
     is: function(s) { 
         return false; // return false so this parser is not auto detected
     }, 
@@ -116,11 +116,28 @@
     },
     type: 'text' // set type, either numeric or text 
   });
+  $.tablesorter.addParser({ 
+    id: 'datetimeSorter', // set a unique id  
+    is: function(s) { return false; }, 
+    format: function(s, table, cell) {
+    	console.log($(cell).attr('class') || s);
+        return $(cell).attr('class') || s;
+    },
+    type: 'text' 
+  });
   $(document).ready(function() {
       $('#open-tickets').tablesorter( {sortList: [[5,1]], headers: { 
-          2: { sorter:'location' } 
+          2: { sorter: 'location' },
+          5: { sorter: 'datetimeSorter' },
       } });
-      $('#archived-tickets').tablesorter( {sortList: [[6,1]]});
+      $('#search-tickets').tablesorter( {sortList: [[5,1]], headers: { 
+          2: { sorter: 'location' },
+          5: { sorter: 'datetimeSorter' },
+      } });
+      $('#archived-tickets').tablesorter( {sortList: [[6,1]], headers: { 
+          2: { sorter: 'location' },
+          6: { sorter: 'datetimeSorter' }
+      } });
   });
 
   $(function() {
