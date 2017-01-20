@@ -120,7 +120,6 @@
     id: 'datetimeSorter', // set a unique id  
     is: function(s) { return false; }, 
     format: function(s, table, cell) {
-    	console.log($(cell).attr('class') || s);
         return $(cell).attr('class') || s;
     },
     type: 'text' 
