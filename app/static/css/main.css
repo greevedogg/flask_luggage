@@ -119,6 +119,7 @@ h2, h3 {
   width: 940px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   padding-bottom: 10px;
+  padding-top: 66px;
 }
 
 #srch {
