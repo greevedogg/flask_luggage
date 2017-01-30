@@ -15,8 +15,8 @@
                 $('#form-edit-ticket').submit();
             }
         });
-
-        $('#submit').on('click', function(event) {
+        
+        function openConfirmDialog(event) {
             var val = $modifiedBy.val();
 
             if (val == '') {
@@ -24,6 +24,14 @@
                 modifyTicketDialog.show();
             } else {
                 console.log('This is supposed to submit');
+            }
+        }
+
+        $('#submit').on('click', openConfirmDialog);
+        
+        $("#form-edit-ticket input").keyup(function(event){
+            if(event.keyCode == 13){
+            	openConfirmDialog(event);
             }
         });
     });

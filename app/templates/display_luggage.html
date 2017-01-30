@@ -50,12 +50,12 @@
 
     {{ form.location.label }}
     {% include 'partials/bin-location/view-availability.html' %}
-    
-    {{ form.comments.label }}
-    {{ form.comments(cols="40", rows="5", class="form-control")|e }}<br/>
 
     {{ form.loggedInBy.label }}
     {{ form.loggedInBy(**{'v-model': 'loggedInBy | uppercase', 'class': 'form-control'}) }}
+    
+    {{ form.comments.label }}
+    {{ form.comments(cols="40", rows="5", class="form-control")|e }}<br/>
 
     {{ form.id|e }}
 
