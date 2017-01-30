@@ -17,7 +17,7 @@ def check_last_modified(form, field):
 def check_location(form, field):
     exceptionsAllowed = ["corral", "cart", "desk", "ref"]
     if exceptionsAllowed.count(lower( field.data )) == 0 and not re.search("^[0-9]+[A-Za-z-\']+$", field.data):
-        raise ValidationError('Location has to start with numbers and ends with letters. Exceptions: Corral, Cart, Desk')
+        raise ValidationError('Location has to start with numbers and ends with letters. Exceptions: Corral, Cart, Desk, Ref')
 
 
 class LuggageForm(Form):
