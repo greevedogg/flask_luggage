@@ -7,6 +7,10 @@
     <script src="{{ url_for('static', filename='js/ticket-actions.js') }}"></script>
 {% endblock %}
 
+{% block extra_navbar %}
+  {% include 'partials/global/extra_navbar.html' %}
+{% endblock %}
+
 {% block container %}
 	{% from 'partials/tickets/dialog__confirm_complete.html' import render_dialog %}
     {{ render_dialog() }}

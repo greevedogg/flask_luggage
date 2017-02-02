@@ -105,7 +105,15 @@ h2, h3 {
   width: 500px;
   margin: 0px auto;
   padding: 5px;
+}
 
+.navbar .container {
+  padding: 5px 0 5px 50px;
+  width: 600px;
+}
+
+.navbar .navbar-form {
+	margin: 5px;
 }
 
 #foot {
