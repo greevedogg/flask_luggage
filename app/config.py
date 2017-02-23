@@ -13,6 +13,9 @@ TESTING = "testing"
 VAGRANT = "vagrant"
 DEFAULT = "default"
 
+UPLOAD_FOLDER = os.path.join(basedir, 'media')
+
+
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
@@ -26,6 +29,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'mysql://' + MYSQL_USER + ':' + MYSQL_PASSWORD + '@' + MYSQL_HOST + '/' + MYSQL_DATABASE
+    #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'Luggage.db')
     SECRET_KEY = '2b918f79-c95a-49b1-a89d-c6c86d7e6081'
 
 class ProductionConfig(BaseConfig):

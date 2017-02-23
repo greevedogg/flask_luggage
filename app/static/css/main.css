@@ -109,7 +109,7 @@ h2, h3 {
 
 .navbar .container {
   padding: 5px 0 5px 50px;
-  width: 600px;
+  width: 750px;
 }
 
 .navbar .navbar-form {
@@ -499,4 +499,16 @@ div#search_bar{
 
 .is-tablet .dropdown-menu {
   margin-top: -4px;
+}
+
+.hotel-block {
+	margin: 2% 3% 2% 2%;
+	width: 28%;
+	float: left;
+}
+
+.hotel-block .jumbotron {
+	display: block;
+	padding: 30px;
+  min-height: 150px;
 }

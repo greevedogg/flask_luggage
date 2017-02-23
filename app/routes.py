@@ -6,15 +6,19 @@
 # import flask.ext.whooshalchemy
 from flask import Blueprint, session, g, redirect, render_template, request, flash
 from helpers import url_for
-from forms import LuggageForm, SearchForm
-from models import Luggage, db, Archive, Location
-from sqlalchemy import exc
+from forms import LuggageForm, SearchForm, LoginForm
+from models import Luggage, db, Archive, Hotel, User
+from sqlalchemy import exc, or_
 from config import MAX_SEARCH_RESULTS
 import re
 from datetime import datetime, timedelta
-import json
+import os
 from whoosh.index import LockError
-
+from flask_login import login_user, logout_user, login_required, current_user
+from app.forms import ChangePasswordForm, HotelForm
+from werkzeug.utils import secure_filename
+from app.config import UPLOAD_FOLDER
+from flask import send_from_directory
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
 
@@ -24,13 +28,14 @@ def before_request():
     g.search_form = SearchForm(request.form)
 
 
-@luggage.route('/', methods=['GET', 'POST'])
+@luggage.route('/luggage', methods=['GET', 'POST'])
+@login_required
 def create_luggage():
     form = LuggageForm(request.form)
 
-    items = [item for item in Luggage.query.order_by(Luggage.timeIn.desc()).all()]
+    items = [item for item in Luggage.query.order_by(Luggage.timeIn.desc()).filter_by(hotel_id=current_user.hotel_id)]
     locations_availability = None  # TODO: find out cleaner way to augment plan with bin location finder
-
+    
     if request.method == 'POST':
         if form.validate() == False:
             flash('All fields are required.')
@@ -43,7 +48,8 @@ def create_luggage():
                 bagCount = form.bagCount.data
                 loggedInBy = form.loggedInBy.data.upper()
                 comments = form.comments.data
-                entity = Luggage(name, ticket, location, bagCount, loggedInBy, comments)
+                hotel_id = current_user.hotel_id
+                entity = Luggage(name, ticket, location, bagCount, loggedInBy, comments, hotel_id)
                 db.session.add(entity)
                 db.session.commit()
                 flash('Entry Submitted to Luggage Log.')
@@ -56,6 +62,7 @@ def create_luggage():
 
 
 @luggage.route('/ticket/<id>',  methods=['POST', 'GET'])
+@login_required
 def edit_ticket(id):
     if request.method == 'POST':
         id = request.form.get('id')
@@ -91,6 +98,7 @@ def edit_ticket(id):
 
 
 @luggage.route('/ticket/<id>/complete', methods=['GET'])
+@login_required
 def complete_ticket(id):
     luggage = Luggage.query.get(id)
     loggedOutBy = re.sub(r'[\W]+', '', request.args.get('loggedOutBy'))
@@ -100,7 +108,7 @@ def complete_ticket(id):
     try:
         if luggage:
             archive = Archive(luggage.name, luggage.ticket, luggage.location, luggage.bagCount, luggage.loggedInBy,
-                              luggage.timeIn, luggage.modifiedBy, luggage.lastModified, loggedOutBy, luggage.comments)
+                              luggage.timeIn, luggage.modifiedBy, luggage.lastModified, luggage.hotel_id, loggedOutBy, luggage.comments)
 
             db.session.add(archive)
             db.session.delete(luggage)
@@ -117,29 +125,119 @@ def show_luggage():
 
 
 @luggage.route('/search', methods=['POST'])
+@login_required
 def search():
     return redirect(url_for('luggage.search_results', query=g.search_form.search.data))
 
 
 @luggage.route('/search_results/<query>')
+@login_required
 def search_results(query):
-    results = Luggage.query.whoosh_search("*" + query + "*", MAX_SEARCH_RESULTS).all()
+    results = Luggage.query.whoosh_search("*" + query + "*", MAX_SEARCH_RESULTS).filter_by(hotel_id=current_user.hotel_id)
     return render_template('search_results.html', query=query, results=results)
 
 
 @luggage.route('/archive', methods=['POST', 'GET'])
+@login_required
 def show_archive():
     return show_specific_archive(datetime.today().strftime("%Y%m%d"))
 
 
 @luggage.route('/archive/<day>', methods=['POST', 'GET'])
+@login_required
 def show_specific_archive(day):
     archiveDate = datetime.strptime(day,"%Y%m%d")
     limitDate = archiveDate + timedelta(days=1)
-    _archives=Archive.query.filter(Archive.timeIn >= archiveDate).filter(Archive.timeIn <= limitDate).order_by(Archive.timeIn.desc()).all()
-    entry = [item for item in _archives]
+    _archives = Archive.query.filter(Archive.timeIn >= archiveDate).filter(Archive.timeIn <= limitDate).order_by(Archive.timeIn.desc())
+    _archives = _archives.filter(or_(Archive.hotel_id==None, Archive.hotel_id==current_user.hotel_id))
     
     daysBeforeToday = timedelta(days= (datetime.today() - archiveDate).days ).days
     daysBeforeToday = daysBeforeToday if (daysBeforeToday <= 5) else 5 
     printableDays = [archiveDate - timedelta(days=x) for x in range(-daysBeforeToday, 7)]
-    return render_template("archive.html", entry=entry, printableDays=printableDays, archiveDate=archiveDate)
+    return render_template("archive.html", entry=_archives, printableDays=printableDays, archiveDate=archiveDate)
+
+
+
+@luggage.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm(request.form, request.args.get('hotel'))
+    if request.method == 'GET' or form.validate() == False:
+        return render_template('login.html', form=form)
+    username = form.username.data
+    password = form.password.data
+    registered_user = User.query.filter_by(username=username,password=password).first()
+    login_user(registered_user)
+    flash('Logged in successfully')
+    return redirect(url_for('luggage.create_luggage'))
+
+
+@luggage.route("/password", methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm(request.form, current_user.password)
+    
+    if request.method == 'GET' or form.validate() == False:
+        return render_template('change_password.html', form=form)
+    
+    current_user.password = form.password1.data
+    db.session.commit()
+    return redirect(url_for('luggage.create_luggage'))
+
+
+@luggage.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
+@luggage.route("/settings", methods=['GET', 'POST'])
+@login_required
+def change_hotel_settings():
+    form = HotelForm(request.form, obj=current_user.hotel)
+    
+    if request.method == 'GET' or form.validate() == False:
+        return render_template('hotel_settings.html', form=form, object=current_user.hotel)
+    
+    current_user.hotel.name = form.name.data
+    db.session.commit()
+    return redirect(url_for('luggage.create_luggage'))
+
+
+@luggage.route("/")
+def home():
+    return render_template("home.html", hotels=Hotel.query.all())
+
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@luggage.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            current_user.hotel.image = filename
+            db.session.commit()
+            return redirect(url_for('luggage.change_hotel_settings', filename=filename))
+    return render_template('hotel_upload_file.html')
+    
+
+@luggage.route('/media/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
+

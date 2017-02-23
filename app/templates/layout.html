@@ -1,18 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Luggage Services</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/restive.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/fastclick.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?release=20170211">
-</head>
-<body>
+{% extends "base.html" %}
 
+
+{% block main_templates %}
 <template id="bin-location-map-template">
   <section class="overlay bin-location-finder" id="bin-location-finder">
     <div class="overlay__action-group">
@@ -51,35 +40,12 @@
 
 <bin-location-map @persist-locations="persistLocations" {{ currentLocations | safe }}></bin-location-map>
 
-<nav class="navbar navbar-inverse navbar-fixed-top center">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand navbar-left" href="/"><span class="glyphicon glyphicon-briefcase"></span> Home</a>
-            <a class="navbar-brand" href="/archive"><span class="glyphicon glyphicon-briefcase"></span> Archives</a>
-            
-        </div>
-        {% block extra_navbar %}{% endblock %}
-    </div>
-    <!-- /.container -->
-</nav>
 
-<div class="outer center" id="top">
-    <div class="container-fluid">
-        {% block container %}
-        {% endblock %}
-    </div>
-</div>
-
-{% block footer %}
-<div id="foot">
-    <div class="footer">
-        <div class="center">
-
-            <p id="footertext">&copy;SCRG {{ current_year() }} | All rights reserved</p>
-        </div>
-    </div>
-</div>
 {% endblock %}
+
+
+
+{% block main_scripts %}
 
 <script>
     $(function(){
@@ -91,7 +57,7 @@
     });
 </script>
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 <script src="{{ url_for('static', filename='jquery.tablesorter.js') }}"></script>
 
 {% if is_production() %}
@@ -111,7 +77,7 @@
     format: function(s) { 
         // format your data for normalization
         var newFormat = s.toLowerCase().replace(/([0-9]+)([a-z]+)/, function(a, b, c){
-        	var number = Number(b).toLocaleString('us', { minimumIntegerDigits: 3 });
+          var number = Number(b).toLocaleString('us', { minimumIntegerDigits: 3 });
             return number + c;
         })
         return newFormat; 
@@ -163,14 +129,4 @@
   function getCellValue(row, index){ return $(row).children('td').eq(index).html() }
 
 </script>
-
-{% block scripts %}
 {% endblock %}
-
-{# Important to instantiate root view AFTER registering components #}
-<script src="{{ url_for('static', filename='js/vue.global.js') }}"></script>
-{#<script src="https://getfirebug.com/firebug-lite.js#startOpened"></script>#}
-{#<script src="https://getfirebug.com/firebug-lite.js#startOpened=false"></script>#}
-
-</body>
-</html>

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+{% block container %}
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1">
+	  <h2>Welcome to Lots A Luggage</h2>
+	
+	  {% for hotel in hotels %}
+	  <div class="hotel-block">
+		  <a class="jumbotron" href="{{ url_for('luggage.login') }}?hotel={{ hotel.name }}">
+			  <h4 class="text-center">{{ hotel.name }}</h4>
+			  <p>
+			    {% if hotel.image %}
+			    <img alt="" src="{{ url_for('luggage.serve_image', filename=hotel.image) }}" width="150" height="150" />
+			    {% endif %}
+			  </p>
+			</a>
+	  </div>    
+	  {% endfor %}
+	  
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block container %}
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-2">
+    <h2>Hotel Settings</h2>
+    
+    {% for message in form.name.errors %}
+      <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+    <form action="{{ url_for('luggage.change_hotel_settings') }}" method="post" class="form-horizontal" enctype="multipart/form-data">
+      
+      {{ form.csrf_token }}
+  
+      {{ form.name.label }}
+      {{ form.name(class="form-control")|e }}<br/>
+      
+      <div class="row">
+        <label for="image">Image</label>
+        <div class="col-sm-6">
+          {% if object.image %}
+          <img alt="" src="{{ url_for('luggage.serve_image', filename=object.image) }}" style="max-width: 250px;" />
+          {% endif %}
+        </div>
+        <div class="col-sm-6">
+          <a href="{{ url_for('luggage.upload_file') }}" class="btn btn-default pull-right">Upload new</a>
+        </div>
+      </div>
+      
+      <button class="btn btn-default btn-primary pull-right" type="submit">Update</button>
+    </form>
+    
+  </div>
+</div>
+{% endblock %}

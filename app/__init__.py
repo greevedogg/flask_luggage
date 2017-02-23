@@ -5,13 +5,17 @@ from config import configure_app
 from flask import Flask, render_template
 from models import Luggage, db, Archive
 from routes import luggage
-import flask.ext.whooshalchemy as whooshalchemy
+import flask_whooshalchemy as whooshalchemy
 from flask_moment import Moment
 import pytz
 from flask_sslify import SSLify
 import helpers
+from flask_login import LoginManager
+from app.models import User
+from app.config import UPLOAD_FOLDER
 
 flask_app = Flask(__name__, template_folder='templates')
+flask_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 SSLify(flask_app)
 
@@ -22,6 +26,15 @@ moment = Moment(flask_app)
 flask_app.register_blueprint(luggage)
 
 whooshalchemy.whoosh_index(flask_app, Luggage)
+
+
+
+login_manager = LoginManager()
+login_manager.init_app(flask_app)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
 
 @flask_app.teardown_appcontext
 def close_db(error=None):

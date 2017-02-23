@@ -8,6 +8,7 @@ import json
 
 db = SQLAlchemy()
 
+
 class Luggage(db.Model):
     __tablename__ = 'luggage'
     __searchable__ = ['name','ticket']
@@ -22,16 +23,16 @@ class Luggage(db.Model):
     lastModified = db.Column(db.DateTime)
     comments = db.Column(db.String(160))
     timeIn = db.Column(db.DateTime, nullable=False)
-    #user = db.relationship('User',
-                             #backref=db.backref('luggage', lazy='joined'))
+    hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id'))
 
-    def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, timeIn=None, lastModified=None):
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, comments, hotel_id, timeIn=None, lastModified=None):
         self.name = name.upper()
         self.ticket = ticket
         self.location = location.upper()
         self.bagCount = bagCount
         self.loggedInBy = loggedInBy.upper()
         self.comments = comments
+        self.hotel_id = hotel_id
         if timeIn is None:
             self.timeIn = datetime.utcnow()
             self.lastModified = datetime.utcnow()
@@ -42,17 +43,49 @@ class Luggage(db.Model):
 #if enable_search:
     #whooshalchemy.whoosh_index(app, Luggage)
 
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     userName = db.Column(db.String(30), unique=True)
-#     pin = db.Column(db.String(10), unique=True)
-#
-#     def __init__(self, userName, pin):
-#         self.userName = userName
-#         self.pin = pin
-#
-#     def __repr__(self):
-#         pass
+
+class User(db.Model):
+    """An admin user capable of access specific hotel.
+
+    :param str username: the name for specific user
+    :param str password: encrypted password for the user
+
+    """
+    __tablename__ = 'user'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True)
+    password = db.Column(db.String(20))
+    authenticated = db.Column(db.Boolean, default=False)
+    # foreign key
+    hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id'))
+    # define relationship
+    hotel = db.relationship('Hotel', uselist=False, backref='users')
+    def is_active(self):
+        """True, as all users are active."""
+        return True
+
+    def get_id(self):
+        """Return the id field."""
+        return self.id
+
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        return self.authenticated
+
+    def is_anonymous(self):
+        """False, as anonymous users aren't supported."""
+        return False
+
+
+
+class Hotel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    image = db.Column(db.String(150))
+    luggages = db.relationship("Luggage", backref="hotel")
+    archives = db.relationship("Archive", backref="hotel")
+
 
 class Archive(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -67,8 +100,9 @@ class Archive(db.Model):
     lastModified = db.Column(db.DateTime)
     timeIn = db.Column(db.DateTime, nullable=False)
     timeOut = db.Column(db.DateTime, nullable=False)
-
-    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn, modifiedBy, lastModified, loggedOutBy=None, comments=None, timeOut=None):
+    hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id'))
+    
+    def __init__(self, name, ticket, location, bagCount, loggedInBy, timeIn, modifiedBy, lastModified, hotel_id, loggedOutBy=None, comments=None, timeOut=None):
         self.name = name.upper()
         self.ticket = ticket
         self.location = location.upper()
@@ -77,6 +111,7 @@ class Archive(db.Model):
         self.loggedOutBy = loggedOutBy.upper()
         self.modifiedBy = modifiedBy.upper() if modifiedBy else modifiedBy
         self.lastModified = lastModified
+        self.hotel_id = hotel_id
         self.comments = comments
         self.timeIn = timeIn
         self.timeOut = datetime.utcnow()

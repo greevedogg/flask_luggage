@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Luggage Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/restive.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fastclick.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?release=20170223">
+</head>
+<body>
+
+{% block main_templates %}
+{% endblock %}
+
+{% block navbar %}
+{% if current_user.is_authenticated %}
+<nav class="navbar navbar-inverse navbar-fixed-top center">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand navbar-left" href="/luggage"><span class="glyphicon glyphicon-briefcase"></span> Home</a>
+            <a class="navbar-brand" href="/archive"><span class="glyphicon glyphicon-briefcase"></span> Archives</a>
+            
+        </div>
+        {% block extra_navbar %}{% endblock %}
+        <div class="navbar-header navbar-right">
+            <a class="navbar-brand" href="#" id="UserDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="glyphicon glyphicon-cog"></span>{{ current_user.username }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="UserDropdownMenu">
+              <li><a href="{{ url_for('luggage.change_hotel_settings') }}">Settings</a></li>
+              <li><a href="{{ url_for('luggage.change_password') }}">Change Password</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="{{ url_for('luggage.logout') }}">Logout</a></li>
+            </ul>
+          
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+{% endif %}
+{% endblock %}
+
+<div class="outer center" id="top">
+    <div class="container-fluid">
+        {% block container %}
+        {% endblock %}
+    </div>
+</div>
+
+{% block footer %}
+<div id="foot">
+    <div class="footer">
+        <div class="center">
+
+            <p id="footertext">&copy;SCRG {{ current_year() }} | All rights reserved</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+{% block main_scripts %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{# Important to instantiate root view AFTER registering components #}
+<script src="{{ url_for('static', filename='js/vue.global.js') }}"></script>
+{#<script src="https://getfirebug.com/firebug-lite.js#startOpened"></script>#}
+{#<script src="https://getfirebug.com/firebug-lite.js#startOpened=false"></script>#}
+
+</body>
+</html>
