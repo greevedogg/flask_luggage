@@ -146,10 +146,14 @@ def show_archive():
 @luggage.route('/archive/<day>', methods=['POST', 'GET'])
 @login_required
 def show_specific_archive(day):
+    HOTEL_ROYAL_ID = 1
     archiveDate = datetime.strptime(day,"%Y%m%d")
     limitDate = archiveDate + timedelta(days=1)
     _archives = Archive.query.filter(Archive.timeIn >= archiveDate).filter(Archive.timeIn <= limitDate).order_by(Archive.timeIn.desc())
-    _archives = _archives.filter(or_(Archive.hotel_id==None, Archive.hotel_id==current_user.hotel_id))
+    if (current_user.hotel_id == HOTEL_ROYAL_ID):
+        _archives = _archives.filter(or_(Archive.hotel_id==None, Archive.hotel_id==current_user.hotel_id))
+    else:
+        _archives = _archives.filter(Archive.hotel_id==current_user.hotel_id)
     
     daysBeforeToday = timedelta(days= (datetime.today() - archiveDate).days ).days
     daysBeforeToday = daysBeforeToday if (daysBeforeToday <= 5) else 5 
@@ -171,6 +175,7 @@ def login():
     return redirect(url_for('luggage.create_luggage'))
 
 
+"""
 @luggage.route("/password", methods=['GET', 'POST'])
 @login_required
 def change_password():
@@ -182,7 +187,7 @@ def change_password():
     current_user.password = form.password1.data
     db.session.commit()
     return redirect(url_for('luggage.create_luggage'))
-
+"""
 
 @luggage.route("/logout")
 @login_required
@@ -190,7 +195,7 @@ def logout():
     logout_user()
     return redirect("/")
 
-
+"""
 @luggage.route("/settings", methods=['GET', 'POST'])
 @login_required
 def change_hotel_settings():
@@ -202,7 +207,7 @@ def change_hotel_settings():
     current_user.hotel.name = form.name.data
     db.session.commit()
     return redirect(url_for('luggage.create_luggage'))
-
+"""
 
 @luggage.route("/")
 def home():
@@ -235,7 +240,8 @@ def upload_file():
             db.session.commit()
             return redirect(url_for('luggage.change_hotel_settings', filename=filename))
     return render_template('hotel_upload_file.html')
-    
+
+
 
 @luggage.route('/media/images/<path:filename>')
 def serve_image(filename):
