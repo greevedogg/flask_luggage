@@ -1,6 +1,6 @@
 from wtforms import Form, StringField, TextAreaField, SubmitField, HiddenField, validators, ValidationError, PasswordField
 from wtforms.validators import DataRequired
-from models import Luggage, User
+from models import Luggage, User, Hotel
 from string import lower
 import re
 from flask_wtf.file import FileField
@@ -26,6 +26,10 @@ def valid_credentials(form, field):
         raise ValidationError('Both fields are required.')
     if User.query.filter_by(username=form.username.data, password=form.password.data).first() is None:
         raise ValidationError('User not found with this username and password.')
+    if form.isAdmin:
+        u = User.query.filter_by(username=form.username.data, password=form.password.data).first()
+        if not u.is_admin:
+            raise ValidationError('User has not enough permissions.')
     if form.currentHotel:
         u = User.query.filter_by(username=form.username.data, password=form.password.data).first()
         if u is not None and u.hotel.name != form.currentHotel:
@@ -69,7 +73,12 @@ class LoginForm(Form):
     password = PasswordField("Password", validators=[validators.Required("Please enter the password"), valid_credentials])
     def __init__(self, formdata=None, *args, **kwargs):
         super(LoginForm, self).__init__(formdata, *args, **kwargs)
-        self.currentHotel = args[0]
+        if (args[0][1]):
+            # is admin
+            self.isAdmin = True
+            self.currentHotel = 1
+        self.currentHotel = args[0][0]
+        self.isAdmin = False
 
 
 class ChangePasswordForm(Form):

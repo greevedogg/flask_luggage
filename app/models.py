@@ -45,7 +45,7 @@ class Luggage(db.Model):
 
 
 class User(db.Model):
-    """An admin user capable of access specific hotel.
+    """An user capable of access specific hotel (or dashboard if he/she is admin).
 
     :param str username: the name for specific user
     :param str password: encrypted password for the user
@@ -57,6 +57,7 @@ class User(db.Model):
     username = db.Column(db.String(30), unique=True)
     password = db.Column(db.String(20))
     authenticated = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False)
     # foreign key
     hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id'))
     # define relationship

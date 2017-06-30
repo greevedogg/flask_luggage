@@ -164,7 +164,7 @@ def show_specific_archive(day):
 
 @luggage.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm(request.form, request.args.get('hotel'))
+    form = LoginForm(request.form, (request.args.get('hotel'), False))
     if request.method == 'GET' or form.validate() == False:
         return render_template('login.html', form=form)
     username = form.username.data
@@ -173,6 +173,27 @@ def login():
     login_user(registered_user)
     flash('Logged in successfully')
     return redirect(url_for('luggage.create_luggage'))
+
+
+
+@luggage.route('/admin', methods=['GET', 'POST'])
+def login_admin():
+    form = LoginForm(request.form, (request.args.get('hotel'), True))
+    if request.method == 'GET' or form.validate() == False:
+        return render_template('login_admin.html', form=form)
+    username = form.username.data
+    password = form.password.data
+    registered_user = User.query.filter_by(username=username,password=password).first()
+    login_user(registered_user)
+    flash('Logged in successfully')
+    return redirect(url_for('luggage.show_dashboard'))
+
+
+
+@luggage.route("/dashboard")
+def show_dashboard():
+    return render_template("dashboard.html")
+
 
 
 """

@@ -1,0 +1,22 @@
+{% if current_user.is_authenticated %}
+<nav class="navbar navbar-inverse navbar-fixed-top center">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-briefcase"></span> Stats</a>
+            <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-briefcase"></span> Info</a>
+            
+        </div>
+        {% block extra_navbar %}{% endblock %}
+        <div class="navbar-header navbar-right">
+            <a class="navbar-brand" href="#" id="UserDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="glyphicon glyphicon-cog"></span>{{ current_user.username }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="UserDropdownMenu">
+              <li><a href="{{ url_for('luggage.logout') }}">Logout</a></li>
+            </ul>
+          
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+{% endif %}
