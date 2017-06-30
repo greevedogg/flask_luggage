@@ -44,8 +44,8 @@ def close_db(error=None):
     pass
 
 # TODO: move filters and helpers to their own file
-def datetimefilter(value, format="%I:%M %p"):
-    tz = pytz.timezone('US/Eastern') # timezone you want to convert to from UTC
+def datetimefilter(value, format="%I:%M %p", timezone_name='US/Eastern'):
+    tz = pytz.timezone(timezone_name) # timezone you want to convert to from UTC
     utc = pytz.timezone('UTC')
     value = utc.localize(value, is_dst=None).astimezone(pytz.utc)
     local_dt = value.astimezone(tz)

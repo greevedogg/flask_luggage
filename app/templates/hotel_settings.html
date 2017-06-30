@@ -15,6 +15,10 @@
       {{ form.name.label }}
       {{ form.name(class="form-control")|e }}<br/>
       
+      {{ form.timezone.label }}
+      {{ form.timezone(class="form-control")|e }}<br/>
+      
+      <!-- 
       <div class="row">
         <label for="image">Image</label>
         <div class="col-sm-6">
@@ -26,8 +30,9 @@
           <a href="{{ url_for('luggage.upload_file') }}" class="btn btn-default pull-right">Upload new</a>
         </div>
       </div>
-      
+      -->
       <button class="btn btn-default btn-primary pull-right" type="submit">Update</button>
+       
     </form>
     
   </div>

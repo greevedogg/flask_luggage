@@ -6,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from collections import Counter
 import json
 
+
+
 db = SQLAlchemy()
 
 
@@ -79,11 +81,12 @@ class User(db.Model):
         return False
 
 
-
+        
 class Hotel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     image = db.Column(db.String(150))
+    timezone = db.Column(db.String(50))
     luggages = db.relationship("Luggage", backref="hotel")
     archives = db.relationship("Archive", backref="hotel")
 

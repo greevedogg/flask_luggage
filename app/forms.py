@@ -4,6 +4,7 @@ from models import Luggage, User, Hotel
 from string import lower
 import re
 from flask_wtf.file import FileField
+from wtforms.fields.core import SelectField
 
 def already_exists(form, field):
     if not form.id.data and Luggage.query.filter_by(ticket=field.data).first():
@@ -88,8 +89,27 @@ class ChangePasswordForm(Form):
     def __init__(self, formdata=None, *args, **kwargs):
         super(ChangePasswordForm, self).__init__(formdata, *args, **kwargs)
         self.currentPassword = args[0]
-        
 
+
+
+# https://support.sendwithus.com/jinja/jinja_time/#complete-list-of-all-available-timezones
+TIMEZONES = [
+         ('US/Alaska', 'US/Alaska'),
+         ('US/Aleutian', 'US/Aleutian'),
+         ('US/Arizona', 'US/Arizona'),
+         ('US/Central', 'US/Central'),
+         ('US/East-Indiana', 'US/East-Indiana'),
+         ('US/Eastern', 'US/Eastern'),
+         ('US/Hawaii', 'US/Hawaii'),
+         ('US/Indiana-Starke', 'US/Indiana-Starke'),
+         ('US/Michigan', 'US/Michigan'),
+         ('US/Mountain', 'US/Mountain'),
+         ('US/Pacific', 'US/Pacific'),
+         ('US/Pacific-New', 'US/Pacific-New'),
+         ('US/Samoa', 'US/Samoa')
+]
 
 class HotelForm(Form):
-    name = StringField('Name', validators=[validators.Required("Please enter a name"), validators.Regexp(r"[A-Za-z-\']+", message="Please include only letters")])
+    name = StringField('Name', render_kw={'readonly': True}, validators=[validators.Required("Please enter a name"), validators.Regexp(r"[A-Za-z-\']+", message="Please include only letters")])
+    timezone = SelectField('Timezone', choices=TIMEZONES)
+

@@ -216,7 +216,7 @@ def logout():
     logout_user()
     return redirect("/")
 
-"""
+
 @luggage.route("/settings", methods=['GET', 'POST'])
 @login_required
 def change_hotel_settings():
@@ -225,10 +225,10 @@ def change_hotel_settings():
     if request.method == 'GET' or form.validate() == False:
         return render_template('hotel_settings.html', form=form, object=current_user.hotel)
     
-    current_user.hotel.name = form.name.data
+    current_user.hotel.timezone = form.timezone.data
     db.session.commit()
     return redirect(url_for('luggage.create_luggage'))
-"""
+
 
 @luggage.route("/")
 def home():

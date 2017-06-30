@@ -47,7 +47,13 @@
         <td>{{data.bagCount}}</td>
         <td>{{data.loggedInBy}}</td>
         <td>{{data.loggedOutBy if data.loggedOutBy}}</td>
-        <td class={{data.timeIn | datetimefilter('%Y-%m-%d-%H:%M:%S') }}>{{data.timeIn | datetimefilter('%Y-%m-%d %H:%M:%S') }}</td>
+        <td class={{data.timeIn | datetimefilter('%Y-%m-%d-%H:%M:%S') }}>
+          {% if current_user.hotel.timezone %}
+            {{data.timeIn | datetimefilter("%I:%M %p", current_user.hotel.timezone)}}
+          {% else %}
+            {{data.timeIn | datetimefilter("%I:%M %p")}}
+          {% endif%}
+        </td>
         <td>{{data.comments if data.comments}}</td>
       </tr>
 {% endfor %}

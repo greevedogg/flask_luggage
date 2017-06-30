@@ -31,6 +31,7 @@
               <span class="glyphicon glyphicon-cog"></span>{{ current_user.username }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="UserDropdownMenu">
+              <li><a href="{{ url_for('luggage.change_hotel_settings') }}">Settings</a></li>
               <li><a href="{{ url_for('luggage.logout') }}">Logout</a></li>
             </ul>
           
