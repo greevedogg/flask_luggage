@@ -5,6 +5,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from collections import Counter
 import json
+import pytz
 
 
 
@@ -41,6 +42,7 @@ class Luggage(db.Model):
 
     def __repr__(self):
         return '<Luggage %r>' % (self.name, self.ticket)
+    
 
 #if enable_search:
     #whooshalchemy.whoosh_index(app, Luggage)
@@ -122,6 +124,15 @@ class Archive(db.Model):
 
     def __repr__(self):
         pass
+    
+    def get_proper_time_in(self):
+        if self.hotel and self.hotel.timezone:
+            tz = pytz.timezone(self.hotel.timezone) # timezone you want to convert to from UTC
+            utc = pytz.timezone('UTC')
+            value = utc.localize(self.timeIn, is_dst=None).astimezone(pytz.utc)
+            local_dt = value.astimezone(tz)
+            return local_dt
+        return self.timeIn
 
 
 class Location(object):

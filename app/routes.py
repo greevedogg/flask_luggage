@@ -4,7 +4,7 @@
 # from flask_wtf import Form
 # from wtforms import validators
 # import flask.ext.whooshalchemy
-from flask import Blueprint, session, g, redirect, render_template, request, flash
+from flask import Blueprint, g, redirect, render_template, request, flash
 from helpers import url_for
 from forms import LuggageForm, SearchForm, LoginForm
 from models import Luggage, db, Archive, Hotel, User
@@ -15,10 +15,11 @@ from datetime import datetime, timedelta
 import os
 from whoosh.index import LockError
 from flask_login import login_user, logout_user, login_required, current_user
-from app.forms import ChangePasswordForm, HotelForm
+from app.forms import HotelForm
 from werkzeug.utils import secure_filename
 from app.config import UPLOAD_FOLDER
 from flask import send_from_directory
+from app.stats import get_first_and_last_stores
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
 
@@ -192,7 +193,8 @@ def login_admin():
 
 @luggage.route("/dashboard")
 def show_dashboard():
-    return render_template("dashboard.html")
+    extra_info = get_first_and_last_stores(Archive.query.all())
+    return render_template("dashboard.html", info=extra_info)
 
 
 

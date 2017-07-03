@@ -1,5 +1,5 @@
 import config
-from datetime import datetime
+from datetime import datetime, time
 import json
 import string
 import os
@@ -40,3 +40,12 @@ def url_for(*args, **kwargs):
         kwargs['_external'] = True
 
     return orig_url_for(*args, **kwargs)
+
+
+def get_average_time(datetimes):
+    total = sum(dt.hour * 3600 + dt.minute * 60 + dt.second for dt in datetimes)
+    avg = total / len(datetimes)
+    minutes, seconds = divmod(int(avg), 60)
+    hours, minutes = divmod(minutes, 60)
+    return time(hours, minutes, seconds)
+
