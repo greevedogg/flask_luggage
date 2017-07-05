@@ -193,8 +193,18 @@ def login_admin():
 
 @luggage.route("/dashboard")
 def show_dashboard():
+    ### Get first and last store
     extra_info = get_first_and_last_stores(Archive.query.all())
-    extra_info['luggage_time'] = get_luggage_time(Archive.query.all())
+    storesByDay = extra_info['stores']
+    ### Get luggage time (from storing to closing)
+    luggage_times = get_luggage_time(Archive.query.all())
+    extra_info['luggage_time'] = luggage_times['luggage_time']
+    
+    ### Add luggage time to storesByDay
+    for el in luggage_times['stores'].values():
+        _key = el['day']
+        storesByDay[_key]['diff'] = el['diff']
+    
     return render_template("dashboard.html", info=extra_info)
 
 
