@@ -49,3 +49,11 @@ def get_average_time(datetimes):
     hours, minutes = divmod(minutes, 60)
     return time(hours, minutes, seconds)
 
+
+def get_average_time_for_timedeltas(timedeltas):
+    total = sum((diff.microseconds + (diff.seconds + diff.days * 24 * 3600) * 10**6) / 10**6 for diff in timedeltas)
+    avg = total / len(timedeltas)
+    minutes, seconds = divmod(int(avg), 60)
+    hours, minutes = divmod(minutes, 60)
+    return time(hours, minutes, seconds)
+

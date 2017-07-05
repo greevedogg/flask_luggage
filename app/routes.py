@@ -19,7 +19,7 @@ from app.forms import HotelForm
 from werkzeug.utils import secure_filename
 from app.config import UPLOAD_FOLDER
 from flask import send_from_directory
-from app.stats import get_first_and_last_stores
+from app.stats import get_first_and_last_stores, get_luggage_time
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
 
@@ -194,6 +194,7 @@ def login_admin():
 @luggage.route("/dashboard")
 def show_dashboard():
     extra_info = get_first_and_last_stores(Archive.query.all())
+    extra_info['luggage_time'] = get_luggage_time(Archive.query.all())
     return render_template("dashboard.html", info=extra_info)
 
 

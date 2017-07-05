@@ -125,14 +125,19 @@ class Archive(db.Model):
     def __repr__(self):
         pass
     
-    def get_proper_time_in(self):
+    def __get_proper_time(self, time):
         if self.hotel and self.hotel.timezone:
             tz = pytz.timezone(self.hotel.timezone) # timezone you want to convert to from UTC
             utc = pytz.timezone('UTC')
-            value = utc.localize(self.timeIn, is_dst=None).astimezone(pytz.utc)
+            value = utc.localize(time, is_dst=None).astimezone(pytz.utc)
             local_dt = value.astimezone(tz)
             return local_dt
-        return self.timeIn
+        return time
+    def get_proper_time_in(self):
+        return self.__get_proper_time(self.timeIn)
+    def get_proper_time_out(self):
+        return self.__get_proper_time(self.timeOut)
+
 
 
 class Location(object):
