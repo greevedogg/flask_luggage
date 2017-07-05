@@ -193,6 +193,8 @@ def login_admin():
 
 
 @luggage.route("/dashboard")
+@login_required
+# TODO: add admin permission check decorator
 def show_dashboard():
     current_archives = Archive.query.order_by(Archive.timeIn.desc()).all()
     
