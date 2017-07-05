@@ -19,7 +19,8 @@ from app.forms import HotelForm
 from werkzeug.utils import secure_filename
 from app.config import UPLOAD_FOLDER
 from flask import send_from_directory
-from app.stats import get_first_and_last_stores, get_luggage_time
+from app.stats import get_first_and_last_stores, get_luggage_time, count_stores
+from collections import OrderedDict
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
 
@@ -193,17 +194,26 @@ def login_admin():
 
 @luggage.route("/dashboard")
 def show_dashboard():
+    current_archives = Archive.query.order_by(Archive.timeIn.desc()).all()
+    
     ### Get first and last store
-    extra_info = get_first_and_last_stores(Archive.query.all())
+    extra_info = get_first_and_last_stores(current_archives)
     storesByDay = extra_info['stores']
     ### Get luggage time (from storing to closing)
-    luggage_times = get_luggage_time(Archive.query.all())
+    luggage_times = get_luggage_time(current_archives)
     extra_info['luggage_time'] = luggage_times['luggage_time']
-    
     ### Add luggage time to storesByDay
     for el in luggage_times['stores'].values():
         _key = el['day']
         storesByDay[_key]['diff'] = el['diff']
+    
+    ### Get amount of stores/logs per day
+    stores_per_day = count_stores(current_archives)
+    extra_info['count_store'] = stores_per_day['count_store']
+    ### Add stores_per_day to storesByDay
+    for el in stores_per_day['stores'].values():
+        _key = el['day']
+        storesByDay[_key]['count'] = el['count']
     
     return render_template("dashboard.html", info=extra_info)
 

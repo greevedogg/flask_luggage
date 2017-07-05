@@ -21,6 +21,7 @@
           <th>First Store</th>
           <th>Last Store</th>
           <th>Luggage time (from storing to closing)</th>
+          <th>Logs per day</th>
         </tr>
       </thead>
       <tbody>
@@ -29,6 +30,7 @@
           <td>{{ info.first_store }}</td>
           <td>{{ info.last_store }}</td>
           <td>{{ info.luggage_time }}</td>
+          <td>{{ info.count_store }}</td>
         </tr>
         {% for store in info.stores.values() %}
         <tr>
@@ -36,6 +38,7 @@
           <td>{{ store.first }}</td>
           <td>{{ store.last }}</td>
           <td>{{ store.diff }}</td>
+          <td>{{ store.count }}</td>
         </tr>
         {% endfor %}
       </tbody>
