@@ -1,5 +1,5 @@
 import config
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 import json
 import string
 import os
@@ -51,9 +51,8 @@ def get_average_time(datetimes):
 
 
 def get_average_time_for_timedeltas(timedeltas):
-    total = sum((diff.microseconds + (diff.seconds + diff.days * 24 * 3600) * 10**6) / 10**6 for diff in timedeltas)
-    avg = total / len(timedeltas)
-    minutes, seconds = divmod(int(avg), 60)
-    hours, minutes = divmod(minutes, 60)
-    return time(hours, minutes, seconds)
+    avg = sum(timedeltas, timedelta(0)) / len(timedeltas)
+    avg = avg - timedelta(microseconds=avg.microseconds)
+    return avg
+
 
