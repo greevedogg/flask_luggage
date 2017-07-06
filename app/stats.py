@@ -37,12 +37,13 @@ def get_luggage_time(stores):
     for el in stores:
         archiveTimeIn = el.get_proper_time_in()
         archiveTimeOut = el.get_proper_time_out()
-        diff = (archiveTimeOut - archiveTimeIn)
-        luggagesTimes.append(diff)
-        if luggagesByDay.has_key(archiveTimeIn.date()):
-            luggagesByDay[archiveTimeIn.date()].append(diff)
-        else:
-            luggagesByDay[archiveTimeIn.date()] = [ diff ]
+        if archiveTimeIn and archiveTimeOut:
+            diff = (archiveTimeOut - archiveTimeIn)
+            luggagesTimes.append(diff)
+            if luggagesByDay.has_key(archiveTimeIn.date()):
+                luggagesByDay[archiveTimeIn.date()].append(diff)
+            else:
+                luggagesByDay[archiveTimeIn.date()] = [ diff ]
         
     stores = {}
     for key, value in luggagesByDay.iteritems():
