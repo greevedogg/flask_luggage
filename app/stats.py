@@ -21,11 +21,11 @@ def get_first_and_last_stores(stores):
         last = max(value)
         firstStores.append(first)
         lastStores.append(last)
-        stores[key] = {'day': key, 'first': first, 'last': last}
+        stores[key] = {'day': key, 'first': first.strftime("%I:%M %p"), 'last': last.strftime("%I:%M %p")}
     
     return {
-            'first_store': get_average_time(firstStores),
-            'last_store': get_average_time(lastStores),
+            'first_store': get_average_time(firstStores).strftime("%I:%M %p"),
+            'last_store': get_average_time(lastStores).strftime("%I:%M %p"),
             'stores': stores
     }
 
@@ -71,7 +71,7 @@ def count_stores(stores):
         stores[key] = {'day': key, 'count': value }
     
     return {
-            'count_store': sum(lenStores) / (len(lenStores) * 1.0),
+            'count_store': int(round( sum(lenStores) / (len(lenStores) * 1.0) ) ),
             'stores': stores
     }
 

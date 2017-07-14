@@ -2,8 +2,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top center">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-briefcase"></span> Stats</a>
-            <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-briefcase"></span> Info</a>
+            <a class="navbar-brand" href="{{ url_for('luggage.show_dashboard') }}"><span class="glyphicon glyphicon-briefcase"></span> Stats</a>
             
         </div>
         {% block extra_navbar %}{% endblock %}

@@ -192,7 +192,7 @@ def login_admin():
 
 
 
-@luggage.route("/dashboard")
+@luggage.route("/admin/dashboard")
 @login_required
 # TODO: add admin permission check decorator
 def show_dashboard():
