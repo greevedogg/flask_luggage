@@ -7,9 +7,15 @@
 
 
 {% block container %}
+<!-- jQuery Datatables -->
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.13/sorting/time.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
 
 <script src="{{ url_for('static', filename='js/Chart.bundle.js') }}"></script>
 
+<script src="{{ url_for('static', filename='js/dashboard-information.js') }}"></script>
 
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
@@ -61,7 +67,7 @@
    </table>
    <h4>Extra information:</h4>
     
-    <table id="open-tickets" class="table table-bordered table-hover table-striped table-responsive tablesorter">
+    <table id="extrainfo-table" class="table table-bordered table-hover table-striped table-responsive tablesorter">
       <thead>
         <tr>
           <th>Date</th>
@@ -74,7 +80,7 @@
       <tbody>
         {% for store in info.stores.values() %}
         <tr>
-          <td>{{ store.day.strftime('%d %b %Y') }}</td>
+          <td data-order="{{ store.day.strftime('%Y-%m-%d') }}">{{ store.day.strftime('%d %b %Y') }}</td>
           <td>{{ store.first }}</td>
           <td>{{ store.last }}</td>
           <td>{{ store.diff }}</td>
