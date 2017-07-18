@@ -35,6 +35,9 @@
             if ($form.valid()) {
                 $myModal.modal('hide');
                 initials.setCustomValidity('');
+                
+                ga('send', 'event', 'luggage', 'archive');
+                
                 acceptCallback();
             }
         });
