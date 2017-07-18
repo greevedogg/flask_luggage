@@ -10,6 +10,9 @@
     <script src="{{ url_for('static', filename='js/restive.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fastclick.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?release=20170223">
+    
+    {% block extra_head %}
+    {% endblock %}
 </head>
 <body>
 
