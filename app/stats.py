@@ -70,8 +70,9 @@ def count_stores(stores):
         lenStores.append(value)
         stores[key] = {'day': key, 'count': value }
     
+    count_store = int(round( sum(lenStores) / (len(lenStores) * 1.0) ) ) if (len(lenStores)) else 0
     return {
-            'count_store': int(round( sum(lenStores) / (len(lenStores) * 1.0) ) ),
+            'count_store': count_store,
             'stores': stores
     }
 
@@ -90,8 +91,9 @@ def count_stores_by_hour(stores):
         lenStores.append(value)
         stores[key] = {'hour': key, 'count': value }
     
+    count_store = int(round( sum(lenStores) / (len(lenStores) * 1.0) ) ) if (len(lenStores)) else 0
     return {
-            'count_store': int(round( sum(lenStores) / (len(lenStores) * 1.0) ) ),
+            'count_store': count_store,
             'stores': stores
     }
 

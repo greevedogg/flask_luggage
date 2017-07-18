@@ -197,7 +197,11 @@ def login_admin():
 @login_required
 # TODO: add admin permission check decorator
 def show_dashboard():
-    current_archives = Archive.query.order_by(Archive.timeIn.desc()).all()
+    hotel_id = request.args.get('hotel')
+    if hotel_id:
+        current_archives = Archive.query.order_by(Archive.timeIn.desc()).filter_by(hotel_id=hotel_id)
+    else:
+        current_archives = Archive.query.order_by(Archive.timeIn.desc()).all()
     
     ### Get first and last store
     extra_info = get_first_and_last_stores(current_archives)
@@ -222,7 +226,8 @@ def show_dashboard():
     stores_per_hour = count_stores_by_hour(current_archives)
     extra_info['stores_by_hour'] = stores_per_hour['stores']
     
-    return render_template("dashboard.html", info=extra_info)
+    hotels = Hotel.query.all()
+    return render_template("dashboard.html", info=extra_info, hotels=hotels, hotel_id=hotel_id)
 
 
 

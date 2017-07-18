@@ -44,16 +44,20 @@ def url_for(*args, **kwargs):
 
 def get_average_time(datetimes):
     total = sum(dt.hour * 3600 + dt.minute * 60 + dt.second for dt in datetimes)
-    avg = total / len(datetimes)
+    avg = total / len(datetimes) if (len(datetimes)) else 0
     minutes, seconds = divmod(int(avg), 60)
     hours, minutes = divmod(minutes, 60)
     return time(hours, minutes, seconds)
 
 
 def get_average_time_for_timedeltas(timedeltas):
-    avg = sum(timedeltas, timedelta(0)) / len(timedeltas)
-    avg = avg - timedelta(microseconds=avg.microseconds)
-    return strfdelta(avg, "{days} days, {hours} hours, {minutes} minutes")
+    if (len(timedeltas)):
+        avg = sum(timedeltas, timedelta(0)) / len(timedeltas)
+        avg = avg - timedelta(microseconds=avg.microseconds)
+        return strfdelta(avg, "{days} days, {hours} hours, {minutes} minutes")
+    else:
+        return 0
+    
 
 
 def strfdelta(tdelta, fmt):
