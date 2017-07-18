@@ -14,16 +14,18 @@
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
    <h2>Dashboard</h2>
-   <div class="row">    
-	   <div class="col-sm-6">
+   
+   <h4>Logs by day:</h4>
+   <div class="">    
+	   
 	     <div id="monthButtonsContainer">
 	       <ul class="pagination">
 		     </ul>
 	     </div>
 	     <div id="monthlyChartContainer">
-		    <canvas id="myChart" width="400" height="400"></canvas>
+		    <canvas id="myChart" width="400" height="200"></canvas>
 		   </div>
-		 </div>
+		 
 	 </div>
 	
    <h4><b>Summary:</b></h4>
@@ -117,7 +119,7 @@ function sortDates(a, b) {
 {% for store in info.stores.values() %}
 
 	var month = "{{store.day.strftime('%b %Y')}}";
-	var day = "{{store.day.strftime('%d')}}";
+	var day = {{store.day.strftime('%d')}};
 	var count = {{ store.count }};
 	
 	addDataToMonth(month, day, count);
@@ -127,7 +129,7 @@ function sortDates(a, b) {
 function createChart(month) {
 	// remove any previous chart
 	$("#monthlyChartContainer").html("");
-	$("#monthlyChartContainer").append('<canvas id="myChart" width="400" height="400"></canvas>');
+	$("#monthlyChartContainer").append('<canvas id="myChart" width="400" height="150"></canvas>');
 	var ctx = document.getElementById("myChart");
 
 	var dataMonth = sortObject(dataByMonths[month]);
@@ -163,6 +165,8 @@ function createMonthButtons() {
 
 	}
 	$(".showChartMonthly").on("click", function(event) {
+		$("#monthButtonsContainer li").removeClass("active");
+		$(event.target).parent("li").addClass("active");
 		var month = $(event.target).html();
 		createChart(month);
 	});
@@ -170,6 +174,7 @@ function createMonthButtons() {
 	if (currentMonths.length > 0) {
 		var lastMonth = currentMonths[currentMonths.length - 1]
 		createChart(lastMonth);
+		$("#monthButtonsContainer li:last-child").addClass("active");
 	}
 	
 }
