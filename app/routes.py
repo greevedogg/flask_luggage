@@ -221,6 +221,7 @@ def show_dashboard():
     for el in stores_per_day['stores'].values():
         _key = el['day']
         storesByDay[_key]['count'] = el['count']
+        storesByDay[_key]['hours'] = el['hours']
     
     ### Get amount of stores/logs per hour
     stores_per_hour = count_stores_by_hour(current_archives)

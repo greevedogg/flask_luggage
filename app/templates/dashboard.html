@@ -41,7 +41,11 @@
 	 
 	 <h4>Luggage by hours:</h4>
    <div class="">
-     
+       
+       <div id="dailyButtonsContainer">
+         <ul class="pagination">
+         </ul>
+       </div>
        <div id="hourlyChartContainer">
         <canvas id="myHourlyChart" width="400" height="150"></canvas>
        </div>
@@ -109,13 +113,16 @@ var ctx = document.getElementById("myChart");
 
 var dataByMonths = {}
 
-var dataByHours = {}
+var dataByHoursGeneral = {}
 
-function addDataToMonth(month, day, value) {
+function addDataToMonth(month, day, value, hours) {
 	if (!dataByMonths[month]) {
     dataByMonths[month] = {}  
 	}
-	dataByMonths[month][day] = value;
+	dataByMonths[month][day] = {
+			value: value,
+			hours: hours
+	};
 	
 }
 
@@ -144,8 +151,9 @@ function sortDates(a, b) {
 	var month = "{{store.day.strftime('%b %Y')}}";
 	var day = {{store.day.strftime('%d')}};
 	var count = {{ store.count }};
+	var hour = {{ store.hours }};
 	
-	addDataToMonth(month, day, count);
+	addDataToMonth(month, day, count, hour);
 
 {% endfor %}
 
@@ -155,7 +163,7 @@ function sortDates(a, b) {
   var hour = {{store.hour}};
   var count = {{ store.count }};
   
-  dataByHours[hour] = count;
+  dataByHoursGeneral[hour] = count;
 
 {% endfor %}
 
@@ -169,28 +177,43 @@ function createMonthlyChart(month) {
 	
 	var color = 'rgba(255, 99, 132, 0.2)';
 	var borderColor = 'rgba(255, 99, 132, 1)';
+	var values = [];
+	var data = Object.values(dataMonth)
+	for (var i in data) {
+		values.push(data[i].value)
+	}
+	createDailyButtons(dataMonth);
 	
-	createChart(ctx, Object.keys(dataMonth), Object.values(dataMonth), '# Logs by day ' + month, color, borderColor);
+	createChart(ctx, Object.keys(dataMonth), values, '# Logs by day ' + month, color, borderColor);
 	
 }
 
-function createChartByHour() {
+function createChartByHour(month, day) {
 	  // remove any previous chart
 	  $("#hourlyChartContainer").html("");
 	  $("#hourlyChartContainer").append('<canvas id="myHourlyChart" width="400" height="150"></canvas>');
 	  var ctx = document.getElementById("myHourlyChart");
 
-	  for (var i = 0; i<24; i++) {
-		  if ( !dataByHours[i] ) {
-			  dataByHours[i] = 0;
-		  }
-	  }
-	  var dataHours = sortObject(dataByHours);
+	  var dataByHours = {}
 	  
+	  var dataMonth = sortObject(dataByMonths[month]);
+	  var hoursArray = dataMonth[day].hours;
+	  
+	  for (var i = 0; i<24; i++) {
+      if ( !dataByHours[i] ) {
+        dataByHours[i] = 0;
+      }
+    }
+	  for (var i in hoursArray) {
+		  var key = hoursArray[i];
+	    dataByHours[key] += 1;
+	  }
+	  
+	  var title = '# Logs by hour ' + day + " " + month;
 	  var color = 'rgba(255, 215, 0, 0.2)';
 	  var borderColor = 'rgba(255, 215, 0, 1)';
 	  
-	  createChart(ctx, Object.keys(dataHours), Object.values(dataHours), '# Logs by hour', color, borderColor);
+	  createChart(ctx, Object.keys(dataByHours), Object.values(dataByHours), title, color, borderColor);
 	  
 	}
 
@@ -241,16 +264,42 @@ function createMonthButtons() {
 	});
 	
 	if (currentMonths.length > 0) {
-		var lastMonth = currentMonths[currentMonths.length - 1]
-		createMonthlyChart(lastMonth);
 		$("#monthButtonsContainer li:last-child").addClass("active");
+		var lastMonth = currentMonths[currentMonths.length - 1];
+		createMonthlyChart(lastMonth);
 	}
 	
 }
 
+function createDailyButtons(data) {
+	$("#dailyButtonsContainer ul").html("");
+  for (var i in data) {
+	  $("#dailyButtonsContainer ul").append('<li><a class="showChartHourly">' + i + '</a></li>');
+  }
+  
+  $(".showChartHourly").on("click", function(event) {
+    $("#dailyButtonsContainer li").removeClass("active");
+    $(event.target).parent("li").addClass("active");
+    var month = $("#monthButtonsContainer .active a").html();
+    var day = $(event.target).html();
+    createChartByHour(month, day);
+  });
+  
+  if (Object.values(data).length > 0) {
+    $("#dailyButtonsContainer li:last-child").addClass("active");
+    var month = $("#monthButtonsContainer .active a").html();
+    var lastDay = null;
+    var days = Object.keys(data);
+    for (var i in days) {
+    	lastDay = days[i];
+    }
+    createChartByHour(month, lastDay);
+  }
+  
+}
+
 createMonthButtons();
 
-createChartByHour();
 
 </script>
 
