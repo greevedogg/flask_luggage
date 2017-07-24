@@ -184,7 +184,7 @@ function createMonthlyChart(month) {
 	}
 	createDailyButtons(dataMonth);
 	
-	createChart(ctx, Object.keys(dataMonth), values, '# Logs by day ' + month, color, borderColor);
+	createChart(ctx, Object.keys(dataMonth), values, '# Logs by day ' + month, color, borderColor, 350);
 	
 }
 
@@ -213,11 +213,27 @@ function createChartByHour(month, day) {
 	  var color = 'rgba(255, 215, 0, 0.2)';
 	  var borderColor = 'rgba(255, 215, 0, 1)';
 	  
-	  createChart(ctx, Object.keys(dataByHours), Object.values(dataByHours), title, color, borderColor);
+	  xAxis = Object.keys(dataByHours);
+	  for (var i in xAxis) {
+		  
+		  var prefix = " p.m.";
+		  var value = parseInt(xAxis[i]);
+		  if (value < 12) {
+			  var prefix = " a.m.";
+		  } else {
+			  value = value - 12;
+		  }
+		  if (value == 0) {
+			  value = 12;
+		  }
+		  xAxis[i] = value + prefix;
+      
+    }
+	  createChart(ctx, xAxis, Object.values(dataByHours), title, color, borderColor);
 	  
 	}
 
-function createChart(ctx, labels, data, title, color, borderColor) {
+function createChart(ctx, labels, data, title, color, borderColor, maxVal) {
 	
   var myChart = new Chart(ctx, {
       type: 'bar',
@@ -237,6 +253,7 @@ function createChart(ctx, labels, data, title, color, borderColor) {
         	  yAxes: [{
                   ticks: {
                 	  beginAtZero: true,
+                	  max: maxVal,
                     callback: function(value) {if (value % 1 === 0) {return value;}}
                   }
               }]
