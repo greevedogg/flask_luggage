@@ -145,11 +145,11 @@ def search_results(query):
 def show_archive():
     return show_specific_archive(datetime.today().strftime("%Y%m%d"))
 
+HOTEL_ROYAL_ID = 1
 
 @luggage.route('/archive/<day>', methods=['POST', 'GET'])
 @login_required
 def show_specific_archive(day):
-    HOTEL_ROYAL_ID = 1
     archiveDate = datetime.strptime(day,"%Y%m%d")
     limitDate = archiveDate + timedelta(days=1)
     _archives = Archive.query.filter(Archive.timeIn >= archiveDate).filter(Archive.timeIn <= limitDate).order_by(Archive.timeIn.desc())
@@ -199,7 +199,10 @@ def login_admin():
 def show_dashboard():
     hotel_id = request.args.get('hotel')
     if hotel_id:
-        current_archives = Archive.query.order_by(Archive.timeIn.desc()).filter_by(hotel_id=hotel_id)
+        if (hotel_id == str(HOTEL_ROYAL_ID)):
+            current_archives = Archive.query.order_by(Archive.timeIn.desc()).filter(or_(Archive.hotel_id==None, Archive.hotel_id==hotel_id))
+        else:
+            current_archives = Archive.query.order_by(Archive.timeIn.desc()).filter_by(hotel_id=hotel_id)
     else:
         current_archives = Archive.query.order_by(Archive.timeIn.desc()).all()
     
