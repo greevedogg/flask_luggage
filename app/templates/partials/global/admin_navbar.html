@@ -5,12 +5,13 @@
             
             
             <ul class="nav navbar-nav">
+              <!-- 
               <li {% if not hotel_id %}class="active"{% endif %}>
                 <a class="navbar-brand" href="{{ url_for('luggage.show_dashboard') }}">
 		              <span class="glyphicon glyphicon-stats"></span> General
 		            </a>
               </li>
-            
+               -->
 	            {% for hotel in hotels %}
 	            <li {% if hotel_id==hotel.id|tojson %}class="active"{% endif %}>
 	              <a class="navbar-brand active" href="{{ url_for('luggage.show_dashboard') }}?hotel={{hotel.id}}">
