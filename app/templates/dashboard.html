@@ -121,13 +121,17 @@ var dataByHoursGeneral = {};
 var monthsSelected = {};
 var monthlyChart = null;
 
-function addDataToMonth(month, day, value, hours) {
+var colors = ['rgba(255, 99, 132, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(51, 204, 51, 0.2)', 'rgba(153, 153, 102, 0.2)', 'rgba(153, 51, 102, 0.2)', 'rgba(102, 102, 153, 0.2)',]
+var borderColors = ['rgba(255, 99, 132, 1)', 'rgba(153, 102, 255, 1)', 'rgba(51, 204, 51, 1)', 'rgba(153, 153, 102, 1)', 'rgba(153, 51, 102, 1)', 'rgba(102, 102, 153, 1)',]
+
+function addDataToMonth(month, day, value, hours, hoursOut) {
 	if (!dataByMonths[month]) {
-    dataByMonths[month] = {}  
+    dataByMonths[month] = {}
 	}
 	dataByMonths[month][day] = {
 			value: value,
-			hours: hours
+			hours: hours,
+			hoursOut: hoursOut
 	};
 	
 }
@@ -158,12 +162,13 @@ function sortDates(a, b) {
 	var day = {{store.day.strftime('%d')}};
 	var count = {{ store.count }};
 	var hour = {{ store.hours }};
+	var hoursOut = {{ store.hoursOut }};
 	
-	addDataToMonth(month, day, count, hour);
+	addDataToMonth(month, day, count, hour, hoursOut);
 
 {% endfor %}
 
-//We load values from luggage-by-hour
+// We load values from luggage-by-hour [Deprecated]
 {% for store in info.stores_by_hour.values() %}
 
   var hour = {{store.hour}};
@@ -234,23 +239,33 @@ function createChartByHour(month, day) {
   var ctx = document.getElementById("myHourlyChart");
 
   var dataByHours = {}
+  var dataByHoursOut = {}
   
   var dataMonth = sortObject(dataByMonths[month]);
   var hoursArray = dataMonth[day].hours;
+  var hoursOutArray = dataMonth[day].hoursOut;
   
   for (var i = 0; i<24; i++) {
-     if ( !dataByHours[i] ) {
-       dataByHours[i] = 0;
-     }
-   }
+    if ( !dataByHours[i] ) {
+      dataByHours[i] = 0;
+      dataByHoursOut[i] = 0;
+    }
+  }
+  // Set values as an array (time-in)
   for (var i in hoursArray) {
 	  var key = hoursArray[i];
     dataByHours[key] += 1;
   }
+  //Set values as an array (time-out)
+  for (var i in hoursOutArray) {
+    var key = hoursOutArray[i];
+    dataByHoursOut[key] += 1;
+  }
   
-  var title = '# Logs by hour ' + day + " " + month;
-  var color = 'rgba(255, 215, 0, 0.2)';
-  var borderColor = 'rgba(255, 215, 0, 1)';
+  var titles = [
+    '# Logs by hour ' + day + " " + month,
+    '# Logs out by hour ' + day + " " + month,
+  ]
   
   xAxis = Object.keys(dataByHours);
   for (var i in xAxis) {
@@ -267,14 +282,14 @@ function createChartByHour(month, day) {
 	  }
 	  xAxis[i] = value + prefix;
      
-   }
-  createChart(ctx, xAxis, Object.values(dataByHours), title, color, borderColor);
+  }
+  
+  var yData = [ Object.values(dataByHours), Object.values(dataByHoursOut) ];
+  createChart(ctx, xAxis, yData, titles);
   
 }
 
 function createChartMultiple(labels, data, titles, maxVal) {
-	var colors = ['rgba(255, 99, 132, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(51, 204, 51, 0.2)', 'rgba(153, 153, 102, 0.2)', 'rgba(153, 51, 102, 0.2)', 'rgba(102, 102, 153, 0.2)',]
-	var borderColors = ['rgba(255, 99, 132, 1)', 'rgba(153, 102, 255, 1)', 'rgba(51, 204, 51, 1)', 'rgba(153, 153, 102, 1)', 'rgba(153, 51, 102, 1)', 'rgba(102, 102, 153, 1)',]
 	var dataset = [];
 	
 	for (var i in data) {
@@ -313,15 +328,23 @@ function createChartMultiple(labels, data, titles, maxVal) {
  });
 }
 
-function createChart(ctx, labels, data, title, color, borderColor, maxVal) {
-  var chartData = {
-      label: title,
-      data: data,
-      backgroundColor: color,
-      borderColor: borderColor,
-      borderWidth: 1
-  }
-  var d = [chartData];
+function createChart(ctx, labels, data, titles) {
+	var d = [];
+	var color = ['rgba(255, 215, 0, 0.2)', 'rgba(0, 215, 255, 0.2)'];
+  var borderColor =['rgba(255, 215, 0, 1)', 'rgba(0, 215, 255, 1)'];
+	  
+	for (var i in data) {
+		var key = parseInt(i);
+	  var chartData = {
+	      label: titles[i],
+	      data: data[i],
+	      backgroundColor: color[key],
+	      borderColor: borderColor[key],
+	      borderWidth: 1
+	  }
+	  d.push(chartData);
+		
+	}
   
   var myChart = new Chart(ctx, {
       type: 'bar',
@@ -335,7 +358,6 @@ function createChart(ctx, labels, data, title, color, borderColor, maxVal) {
             yAxes: [{
                   ticks: {
                     beginAtZero: true,
-                    max: maxVal,
                     callback: function(value) {if (value % 1 === 0) {return value;}}
                   }
               }]
