@@ -11,7 +11,6 @@
 <script src="https://cdn.datatables.net/plug-ins/1.10.13/sorting/time.js" type="text/javascript"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
 <script src="{{ url_for('static', filename='js/dashboard-information.js') }}"></script>
-
 {% endblock %}
 
 {% block navbar %}
@@ -29,6 +28,10 @@
    <h4>Luggage by day:</h4>
    <div class="">
 	   
+	     <div id="annualButtonsContainer">
+         <ul class="pagination">
+         </ul>
+       </div>
 	     <div id="monthButtonsContainer">
 	       <ul class="pagination">
 		     </ul>
@@ -111,9 +114,12 @@
 
 var ctx = document.getElementById("myChart");
 
-var dataByMonths = {}
+var dataByMonths = {};
 
-var dataByHoursGeneral = {}
+var dataByHoursGeneral = {};
+
+var monthsSelected = {};
+var monthlyChart = null;
 
 function addDataToMonth(month, day, value, hours) {
 	if (!dataByMonths[month]) {
@@ -167,93 +173,169 @@ function sortDates(a, b) {
 
 {% endfor %}
 
-function createMonthlyChart(month) {
-	// remove any previous chart
-	$("#monthlyChartContainer").html("");
-	$("#monthlyChartContainer").append('<canvas id="myChart" width="400" height="150"></canvas>');
-	var ctx = document.getElementById("myChart");
-
-	var dataMonth = sortObject(dataByMonths[month]);
-	
-	var color = 'rgba(255, 99, 132, 0.2)';
-	var borderColor = 'rgba(255, 99, 132, 1)';
-	var values = [];
-	var data = Object.values(dataMonth)
-	for (var i in data) {
-		values.push(data[i].value)
+function createMonthlyChart() {
+	var mSelected = Object.keys(monthsSelected);
+	var days = []
+	for (var i = 1; i<= 31; i++) {
+		days.push(i);
 	}
-	createDailyButtons(dataMonth);
 	
-	createChart(ctx, Object.keys(dataMonth), values, '# Logs by day ' + month, color, borderColor, 350);
+	var values = [];
+	var titles = [];
+	var daysInMonth = {
+		'Jan': 31, 'Feb': 28, 'Mar': 31, 'Apr': 30, 'May': 31,'Jun': 30, 
+		'Jul': 31, 'Aug': 31, 'Sep': 30, 'Oct': 31, 'Nov': 30, 'Dec': 31
+	};
+	var minDaysToShow = 28;
+	for (var m in mSelected) {
+		var key = mSelected[m];
+		var val = [];
+		
+		if (monthsSelected[key]) {
+			var month = mSelected[m];
+			
+			var dataMonth = sortObject(dataByMonths[month]);
+			
+			for (var i in days) {
+				var d = days[i]
+		    if (dataMonth[d]) {
+		      val.push(dataMonth[d].value);
+		    } else {
+		      val.push(0);
+		    }
+		  }
+			values.push(val);
+			titles.push('# Logs by day ' + month);
+			var shortMonth = month.slice(0, 3);
+			if (daysInMonth[shortMonth] > minDaysToShow) {
+				minDaysToShow = daysInMonth[shortMonth];
+			}
+		}
+		
+	}
+	// Remove extra days
+	var extraDays = 31 - minDaysToShow;
+	for (var i = 0; i<extraDays; i++) {
+		days.pop();
+	}
+	
+	if (dataMonth) {
+		createDailyButtons(dataMonth);	
+	}
+	
+	createChartMultiple(days, values, titles, 350);
 	
 }
 
 function createChartByHour(month, day) {
-	  // remove any previous chart
-	  $("#hourlyChartContainer").html("");
-	  $("#hourlyChartContainer").append('<canvas id="myHourlyChart" width="400" height="150"></canvas>');
-	  var ctx = document.getElementById("myHourlyChart");
+  // remove any previous chart
+  $("#hourlyChartContainer").html("");
+  $("#hourlyChartContainer").append('<canvas id="myHourlyChart" width="400" height="150"></canvas>');
+  var ctx = document.getElementById("myHourlyChart");
 
-	  var dataByHours = {}
+  var dataByHours = {}
+  
+  var dataMonth = sortObject(dataByMonths[month]);
+  var hoursArray = dataMonth[day].hours;
+  
+  for (var i = 0; i<24; i++) {
+     if ( !dataByHours[i] ) {
+       dataByHours[i] = 0;
+     }
+   }
+  for (var i in hoursArray) {
+	  var key = hoursArray[i];
+    dataByHours[key] += 1;
+  }
+  
+  var title = '# Logs by hour ' + day + " " + month;
+  var color = 'rgba(255, 215, 0, 0.2)';
+  var borderColor = 'rgba(255, 215, 0, 1)';
+  
+  xAxis = Object.keys(dataByHours);
+  for (var i in xAxis) {
 	  
-	  var dataMonth = sortObject(dataByMonths[month]);
-	  var hoursArray = dataMonth[day].hours;
-	  
-	  for (var i = 0; i<24; i++) {
-      if ( !dataByHours[i] ) {
-        dataByHours[i] = 0;
-      }
-    }
-	  for (var i in hoursArray) {
-		  var key = hoursArray[i];
-	    dataByHours[key] += 1;
+	  var prefix = " p.m.";
+	  var value = parseInt(xAxis[i]);
+	  if (value < 12) {
+		  var prefix = " a.m.";
+	  } else {
+		  value = value - 12;
 	  }
-	  
-	  var title = '# Logs by hour ' + day + " " + month;
-	  var color = 'rgba(255, 215, 0, 0.2)';
-	  var borderColor = 'rgba(255, 215, 0, 1)';
-	  
-	  xAxis = Object.keys(dataByHours);
-	  for (var i in xAxis) {
-		  
-		  var prefix = " p.m.";
-		  var value = parseInt(xAxis[i]);
-		  if (value < 12) {
-			  var prefix = " a.m.";
-		  } else {
-			  value = value - 12;
-		  }
-		  if (value == 0) {
-			  value = 12;
-		  }
-		  xAxis[i] = value + prefix;
-      
-    }
-	  createChart(ctx, xAxis, Object.values(dataByHours), title, color, borderColor);
-	  
+	  if (value == 0) {
+		  value = 12;
+	  }
+	  xAxis[i] = value + prefix;
+     
+   }
+  createChart(ctx, xAxis, Object.values(dataByHours), title, color, borderColor);
+  
+}
+
+function createChartMultiple(labels, data, titles, maxVal) {
+	var colors = ['rgba(255, 99, 132, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(51, 204, 51, 0.2)', 'rgba(153, 153, 102, 0.2)', 'rgba(153, 51, 102, 0.2)', 'rgba(102, 102, 153, 0.2)',]
+	var borderColors = ['rgba(255, 99, 132, 1)', 'rgba(153, 102, 255, 1)', 'rgba(51, 204, 51, 1)', 'rgba(153, 153, 102, 1)', 'rgba(153, 51, 102, 1)', 'rgba(102, 102, 153, 1)',]
+	var dataset = [];
+	
+	for (var i in data) {
+		var chartData = {
+      label: titles[i],
+      data: data[i],
+      backgroundColor: colors[i%6],
+      borderColor: borderColors[i%6],
+      borderWidth: 1
+	  }
+		dataset.push(chartData);
 	}
+	
+  // remove any previous chart
+  $("#monthlyChartContainer").html("");
+  $("#monthlyChartContainer").append('<canvas id="myChart" width="400" height="150"></canvas>');
+  var ctx = document.getElementById("myChart");
+  monthlyChart = new Chart(ctx, {
+     type: 'bar',
+
+     data: {
+         labels: labels,
+         datasets: dataset
+     },
+     options: {
+         scales: {
+       	  yAxes: [{
+                 ticks: {
+	               	 beginAtZero: true,
+	               	 max: maxVal,
+                   callback: function(value) {if (value % 1 === 0) {return value;}}
+                 }
+             }]
+         }
+     }
+ });
+}
 
 function createChart(ctx, labels, data, title, color, borderColor, maxVal) {
-	
+  var chartData = {
+      label: title,
+      data: data,
+      backgroundColor: color,
+      borderColor: borderColor,
+      borderWidth: 1
+  }
+  var d = [chartData];
+  
   var myChart = new Chart(ctx, {
       type: 'bar',
 
       data: {
           labels: labels,
-          datasets: [{
-              label: title,
-              data: data,
-              backgroundColor: color,
-              borderColor: borderColor,
-              borderWidth: 1
-          }]
+          datasets: d
       },
       options: {
           scales: {
-        	  yAxes: [{
+            yAxes: [{
                   ticks: {
-                	  beginAtZero: true,
-                	  max: maxVal,
+                    beginAtZero: true,
+                    max: maxVal,
                     callback: function(value) {if (value % 1 === 0) {return value;}}
                   }
               }]
@@ -263,27 +345,88 @@ function createChart(ctx, labels, data, title, color, borderColor, maxVal) {
   
 }
 
+function selectMonthsForYear(yearSelected) {
+	$("#monthButtonsContainer ul li a").each(function(i, el) {
+     var year = $(el).attr("data-year");
+     if (year == yearSelected) {
+       $(el).show();
+     } else {
+       $(el).hide();
+     }
+     
+  })
+}
+
+function onSelectYear(event) {
+	
+  var year = $(event.target).html();
+  $("#monthButtonsContainer li.active").removeClass("active");
+  monthsSelected = {};
+  selectMonthsForYear(year);
+  
+  $("#annualButtonsContainer li").removeClass("active");
+  $(event.target).parent("li").addClass("active");
+  
+  var monthButtons = $("#monthButtonsContainer .showChartMonthly[data-year=" + year + "]");
+  
+  if (monthButtons.length) {
+	  // trigger onSelectMonth
+    $(monthButtons[monthButtons.length-1]).trigger("click");
+    
+  }
+
+}
+
+function onSelectMonth(event) {
+  
+  $(event.target).parent("li").toggleClass("active");
+  if ($("#monthButtonsContainer li.active").length == 0) {
+    $(event.target).parent("li").toggleClass("active");
+  }
+  
+  var month = $(event.target).attr("data-value");
+  var isActive = $(event.target).parent("li").hasClass("active");
+  if (isActive) {
+    monthsSelected[month] = 1;
+  } else {
+    monthsSelected[month] = 0;
+  }
+  
+  createMonthlyChart();
+}
 
 function createMonthButtons() {
 	var currentMonths = Object.keys(dataByMonths);
 	
 	currentMonths.sort(sortDates);
 	
+	var lastY = 0;
 	for (var i in currentMonths) {
-		$("#monthButtonsContainer ul").append('<li><a class="showChartMonthly">' + currentMonths[i] + '</a></li>');
-
+		var m = currentMonths[i].slice(0, 3);
+		var y = currentMonths[i].slice(4);
+		
+		var _html = '<li><a class="showChartMonthly" data-value="' + currentMonths[i] + '" data-year="' + y + '">' +  m + '</a></li>'
+		$("#monthButtonsContainer ul").append(_html);
+		if (y != lastY) {
+			$("#annualButtonsContainer ul").append('<li><a class="showYear">' +  y + '</a></li>');
+			lastY = y;
+		}
 	}
-	$(".showChartMonthly").on("click", function(event) {
-		$("#monthButtonsContainer li").removeClass("active");
-		$(event.target).parent("li").addClass("active");
-		var month = $(event.target).html();
-		createMonthlyChart(month);
-	});
+	
+	$("#annualButtonsContainer ul .showYear").on("click", onSelectYear);
+	if (lastY) {
+		selectMonthsForYear(lastY);
+		$("#annualButtonsContainer li:last-child").addClass("active");
+	}
+	
+	$("#monthButtonsContainer .showChartMonthly").on("click", onSelectMonth);
 	
 	if (currentMonths.length > 0) {
 		$("#monthButtonsContainer li:last-child").addClass("active");
+		
 		var lastMonth = currentMonths[currentMonths.length - 1];
-		createMonthlyChart(lastMonth);
+		monthsSelected[lastMonth] = 1;
+		createMonthlyChart();
 	}
 	
 }
@@ -297,14 +440,14 @@ function createDailyButtons(data) {
   $(".showChartHourly").on("click", function(event) {
     $("#dailyButtonsContainer li").removeClass("active");
     $(event.target).parent("li").addClass("active");
-    var month = $("#monthButtonsContainer .active a").html();
+    var month = $("#monthButtonsContainer .active a").attr("data-value");
     var day = $(event.target).html();
     createChartByHour(month, day);
   });
   
   if (Object.values(data).length > 0) {
     $("#dailyButtonsContainer li:last-child").addClass("active");
-    var month = $("#monthButtonsContainer .active a").html();
+    var month = $("#monthButtonsContainer .active a").attr("data-value");
     var lastDay = null;
     var days = Object.keys(data);
     for (var i in days) {
