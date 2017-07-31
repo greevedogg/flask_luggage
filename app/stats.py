@@ -62,7 +62,7 @@ def count_stores(stores):
         archiveTimeOut = el.get_proper_time_out()
         times = {
             'in': archiveTimeIn.time().hour,
-            'out': archiveTimeOut.time().hour if archiveTimeOut else ""
+            'out': archiveTimeOut.time().hour if archiveTimeOut else None
         }
         
         if luggagesByDay.has_key(archiveTimeIn.date()):
@@ -78,7 +78,8 @@ def count_stores(stores):
         hoursOut = []
         for el in value:
             hours.append(el['in'])
-            hoursOut.append(el['out']) 
+            if el['out']:
+                hoursOut.append(el['out']) 
         stores[key] = {'day': key, 'count': len(value), 'hours': hours, 'hoursOut': hoursOut }
         print stores[key]
     
