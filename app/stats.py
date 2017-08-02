@@ -81,7 +81,6 @@ def count_stores(stores):
             if el['out']:
                 hoursOut.append(el['out']) 
         stores[key] = {'day': key, 'count': len(value), 'hours': hours, 'hoursOut': hoursOut }
-        print stores[key]
     
     count_store = int(round( sum(lenStores) / (len(lenStores) * 1.0) ) ) if (len(lenStores)) else 0
     return {
