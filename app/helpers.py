@@ -54,7 +54,10 @@ def get_average_time_for_timedeltas(timedeltas):
     if (len(timedeltas)):
         avg = sum(timedeltas, timedelta(0)) / len(timedeltas)
         avg = avg - timedelta(microseconds=avg.microseconds)
-        return strfdelta(avg, "{days} days, {hours} hours, {minutes} minutes")
+        if avg.days:
+            return strfdelta(avg, "{days} days, {hours} hours, {minutes} minutes")
+        else:
+            return strfdelta(avg, "{hours} hours, {minutes} minutes")
     else:
         return 0
     
