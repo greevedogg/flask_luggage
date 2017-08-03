@@ -21,7 +21,6 @@ from app.config import UPLOAD_FOLDER
 from flask import send_from_directory
 from app.stats import get_first_and_last_stores, get_luggage_time, count_stores,\
     count_stores_by_hour
-from collections import OrderedDict
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
 
@@ -40,7 +39,7 @@ def create_luggage():
     locations_availability = None  # TODO: find out cleaner way to augment plan with bin location finder
     
     if request.method == 'POST':
-        if form.validate() == False:
+        if form.validate() == False and current_user and current_user.hotel_id:
             flash('All fields are required.')
             return render_template('display_luggage.html', items=items, form=form, locations_availability=locations_availability)
         else:
