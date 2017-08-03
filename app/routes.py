@@ -189,7 +189,11 @@ def login_admin():
     registered_user = User.query.filter_by(username=username,password=password).first()
     login_user(registered_user)
     flash('Logged in successfully')
-    return redirect(url_for('luggage.show_dashboard'))
+    hotels = Hotel.query.all()
+    params = ""
+    if (len(hotels)):
+        params = "?hotel=%s" % hotels[0].id
+    return redirect(url_for('luggage.show_dashboard') + params)
 
 
 
