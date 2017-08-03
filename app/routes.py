@@ -179,7 +179,7 @@ def login():
 
 
 
-@luggage.route('/admin', methods=['GET', 'POST'])
+@luggage.route('/admin/', methods=['GET', 'POST'])
 def login_admin():
     form = LoginForm(request.form, (request.args.get('hotel'), True))
     if request.method == 'GET' or form.validate() == False:
@@ -193,7 +193,7 @@ def login_admin():
 
 
 
-@luggage.route("/admin/dashboard")
+@luggage.route("/admin/dashboard/")
 @login_required
 # TODO: add admin permission check decorator
 def show_dashboard():
