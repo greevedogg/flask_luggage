@@ -181,13 +181,16 @@ def login():
 @luggage.route('/admin/', methods=['GET', 'POST'])
 def login_admin():
     form = LoginForm(request.form, (request.args.get('hotel'), True))
-    if request.method == 'GET' or form.validate() == False:
-        return render_template('login_admin.html', form=form)
-    username = form.username.data
-    password = form.password.data
-    registered_user = User.query.filter_by(username=username,password=password).first()
-    login_user(registered_user)
-    flash('Logged in successfully')
+    if current_user and hasattr(current_user, 'is_admin') and current_user.is_admin:
+        pass
+    else:
+        if request.method == 'GET' or form.validate() == False:
+            return render_template('login_admin.html', form=form)
+        username = form.username.data
+        password = form.password.data
+        registered_user = User.query.filter_by(username=username,password=password).first()
+        login_user(registered_user)
+        flash('Logged in successfully')
     hotels = Hotel.query.all()
     params = ""
     if (len(hotels)):
