@@ -35,6 +35,7 @@
         <th>Logged By</th>
         <th>Closed By</th>
         <th>Time Stored</th>
+        <th>Time Closed</th>
         <th>Comments</th>
       </tr>
     </thead>
@@ -47,8 +48,14 @@
         <td>{{data.bagCount}}</td>
         <td>{{data.loggedInBy}}</td>
         <td>{{data.loggedOutBy if data.loggedOutBy}}</td>
-        <td class={{data.get_proper_time_in().strftime('%Y-%m-%d-%H:%M:%S') }}>
+        <td class="{{data.get_proper_time_in().strftime('%Y-%m-%d-%H:%M:%S')}}">
           {{data.get_proper_time_in().strftime("%I:%M %p") }}
+        </td>
+        <td 
+          {% if data.get_proper_time_out() %} class="{{data.get_proper_time_out().strftime('%Y-%m-%d-%H:%M:%S')}}" {% endif %}>
+          {% if data.get_proper_time_out() %}
+            {{data.get_proper_time_out().strftime("%I:%M %p") }}
+          {% endif %}
         </td>
         <td>{{data.comments if data.comments}}</td>
       </tr>
