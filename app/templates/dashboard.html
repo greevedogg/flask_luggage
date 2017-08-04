@@ -116,8 +116,6 @@ var ctx = document.getElementById("myChart");
 
 var dataByMonths = {};
 
-var dataByHoursGeneral = {};
-
 var monthsSelected = {};
 var monthlyChart = null;
 
@@ -165,16 +163,6 @@ function sortDates(a, b) {
 	var hoursOut = {{ store.hoursOut }};
 	
 	addDataToMonth(month, day, count, hour, hoursOut);
-
-{% endfor %}
-
-// We load values from luggage-by-hour [Deprecated]
-{% for store in info.stores_by_hour.values() %}
-
-  var hour = {{store.hour}};
-  var count = {{ store.count }};
-  
-  dataByHoursGeneral[hour] = count;
 
 {% endfor %}
 

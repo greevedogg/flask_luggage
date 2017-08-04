@@ -19,8 +19,7 @@ from app.forms import HotelForm
 from werkzeug.utils import secure_filename
 from app.config import UPLOAD_FOLDER
 from flask import send_from_directory
-from app.stats import get_first_and_last_stores, get_luggage_time, count_stores,\
-    count_stores_by_hour
+from app.stats import get_first_and_last_stores, get_luggage_time, count_stores
 
 luggage = Blueprint('luggage', __name__, template_folder='templates')
 
@@ -232,10 +231,6 @@ def show_dashboard():
         storesByDay[_key]['count'] = el['count']
         storesByDay[_key]['hours'] = el['hours']
         storesByDay[_key]['hoursOut'] = el['hoursOut']
-    
-    ### Get amount of stores/logs per hour
-    stores_per_hour = count_stores_by_hour(current_archives)
-    extra_info['stores_by_hour'] = stores_per_hour['stores']
     
     hotels = Hotel.query.all()
     return render_template("dashboard.html", info=extra_info, hotels=hotels, hotel_id=hotel_id)

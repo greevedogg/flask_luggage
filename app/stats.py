@@ -88,24 +88,4 @@ def count_stores(stores):
             'stores': stores
     }
 
-def count_stores_by_hour(stores):
-    luggagesByDay = {}
-    for el in stores:
-        archiveTimeIn = el.get_proper_time_in()
-        if luggagesByDay.has_key(archiveTimeIn.strftime("%H")):
-            luggagesByDay[archiveTimeIn.strftime("%H")] += 1
-        else:
-            luggagesByDay[archiveTimeIn.strftime("%H")] = 1
-    stores = {}
-    lenStores = []
-    
-    for key, value in luggagesByDay.iteritems():
-        lenStores.append(value)
-        stores[key] = {'hour': key, 'count': value }
-    
-    count_store = int(round( sum(lenStores) / (len(lenStores) * 1.0) ) ) if (len(lenStores)) else 0
-    return {
-            'count_store': count_store,
-            'stores': stores
-    }
 
