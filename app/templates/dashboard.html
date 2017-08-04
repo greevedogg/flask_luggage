@@ -226,7 +226,7 @@ function createMonthlyChart() {
 	}
 	
 	if (dataMonth && lastMonth) {
-		createDailyButtons(dataMonth, lastMonth);	
+		createDailyButtons(dataMonth, lastMonth, days);	
 	}
 	
 	createChartMultiple(days, values, titles, 350);
@@ -243,8 +243,8 @@ function createChartByHour(month, day) {
   var dataByHoursOut = {}
   
   var dataMonth = sortObject(dataByMonths[month]);
-  var hoursArray = dataMonth[day].hours;
-  var hoursOutArray = dataMonth[day].hoursOut;
+  var hoursArray = dataMonth[day] ? dataMonth[day].hours : [];
+  var hoursOutArray = dataMonth[day] ? dataMonth[day].hoursOut: [];
   
   for (var i = 0; i<24; i++) {
     if ( !dataByHours[i] ) {
@@ -454,10 +454,10 @@ function createMonthButtons() {
 	
 }
 
-function createDailyButtons(data, lastMonth) {
+function createDailyButtons(data, lastMonth, days) {
 	$("#dailyButtonsContainer ul").html("");
-  for (var i in data) {
-	  $("#dailyButtonsContainer ul").append('<li><a class="showChartHourly">' + i + '</a></li>');
+  for (var i in days) {
+	  $("#dailyButtonsContainer ul").append('<li><a class="showChartHourly">' + days[i] + '</a></li>');
   }
   
   $(".showChartHourly").on("click", function(event) {
@@ -472,7 +472,6 @@ function createDailyButtons(data, lastMonth) {
     $("#dailyButtonsContainer li:last-child").addClass("active");
     var month = lastMonth;
     var lastDay = null;
-    var days = Object.keys(data);
     for (var i in days) {
     	lastDay = days[i];
     }
