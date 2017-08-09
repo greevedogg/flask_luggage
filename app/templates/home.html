@@ -12,7 +12,7 @@
 			  <h4 class="text-center">{{ hotel.name }}</h4>
 			  <p>
 			    {% if hotel.image %}
-			    <img alt="" src="{{ url_for('luggage.serve_image', filename=hotel.image) }}" width="150" height="150" />
+			    <img alt="" src="{{ url_for('luggage.serve_image', filename=hotel.image) }}" />
 			    {% endif %}
 			  </p>
 			</a>

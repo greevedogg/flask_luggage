@@ -2,36 +2,46 @@
 <nav class="navbar navbar-inverse navbar-fixed-top center">
     <div class="container">
         <div class="navbar-header">
-            
-            
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <!-- 
               <li {% if not hotel_id %}class="active"{% endif %}>
-                <a class="navbar-brand" href="{{ url_for('luggage.show_dashboard') }}">
+                <a class="" href="{{ url_for('luggage.show_dashboard') }}">
 		              <span class="glyphicon glyphicon-stats"></span> General
 		            </a>
               </li>
                -->
 	            {% for hotel in hotels %}
 	            <li {% if hotel_id==hotel.id|tojson %}class="active"{% endif %}>
-	              <a class="navbar-brand active" href="{{ url_for('luggage.show_dashboard') }}?hotel={{hotel.id}}">
+	              <a class="" href="{{ url_for('luggage.show_dashboard') }}?hotel={{hotel.id}}">
 	                <span class="glyphicon glyphicon-stats"></span> {{hotel.name}}
 	              </a>
 	            </li>
 	            {% endfor %}
 		        </ul>
-            
-        </div>
-        {% block extra_navbar %}{% endblock %}
-        <div class="navbar-header navbar-right">
-            <a class="navbar-brand" href="#" id="UserDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="glyphicon glyphicon-cog"></span>{{ current_user.username }}
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="UserDropdownMenu">
-              <li><a href="{{ url_for('luggage.logout') }}">Logout</a></li>
-            </ul>
-          
-        </div>
+		        
+		        {% block extra_navbar %}{% endblock %}
+		        
+		        <ul class="nav navbar-nav navbar-right">
+		          <li>
+		          <a class="navbar-brand" href="#" id="UserDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	              <span class="glyphicon glyphicon-cog"></span> {{ current_user.username }}
+	            </a>
+	            <ul class="dropdown-menu" aria-labelledby="UserDropdownMenu">
+	              <li><a href="{{ url_for('luggage.logout') }}">Logout</a></li>
+	            </ul>
+		          </li>
+		        </ul>
+        </div>    
+        
     </div>
     <!-- /.container -->
 </nav>

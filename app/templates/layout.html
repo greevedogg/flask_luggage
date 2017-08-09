@@ -93,6 +93,7 @@
     type: 'text' 
   });
   $(document).ready(function() {
+	  if ($("tbody tr").length) {
       $('#open-tickets').tablesorter( {sortList: [[5,1]], headers: { 
           2: { sorter: 'location' },
           5: { sorter: 'datetimeSorter' },
@@ -105,6 +106,7 @@
           2: { sorter: 'location' },
           6: { sorter: 'datetimeSorter' }
       } });
+	  }
   });
 
   $(function() {

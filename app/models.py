@@ -126,7 +126,7 @@ class Archive(db.Model):
         pass
     
     def __get_proper_time(self, time):
-        if self.hotel and self.hotel.timezone:
+        if time and self.hotel and self.hotel.timezone:
             tz = pytz.timezone(self.hotel.timezone) # timezone you want to convert to from UTC
             utc = pytz.timezone('UTC')
             value = utc.localize(time, is_dst=None).astimezone(pytz.utc)

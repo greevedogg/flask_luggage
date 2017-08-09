@@ -19,7 +19,7 @@
   <div class="container-fluid">
         <h2>Lots A Luggage</h2>
     <div class="row">
-    <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-2">
+    <div class="col-sm-6 col-sm-offset-3">
   {% for message in form.name.errors %}
     <div class="alert alert-danger">{{ message }}</div>
   {% endfor %}
@@ -70,14 +70,14 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-6 col-xs-offset-0">
+    <div class="col-sm-12">
       <h3>Luggage Log</h3>
     </div>
     <div class="col-sm-6" id="search_bar">
     </div>
   </div>
-  <div class="row">
-    <table id="open-tickets" class="table table-bordered table-hover table-striped table-responsive tablesorter">
+  <div class="table-responsive">
+    <table id="open-tickets" class="table table-bordered table-hover table-striped tablesorter">
       <thead>
         <tr>
           <th>Last Name</th>

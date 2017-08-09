@@ -15,7 +15,7 @@
 <div class="container-fluid">
   <h2>Luggage Storage</h2>
   <div class="row">
-    <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-2">
+    <div class="col-sm-6 col-sm-offset-3">
       {% for field, errors in form.errors.iteritems() %}
           {% for error in errors %}
               <div class="alert alert-danger"><strong>{{ form[field].label.text }}:</strong> {{ error }}</div>

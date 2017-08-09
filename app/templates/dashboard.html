@@ -13,6 +13,7 @@
 <script src="{{ url_for('static', filename='js/dashboard-information.js') }}"></script>
 {% endblock %}
 
+
 {% block navbar %}
   {% include 'partials/global/admin_navbar.html' %}
 {% endblock %}
@@ -21,8 +22,8 @@
 {% block container %}
 
 
-<div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+<div class="row dashboard-page">
+  <div class="col-sm-10 col-sm-offset-1">
    <h2>Dashboard</h2>
    
    <h4>Luggage by day:</h4>
@@ -37,7 +38,7 @@
 		     </ul>
 	     </div>
 	     <div id="monthlyChartContainer">
-		    <canvas id="myChart" width="400" height="150"></canvas>
+		    <canvas id="myChart" height="150"></canvas>
 		   </div>
 		 
 	 </div>
@@ -50,36 +51,39 @@
          </ul>
        </div>
        <div id="hourlyChartContainer">
-        <canvas id="myHourlyChart" width="400" height="150"></canvas>
+        <canvas id="myHourlyChart" height="150"></canvas>
        </div>
      
    </div>
 	
    <h4><b>Summary:</b></h4>
    
-   <table class="table table-bordered table-hover table-striped table-responsive tablesorter">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>First Store</th>
-          <th>Last Store</th>
-          <th>Average Luggage Time</th>
-          <th>Logs per day</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Average</td>
-          <td>{{ info.first_store }}</td>
-          <td>{{ info.last_store }}</td>
-          <td>{{ info.luggage_time }}</td>
-          <td>{{ info.count_store }}</td>
-        </tr>
-      </tbody>
-   </table>
+   <div class="table-responsive">
+	   <table class="table table-bordered table-hover table-striped tablesorter">
+	      <thead>
+	        <tr>
+	          <th>Date</th>
+	          <th>First Store</th>
+	          <th>Last Store</th>
+	          <th>Average Luggage Time</th>
+	          <th>Logs per day</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        <tr>
+	          <td>Average</td>
+	          <td>{{ info.first_store }}</td>
+	          <td>{{ info.last_store }}</td>
+	          <td>{{ info.luggage_time }}</td>
+	          <td>{{ info.count_store }}</td>
+	        </tr>
+	      </tbody>
+	   </table>
+   </div>
+   
    <h4>Extra information:</h4>
-    
-    <table id="extrainfo-table" class="table table-bordered table-hover table-striped table-responsive tablesorter">
+   <div class="table-responsive">
+    <table id="extrainfo-table" class="table table-bordered table-hover table-striped tablesorter">
       <thead>
         <tr>
           <th>Date</th>
@@ -102,7 +106,7 @@
       </tbody>
     </table>
     
-    
+   </div>
   </div>
 </div>
 
@@ -199,7 +203,8 @@ function createMonthlyChart() {
 		    }
 		  }
 			values.push(val);
-			titles.push('# Logs by day ' + month);
+			var pretitle = window.innerWidth > 768 ? '# Logs by day ' : '# '
+			titles.push(pretitle + month);
 			var shortMonth = month.slice(0, 3);
 			if (daysInMonth[shortMonth] > minDaysToShow) {
 				minDaysToShow = daysInMonth[shortMonth];
@@ -224,7 +229,7 @@ function createMonthlyChart() {
 function createChartByHour(month, day) {
   // remove any previous chart
   $("#hourlyChartContainer").html("");
-  $("#hourlyChartContainer").append('<canvas id="myHourlyChart" width="400" height="150"></canvas>');
+  $("#hourlyChartContainer").append('<canvas id="myHourlyChart" height="150"></canvas>');
   var ctx = document.getElementById("myHourlyChart");
 
   var dataByHours = {}
@@ -294,7 +299,7 @@ function createChartMultiple(labels, data, titles, maxVal) {
 	
   // remove any previous chart
   $("#monthlyChartContainer").html("");
-  $("#monthlyChartContainer").append('<canvas id="myChart" width="400" height="150"></canvas>');
+  $("#monthlyChartContainer").append('<canvas id="myChart" height="150"></canvas>');
   var ctx = document.getElementById("myChart");
   monthlyChart = new Chart(ctx, {
      type: 'bar',
@@ -312,6 +317,11 @@ function createChartMultiple(labels, data, titles, maxVal) {
                    callback: function(value) {if (value % 1 === 0) {return value;}}
                  }
              }]
+         },
+         legend: {
+             labels: {
+            	 fontSize: window.innerWidth > 768 ? 12 : 9
+             }
          }
      }
  });
@@ -350,6 +360,11 @@ function createChart(ctx, labels, data, titles) {
                     callback: function(value) {if (value % 1 === 0) {return value;}}
                   }
               }]
+          },
+          legend: {
+              labels: {
+                fontSize: window.innerWidth > 768 ? 12 : 8
+              }
           }
       }
   });
