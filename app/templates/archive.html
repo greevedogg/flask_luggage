@@ -11,16 +11,16 @@
 {% block container %}
 
 
-<div class="row">
+<div class="row archive-pagination">
   <nav aria-label="Page navigation" class="text-center">
     <ul class="pagination">
-    
+      
       {% for day in printableDays %}
-        <li {% if archiveDate == day %} class="active" {% endif %}>
+        <li 
+           class="{% if archiveDate == day %}active{% endif %}{% if loop.last %}pagination-next{% endif %}" >
           <a href="/archive/{{ day.strftime('%Y%m%d') }}">{{ day.strftime('%b %d') }}</a>
        	</li>
       {% endfor %}
-      
     </ul>
   </nav>
 </div>

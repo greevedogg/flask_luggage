@@ -536,4 +536,9 @@ div#search_bar{
     line-height: 22px;
     font-size: 12px;
   }
+  .archive-pagination .pagination > li > a, .archive-pagination .pagination > li > span {
+    padding: 6px 6px;
+    line-height: 22px;
+    font-size: 10px;
+  }
 }
