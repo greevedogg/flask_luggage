@@ -123,8 +123,10 @@ var dataByMonths = {};
 var monthsSelected = {};
 var monthlyChart = null;
 
-var colors = ['rgba(255, 99, 132, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(51, 204, 51, 0.2)', 'rgba(153, 153, 102, 0.2)', 'rgba(153, 51, 102, 0.2)', 'rgba(102, 102, 153, 0.2)',]
-var borderColors = ['rgba(255, 99, 132, 1)', 'rgba(153, 102, 255, 1)', 'rgba(51, 204, 51, 1)', 'rgba(153, 153, 102, 1)', 'rgba(153, 51, 102, 1)', 'rgba(102, 102, 153, 1)',]
+var colors = ['rgba(255, 43, 43, 0.4)', 'rgba(159, 43, 255, 0.4)', 'rgba(255, 209, 43, 0.4)', 'rgba(43, 64, 255, 0.4)', 'rgba(57, 255, 43, 0.4)', 'rgba(255, 43, 117, 0.4)',
+              'rgba(255, 128, 0, 0.4)', 'rgba(153, 0, 76, 0.4)', 'rgba(153, 255, 255, 0.4)', 'rgba(153, 76, 0, 0.4)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 102, 0, 0.4)',]
+var borderColors = ['rgba(255, 43, 43, 1)', 'rgba(159, 43, 255, 1)', 'rgba(255, 209, 43, 1)', 'rgba(43, 64, 255, 1)', 'rgba(57, 255, 43, 1)', 'rgba(255, 43, 117, 1)',
+                    'rgba(255, 128, 0, 1)', 'rgba(153, 0, 76, 1)', 'rgba(153, 255, 255, 1)', 'rgba(153, 76, 0, 1)', 'rgba(0, 0, 0, 1)', 'rgba(0, 102, 0, 1)',]
 
 function addDataToMonth(month, day, value, hours, hoursOut) {
 	if (!dataByMonths[month]) {
@@ -290,8 +292,8 @@ function createChartMultiple(labels, data, titles, maxVal) {
 		var chartData = {
       label: titles[i],
       data: data[i],
-      backgroundColor: colors[i%6],
-      borderColor: borderColors[i%6],
+      backgroundColor: colors[i],
+      borderColor: borderColors[i],
       borderWidth: 1
 	  }
 		dataset.push(chartData);
@@ -329,8 +331,8 @@ function createChartMultiple(labels, data, titles, maxVal) {
 
 function createChart(ctx, labels, data, titles) {
 	var d = [];
-	var color = ['rgba(255, 215, 0, 0.2)', 'rgba(0, 215, 255, 0.2)'];
-  var borderColor =['rgba(255, 215, 0, 1)', 'rgba(0, 215, 255, 1)'];
+	var color = ['rgba(255, 251, 43, 0.4)', 'rgba(43, 255, 195, 0.4)'];
+  var borderColor =['rgba(255, 251, 43, 1)', 'rgba(43, 255, 195, 1)'];
 	  
 	for (var i in data) {
 		var key = parseInt(i);
