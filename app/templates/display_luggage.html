@@ -13,11 +13,17 @@
 {% endblock %}
 
 {% block container %}
-    {% from 'partials/tickets/dialog__confirm_complete.html' import render_dialog %}
-    {{ render_dialog() }}
-
+  {% from 'partials/tickets/dialog__confirm_complete.html' import render_dialog %}
+  {{ render_dialog() }}
+  
   <div class="container-fluid">
-        <h2>Lots A Luggage</h2>
+    <div class="row searchbar-mobile">
+      <div class="col-sm-6 col-sm-offset-3">
+	    {% include 'partials/global/extra_navbar.html' %}
+	    </div>
+	  </div>
+  
+    <h2>Lots A Luggage</h2>
     <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
   {% for message in form.name.errors %}
