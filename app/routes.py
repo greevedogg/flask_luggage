@@ -200,24 +200,24 @@ def login_admin():
 
 @luggage.route("/admin/dashboard/")
 @login_required
-# TODO: add admin permission check decorator
 def show_dashboard():
-    hotel_id = request.args.get('hotel')
-    if hotel_id:
-        if (hotel_id == str(HOTEL_ROYAL_ID)):
-            current_archives = Archive.query.order_by(Archive.timeIn.desc()).filter(or_(Archive.hotel_id==None, Archive.hotel_id==hotel_id))
+    if current_user and current_user.is_admin:
+        hotel_id = request.args.get('hotel')
+        if hotel_id:
+            if (hotel_id == str(HOTEL_ROYAL_ID)):
+                current_archives = Archive.query.order_by(Archive.timeIn.desc()).filter(or_(Archive.hotel_id==None, Archive.hotel_id==hotel_id))
+            else:
+                current_archives = Archive.query.order_by(Archive.timeIn.desc()).filter_by(hotel_id=hotel_id)
         else:
-            current_archives = Archive.query.order_by(Archive.timeIn.desc()).filter_by(hotel_id=hotel_id)
+            current_archives = Archive.query.order_by(Archive.timeIn.desc()).all()
+    
+        ### Get amount of stores/logs per day
+        extra_info = get_stats(current_archives)
+        
+        hotels = Hotel.query.all()
+        return render_template("dashboard.html", info=extra_info, hotels=hotels, hotel_id=hotel_id)
     else:
-        current_archives = Archive.query.order_by(Archive.timeIn.desc()).all()
-    
-    
-    
-    ### Get amount of stores/logs per day
-    extra_info = get_stats(current_archives)
-    
-    hotels = Hotel.query.all()
-    return render_template("dashboard.html", info=extra_info, hotels=hotels, hotel_id=hotel_id)
+        return redirect(url_for('luggage.login_admin'))
 
 
 
