@@ -281,7 +281,7 @@ function createChartByHour(month, day) {
      
   }
   
-  var yData = [ Object.values(dataByHours), Object.values(dataByHoursOut) ];
+  var yData = [ objectValues(dataByHours), objectValues(dataByHoursOut) ];
   createChart(ctx, xAxis, yData, titles);
   
 }
@@ -474,7 +474,7 @@ function createDailyButtons(data, lastMonth, days) {
     createChartByHour(month, day);
   });
   
-  if (Object.values(data).length > 0) {
+  if (objectValues(data).length > 0) {
     $("#dailyButtonsContainer li:last-child").addClass("active");
     var month = lastMonth;
     var lastDay = null;
@@ -484,6 +484,16 @@ function createDailyButtons(data, lastMonth, days) {
     createChartByHour(month, lastDay);
   }
   
+}
+
+function objectValues(obj) {
+  var res = [];
+  for (var i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      res.push(obj[i]);
+    }
+  }
+  return res;
 }
 
 createMonthButtons();
