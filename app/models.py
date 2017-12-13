@@ -88,7 +88,7 @@ class Hotel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     image = db.Column(db.String(150))
-    timezone = db.Column(db.String(50))
+    timezone = db.Column(db.String(50), nullable=False)
     luggages = db.relationship("Luggage", backref="hotel")
     archives = db.relationship("Archive", backref="hotel")
 
