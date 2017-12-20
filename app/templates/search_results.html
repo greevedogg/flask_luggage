@@ -32,6 +32,7 @@
                 <th>Bag #</th>
                 <th>Logged By</th>
                 <th>Time Stored</th>
+                <th>Comments</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -50,6 +51,7 @@
 							            {{data.timeIn | datetimefilter("%I:%M %p")}}
 							           {% endif%}
                         </td>
+                        <td>{{data.comments | replace("\n", "<br>") | safe}}</td>
                         <td class="dropdown"><button class="btn btn-default dropdown-toggle" type="button"
                           data-toggle="dropdown"> Action <span class="caret"></span></button>
                           <ul class="dropdown-menu">
